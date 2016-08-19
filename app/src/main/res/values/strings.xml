@@ -2,6 +2,7 @@
     <string name="app_name">WordKeeper</string>
     <string name="msg_empty_word_list">You have not added words with translations.
         To add a new word, press the \"+\".</string>
+    <string name="action_word_sort">Sort by</string>
     <string name="action_about">About</string>
     <string name="action_edit_word">Edit</string>
     <string name="action_delete_word">Delete</string>
@@ -11,9 +12,15 @@
     <string name="editor_translation_hint">Translation</string>
     <string name="action_add">Add</string>
     <string name="action_cancel">Cancel</string>
+    <string name="title_word_sort">Sort by</string>
     <string name="error_empty_fields">The fields are not filled!</string>
     <string name="error_delete_word">Failed to delete the word!</string>
     <string name="app_icon_description">Application icon</string>
     <string name="app_version">Version %1$s (%2$d)</string>
     <string name="app_author">Akhbulatov Alidibir</string>
+    
+    <string-array name="word_sorts">
+        <item>Name</item>
+        <item>Last modified</item>
+    </string-array>
 </resources>

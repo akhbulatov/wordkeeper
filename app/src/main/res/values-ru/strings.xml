@@ -2,6 +2,7 @@
     <string name="app_name">WordKeeper</string>
     <string name="msg_empty_word_list">У вас нет добавленных слов с переводами.
         Чтобы добавить новое слово, нажмите \"+\".</string>
+    <string name="action_word_sort">Сортировать</string>
     <string name="action_about">О приложении</string>
     <string name="action_edit_word">Редактировать</string>
     <string name="action_delete_word">Удалить</string>
@@ -11,9 +12,15 @@
     <string name="editor_translation_hint">Перевод</string>
     <string name="action_add">Добавить</string>
     <string name="action_cancel">Отмена</string>
+    <string name="title_word_sort">Сортировать</string>
     <string name="error_empty_fields">Поля не заполнены!</string>
     <string name="error_delete_word">Не удалось удалить слово!</string>
     <string name="app_icon_description">Иконка приложения</string>
     <string name="app_version">Версия %1$s (%2$d)</string>
     <string name="app_author">Akhbulatov Alidibir</string>
+
+    <string-array name="word_sorts">
+        <item>По названию</item>
+        <item>По дате изменения</item>
+    </string-array>
 </resources>
