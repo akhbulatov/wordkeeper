@@ -29,6 +29,12 @@ public final class DatabaseContract {
                     + WordEntry.COLUMN_NAME + " TEXT, "
                     + WordEntry.COLUMN_TRANSLATION + " TEXT);";
 
+    static final String SQL_WORD_ADD_COLUMN_DATETIME = "ALTER TABLE " + WordEntry.TABLE_NAME
+            + " ADD COLUMN " + WordEntry.COLUMN_DATETIME + " INTEGER;";
+
+    static final String SQL_WORD_ORDER_BY_NAME = WordEntry.COLUMN_NAME + " ASC";
+    static final String SQL_WORD_ORDER_BY_DATETIME = WordEntry.COLUMN_DATETIME + " DESC";
+
     // Prevents the initialization of an instance of the class contract
     private DatabaseContract() {
     }
@@ -38,5 +44,6 @@ public final class DatabaseContract {
         public static final String TABLE_NAME = "words";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_TRANSLATION = "translation";
+        public static final String COLUMN_DATETIME = "datetime";
     }
 }

@@ -24,6 +24,7 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -56,6 +57,8 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     // The row ID in the database for the selected item in the word list
     private long mRowId;
 
+    private static int mSortMode;
+
     private ContextMenuRecyclerView mWordListRecycler;
     private WordRecyclerViewAdapter mWordRecyclerAdapter;
     private DatabaseAdapter mDbAdapter;
@@ -78,6 +81,11 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         super.onCreate(savedInstanceState);
         mDbAdapter = new DatabaseAdapter(getActivity());
         mDbAdapter.open();
+
+        SharedPreferences mPrefs = getActivity()
+                .getSharedPreferences(WordSortDialogFragment.PREF_NAME, Context.MODE_PRIVATE);
+        // If the sort mode is not set use default "Last modified" (value is 1)
+        mSortMode = mPrefs.getInt(WordSortDialogFragment.PREF_SORT_MODE, 1);
     }
 
     @Override
@@ -184,6 +192,11 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         }
     }
 
+    public void changeSortWordList(int sortMode) {
+        mSortMode = sortMode;
+        getLoaderManager().restartLoader(LOADER_ID, null, this);
+    }
+
     /**
      * Receives the entered data (word) and saves in the database
      *
@@ -203,7 +216,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
             return false;
         }
         mDbAdapter.addRecord(name, translation);
-        mWordListRecycler.scrollToPosition(mWordRecyclerAdapter.getItemCount() - 1);
+        mWordListRecycler.scrollToPosition(0);
         getLoaderManager().restartLoader(LOADER_ID, null, this);
         return true;
     }
@@ -259,7 +272,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
 
         @Override
         public Cursor loadInBackground() {
-            return mDbAdapter.getAllRecords();
+            return mDbAdapter.getAllRecords(mSortMode);
         }
     }
 

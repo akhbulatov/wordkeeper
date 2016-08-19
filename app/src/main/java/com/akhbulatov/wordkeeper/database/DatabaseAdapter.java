@@ -59,10 +59,20 @@ public class DatabaseAdapter {
         return mDatabase.delete(WordEntry.TABLE_NAME, WordEntry._ID + "=" + rowId, null) > 0;
     }
 
-    public Cursor getAllRecords() {
+    public Cursor getAllRecords(int sortMode) {
+        String orderBy;
+        // Uses only 2 sort mode
+        // For sorting by name value is 0 and by last modified is value 1
+        if (sortMode == 0) {
+            orderBy = DatabaseContract.SQL_WORD_ORDER_BY_NAME;
+        } else {
+            orderBy = DatabaseContract.SQL_WORD_ORDER_BY_DATETIME;
+        }
+
         return mDatabase.query(DatabaseContract.WordEntry.TABLE_NAME,
                 new String[]{WordEntry._ID, WordEntry.COLUMN_NAME, WordEntry.COLUMN_TRANSLATION},
-                null, null, null, null, null);
+                null, null, null, null,
+                orderBy);
     }
 
     public Cursor getRecord(long rowId) {
@@ -81,6 +91,7 @@ public class DatabaseAdapter {
         ContentValues values = new ContentValues();
         values.put(WordEntry.COLUMN_NAME, name);
         values.put(WordEntry.COLUMN_TRANSLATION, translation);
+        values.put(WordEntry.COLUMN_DATETIME, System.currentTimeMillis());
         return values;
     }
 }

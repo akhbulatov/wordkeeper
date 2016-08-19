@@ -34,9 +34,13 @@ import com.akhbulatov.wordkeeper.R;
  * and the context menu to perform actions on words
  */
 public class MainActivity extends AppCompatActivity implements
-        WordEditorDialogFragment.WordEditorDialogListener, WordListFragment.WordClickListener {
+        WordEditorDialogFragment.WordEditorDialogListener, WordListFragment.WordClickListener,
+        WordSortDialogFragment.WordSortDialogListener {
 
     private static final String WORD_EDITOR_DIALOG_ID = WordEditorDialogFragment.class.getName();
+    private static final String WORD_SORT_DIALOG_ID = WordSortDialogFragment.class.getName();
+
+    private WordListFragment mWordListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(toolbar);
+
+        mWordListFragment = (WordListFragment)
+                getFragmentManager().findFragmentById(R.id.fragment_word_list);
     }
 
     @Override
@@ -55,20 +62,25 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent(this, AboutActivity.class);
-        startActivity(intent);
-        return true;
+        switch (item.getItemId()) {
+            case R.id.menu_word_sort:
+                showWordSortDialog();
+                return true;
+            case R.id.menu_about:
+                showAbout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     // Passes the ID of the text on the positive button
     // to determine which dialog button was pressed: dialog add a word or edit word
     @Override
     public void onPositiveClick(DialogFragment dialog, int positiveTextId) {
-        WordListFragment fragment = (WordListFragment)
-                getFragmentManager().findFragmentById(R.id.fragment_word_list);
         // Add the word
         if (positiveTextId == R.string.action_add) {
-            fragment.addWord(dialog);
+            mWordListFragment.addWord(dialog);
         } else {
             // Edit the word
             Dialog dialogView = dialog.getDialog();
@@ -79,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements
             String name = editName.getText().toString();
             String translation = editTranslation.getText().toString();
 
-            fragment.editWord(name, translation);
+            mWordListFragment.editWord(name, translation);
         }
     }
 
@@ -88,6 +100,12 @@ public class MainActivity extends AppCompatActivity implements
     public void onWordClick(int titleId, int positiveTextId, int negativeTextId) {
         showWordEditorDialog(titleId, positiveTextId, negativeTextId);
 
+    }
+
+    // Used as an interface for receiving selection events sorting mode
+    @Override
+    public void onSingleChoiceClick(int sortMode) {
+        mWordListFragment.changeSortWordList(sortMode);
     }
 
     private void showWordEditorDialog(int titleId, int positiveTextId, int negativeTextId) {
@@ -101,16 +119,23 @@ public class MainActivity extends AppCompatActivity implements
             // NOTE! If the method is not called, the program crashes
             getFragmentManager().executePendingTransactions();
 
-            WordListFragment fragment = (WordListFragment)
-                    getFragmentManager().findFragmentById(R.id.fragment_word_list);
-
             Dialog dialogView = dialog.getDialog();
 
             EditText editName = (EditText) dialogView.findViewById(R.id.edit_word_name);
             EditText editTranslation =
                     (EditText) dialogView.findViewById(R.id.edit_word_translation);
-            editName.setText(fragment.getName());
-            editTranslation.setText(fragment.getTranslation());
+            editName.setText(mWordListFragment.getName());
+            editTranslation.setText(mWordListFragment.getTranslation());
         }
+    }
+
+    private void showWordSortDialog() {
+        DialogFragment dialog = new WordSortDialogFragment();
+        dialog.show(getFragmentManager(), WORD_SORT_DIALOG_ID);
+    }
+
+    private void showAbout() {
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
     }
 }

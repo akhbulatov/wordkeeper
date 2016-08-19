@@ -26,7 +26,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "wordkeeper.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     DatabaseOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -45,6 +45,9 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     private void updateDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 1) {
             db.execSQL(DatabaseContract.SQL_CREATE_WORD_ENTRIES);
+        }
+        if (oldVersion < 2) {
+            db.execSQL(DatabaseContract.SQL_WORD_ADD_COLUMN_DATETIME);
         }
     }
 }
