@@ -2,6 +2,7 @@
     <string name="app_name">WordKeeper</string>
     <string name="msg_empty_word_list">You have not added words with translations.
         To add a new word, press the \"+\".</string>
+    <string name="action_search_word">Search</string>
     <string name="action_word_sort">Sort by</string>
     <string name="action_about">About</string>
     <string name="action_edit_word">Edit</string>

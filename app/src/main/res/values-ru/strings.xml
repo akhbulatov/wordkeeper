@@ -2,6 +2,7 @@
     <string name="app_name">WordKeeper</string>
     <string name="msg_empty_word_list">У вас нет добавленных слов с переводами.
         Чтобы добавить новое слово, нажмите \"+\".</string>
+    <string name="action_search_word">Поиск</string>
     <string name="action_word_sort">Сортировать</string>
     <string name="action_about">О приложении</string>
     <string name="action_edit_word">Редактировать</string>
