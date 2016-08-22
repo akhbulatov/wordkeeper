@@ -1,10 +1,11 @@
 <resources>
     <dimen name="ab_shadow_elevation">4dp</dimen>
+    <dimen name="empty_word_list_text_size">16sp</dimen>
+    <dimen name="no_search_results_text_size">16sp</dimen>
     <dimen name="list_item_height">72dp</dimen>
     <dimen name="list_item_vertical_padding">20dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="dialog_padding">24dp</dimen>
     <dimen name="app_author_margin">18dp</dimen>
     <dimen name="app_author_text_size">12sp</dimen>
-    <dimen name="no_search_results_text_size">16sp</dimen>
 </resources>

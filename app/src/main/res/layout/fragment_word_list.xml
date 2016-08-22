@@ -13,7 +13,7 @@
         android:layout_marginRight="16dp"
         android:gravity="center"
         android:text="@string/msg_empty_word_list"
-        android:textAppearance="?android:attr/textAppearance" />
+        android:textSize="@dimen/empty_word_list_text_size" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_add_word"

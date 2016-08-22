@@ -20,8 +20,8 @@
     <string name="error_empty_fields">Поля не заполнены!</string>
     <string name="error_delete_word">Не удалось удалить слово!</string>
     <string name="app_icon_description">Иконка приложения</string>
-    <string name="app_version">Версия %1$s (%2$d)</string>
-    <string name="app_author">Akhbulatov Alidibir</string>
+    <string name="app_version">Версия %1$s (сборка %2$d)</string>
+    <string name="app_author">Alidibir Akhbulatov</string>
 
     <string-array name="word_sorts">
         <item>По названию</item>

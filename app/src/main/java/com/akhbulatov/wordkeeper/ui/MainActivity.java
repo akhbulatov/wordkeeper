@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_word_sort:
+            case R.id.menu_sort_word:
                 showWordSortDialog();
                 return true;
             case R.id.menu_about:

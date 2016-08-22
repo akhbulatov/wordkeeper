@@ -10,7 +10,7 @@
         app:showAsAction="collapseActionView|ifRoom" />
 
     <item
-        android:id="@+id/menu_word_sort"
+        android:id="@+id/menu_sort_word"
         android:icon="@drawable/ic_sort"
         android:title="@string/action_word_sort"
         app:showAsAction="ifRoom" />
