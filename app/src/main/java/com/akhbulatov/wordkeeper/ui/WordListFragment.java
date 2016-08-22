@@ -63,6 +63,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     private WordRecyclerViewAdapter mWordRecyclerAdapter;
     private DatabaseAdapter mDbAdapter;
     private TextView textEmptyWordList;
+    protected FloatingActionButton fabAddWord;
 
     private WordClickListener mListener;
 
@@ -101,8 +102,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
 
         registerForContextMenu(mWordListRecycler);
 
-        FloatingActionButton fabAddWord =
-                (FloatingActionButton) rootView.findViewById(R.id.fab_add_word);
+        fabAddWord = (FloatingActionButton) rootView.findViewById(R.id.fab_add_word);
         fabAddWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -241,7 +241,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     public String getName() {
-        Cursor cursor = mDbAdapter.getRecord(mRowId);
+        Cursor cursor = mDbAdapter.fetchRecord(mRowId);
 
         if (cursor.getCount() > 0) {
             return cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME));
@@ -250,7 +250,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     public String getTranslation() {
-        Cursor cursor = mDbAdapter.getRecord(mRowId);
+        Cursor cursor = mDbAdapter.fetchRecord(mRowId);
 
         if (cursor.getCount() > 0) {
             return cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION));
@@ -272,7 +272,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
 
         @Override
         public Cursor loadInBackground() {
-            return mDbAdapter.getAllRecords(mSortMode);
+            return mDbAdapter.fetchAllRecords(mSortMode);
         }
     }
 

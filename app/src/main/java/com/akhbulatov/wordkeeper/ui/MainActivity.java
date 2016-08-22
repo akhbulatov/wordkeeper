@@ -18,12 +18,19 @@ package com.akhbulatov.wordkeeper.ui;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import com.akhbulatov.wordkeeper.R;
@@ -57,6 +64,30 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.menu_search_word);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        // Create intent for launching search results screen
+        searchView.setSearchableInfo(searchManager
+                .getSearchableInfo(new ComponentName(this, SearchableActivity.class)));
+        searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+
+        MenuItemCompat.setOnActionExpandListener(searchItem,
+                new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                mWordListFragment.fabAddWord.setVisibility(View.INVISIBLE);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                mWordListFragment.fabAddWord.setVisibility(View.VISIBLE);
+                return true;
+            }
+        });
         return true;
     }
 

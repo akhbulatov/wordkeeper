@@ -59,7 +59,7 @@ public class DatabaseAdapter {
         return mDatabase.delete(WordEntry.TABLE_NAME, WordEntry._ID + "=" + rowId, null) > 0;
     }
 
-    public Cursor getAllRecords(int sortMode) {
+    public Cursor fetchAllRecords(int sortMode) {
         String orderBy;
         // Uses only 2 sort mode
         // For sorting by name value is 0 and by last modified is value 1
@@ -75,7 +75,7 @@ public class DatabaseAdapter {
                 orderBy);
     }
 
-    public Cursor getRecord(long rowId) {
+    public Cursor fetchRecord(long rowId) {
         Cursor cursor = mDatabase.query(true, WordEntry.TABLE_NAME,
                 new String[]{WordEntry._ID, WordEntry.COLUMN_NAME, WordEntry.COLUMN_TRANSLATION},
                 WordEntry._ID + "=" + rowId,
@@ -85,6 +85,15 @@ public class DatabaseAdapter {
             cursor.moveToFirst();
         }
         return cursor;
+    }
+
+    public Cursor fetchRecordsByName(String name) {
+        return mDatabase.query(WordEntry.TABLE_NAME,
+                new String[]{WordEntry._ID, WordEntry.COLUMN_NAME, WordEntry.COLUMN_TRANSLATION},
+                WordEntry.COLUMN_NAME + "=? COLLATE NOCASE",
+                new String[]{name},
+                null, null,
+                DatabaseContract.SQL_WORD_ORDER_BY_NAME);
     }
 
     private ContentValues createContentValues(String name, String translation) {

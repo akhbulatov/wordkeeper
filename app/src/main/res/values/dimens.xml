@@ -6,4 +6,5 @@
     <dimen name="dialog_padding">24dp</dimen>
     <dimen name="app_author_margin">18dp</dimen>
     <dimen name="app_author_text_size">12sp</dimen>
+    <dimen name="no_search_results_text_size">16sp</dimen>
 </resources>

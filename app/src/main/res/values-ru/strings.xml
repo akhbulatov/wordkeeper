@@ -7,6 +7,9 @@
     <string name="action_about">О приложении</string>
     <string name="action_edit_word">Редактировать</string>
     <string name="action_delete_word">Удалить</string>
+    <string name="search_word_hint">Поиск слова</string>
+    <string name="title_searchable">Результаты поиска</string>
+    <string name="msg_no_search_results">По запросу \"%1$s\" ничего не найдено</string>
     <string name="title_add_word">Добавить слово</string>
     <string name="title_edit_word">Редактировать слово</string>
     <string name="editor_name_hint">Название</string>
