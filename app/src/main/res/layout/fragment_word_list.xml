@@ -2,11 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView
-        android:id="@+id/recycler_word_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+    <include layout="@layout/recycler_view_word_list" />
 
     <TextView
         android:id="@+id/text_empty_word_list"
