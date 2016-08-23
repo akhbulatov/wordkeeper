@@ -74,20 +74,6 @@ public class MainActivity extends AppCompatActivity implements
                 .getSearchableInfo(new ComponentName(this, SearchableActivity.class)));
         searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 
-        MenuItemCompat.setOnActionExpandListener(searchItem,
-                new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                mWordListFragment.fabAddWord.setVisibility(View.INVISIBLE);
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                mWordListFragment.fabAddWord.setVisibility(View.VISIBLE);
-                return true;
-            }
-        });
         return true;
     }
 
