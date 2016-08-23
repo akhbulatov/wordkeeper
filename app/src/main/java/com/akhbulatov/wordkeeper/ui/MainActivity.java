@@ -29,7 +29,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
@@ -74,20 +73,6 @@ public class MainActivity extends AppCompatActivity implements
                 .getSearchableInfo(new ComponentName(this, SearchableActivity.class)));
         searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 
-        MenuItemCompat.setOnActionExpandListener(searchItem,
-                new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                mWordListFragment.fabAddWord.setVisibility(View.INVISIBLE);
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                mWordListFragment.fabAddWord.setVisibility(View.VISIBLE);
-                return true;
-            }
-        });
         return true;
     }
 
