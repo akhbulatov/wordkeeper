@@ -38,17 +38,13 @@ public class AboutActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         String appVersion = String.format(getString(R.string.app_version),
                 BuildConfig.VERSION_NAME,
                 BuildConfig.VERSION_CODE);
 
         TextView textAppVersion = (TextView) findViewById(R.id.text_app_version);
-        if (textAppVersion != null) {
-            textAppVersion.setText(appVersion);
-        }
+        textAppVersion.setText(appVersion);
     }
 }

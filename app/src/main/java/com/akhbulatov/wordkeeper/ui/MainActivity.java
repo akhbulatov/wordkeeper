@@ -40,7 +40,7 @@ import com.akhbulatov.wordkeeper.R;
  * and the context menu to perform actions on words
  */
 public class MainActivity extends AppCompatActivity implements
-        WordEditorDialogFragment.WordEditorDialogListener, WordListFragment.WordClickListener,
+        WordEditorDialogFragment.WordEditorDialogListener, WordListFragment.EditWordClickListener,
         WordSortDialogFragment.WordSortDialogListener {
 
     private static final String WORD_EDITOR_DIALOG_ID = WordEditorDialogFragment.class.getName();
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements
 
     // Used as an interface to call a method from MainActivity in WordListFragment
     @Override
-    public void onWordClick(int titleId, int positiveTextId, int negativeTextId) {
+    public void onEditWordClick(int titleId, int positiveTextId, int negativeTextId) {
         showWordEditorDialog(titleId, positiveTextId, negativeTextId);
 
     }
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements
         // For edit word dialog receives and displays data of the selected word
         // Data is the name and translation
         if (positiveTextId == R.string.action_edit_word) {
-            // NOTE! If the method is not called, the program crashes
+            // NOTE! If the method is not called, the app crashes
             getFragmentManager().executePendingTransactions();
 
             Dialog dialogView = dialog.getDialog();
