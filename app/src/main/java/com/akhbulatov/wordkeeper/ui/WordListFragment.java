@@ -28,10 +28,12 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.ContextMenu;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,40 +42,46 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.akhbulatov.wordkeeper.R;
-import com.akhbulatov.wordkeeper.adapter.WordRecyclerViewAdapter;
+import com.akhbulatov.wordkeeper.adapter.WordAdapter;
 import com.akhbulatov.wordkeeper.database.DatabaseAdapter;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
-import com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
+
+import java.util.List;
 
 /**
  * Displays a list of words that is updated when data changes in the database.
  * Loader uses a custom class for working with the database, not the ContentProvider
  */
-public class WordListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class WordListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+        WordAdapter.WordViewHolder.WordClickListener {
 
     private static final int LOADER_ID = 0;
 
-    // The row ID in the database for the selected item in the word list
-    private long mRowId;
+    // The word ID in the database for the selected item in the word list
+    private long mWordId;
 
-    private static int mSortMode;
+    private static int sSortMode;
 
-    private ContextMenuRecyclerView mWordListRecycler;
-    private WordRecyclerViewAdapter mWordRecyclerAdapter;
+    private RecyclerView mWordList;
+    private WordAdapter mWordAdapter;
     private DatabaseAdapter mDbAdapter;
-    private TextView textEmptyWordList;
+    private TextView mTextEmptyWordList;
     protected FloatingActionButton fabAddWord;
 
-    private WordClickListener mListener;
+    private ActionModeCallback mActionModeCallback;
+    private ActionMode mActionMode;
+
+    private EditWordClickListener mListener;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (WordClickListener) activity;
+            mListener = (EditWordClickListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + "must implement WordClickListener");
+            throw new ClassCastException(activity.toString() + " must implement "
+                    + EditWordClickListener.class.getName());
         }
     }
 
@@ -86,7 +94,9 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         SharedPreferences mPrefs = getActivity()
                 .getSharedPreferences(WordSortDialogFragment.PREF_NAME, Context.MODE_PRIVATE);
         // If the sort mode is not set use default "Last modified" (value is 1)
-        mSortMode = mPrefs.getInt(WordSortDialogFragment.PREF_SORT_MODE, 1);
+        sSortMode = mPrefs.getInt(WordSortDialogFragment.PREF_SORT_MODE, 1);
+
+        mActionModeCallback = new ActionModeCallback();
     }
 
     @Override
@@ -94,26 +104,23 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_word_list, container, false);
 
-        mWordListRecycler = (ContextMenuRecyclerView) rootView.findViewById(R.id.recycler_word_list);
-        mWordListRecycler.setHasFixedSize(true);
-        mWordListRecycler.addItemDecoration(new DividerItemDecoration(getActivity(),
+        mWordList = (RecyclerView) rootView.findViewById(R.id.recycler_word_list);
+        mWordList.setHasFixedSize(true);
+        mWordList.addItemDecoration(new DividerItemDecoration(getActivity(),
                 LinearLayoutManager.VERTICAL));
-        mWordListRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        registerForContextMenu(mWordListRecycler);
+        mWordList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         fabAddWord = (FloatingActionButton) rootView.findViewById(R.id.fab_add_word);
         fabAddWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onWordClick(R.string.title_add_word,
+                mListener.onEditWordClick(R.string.title_add_word,
                         R.string.action_add,
                         R.string.action_cancel);
             }
         });
 
-        textEmptyWordList = (TextView) rootView.findViewById(R.id.text_empty_word_list);
-
+        mTextEmptyWordList = (TextView) rootView.findViewById(R.id.text_empty_word_list);
         return rootView;
     }
 
@@ -130,37 +137,6 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.item_word_action, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        ContextMenuRecyclerView.RecyclerContextMenuInfo info =
-                (ContextMenuRecyclerView.RecyclerContextMenuInfo) item.getMenuInfo();
-
-        switch (item.getItemId()) {
-            case R.id.menu_edit_word:
-                // Saves the ID to use to retrieve the selected row
-                // and paste the edited string into the database
-                mRowId = info.id;
-
-                mListener.onWordClick(R.string.title_edit_word,
-                        R.string.action_edit_word,
-                        R.string.action_cancel);
-                return true;
-            case R.id.menu_delete_word:
-                deleteWord(info.id);
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
-    }
-
-    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // Returns a cursor with all records from the database.
         // Using own class instead of a ContentProvider
@@ -169,31 +145,49 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (mWordRecyclerAdapter == null) {
+        if (mWordAdapter == null) {
             // The adapter is created only the first time retrieving data from the database
-            mWordRecyclerAdapter = new WordRecyclerViewAdapter(data);
-            mWordRecyclerAdapter.setHasStableIds(true);
-            mWordListRecycler.setAdapter(mWordRecyclerAdapter);
+            mWordAdapter = new WordAdapter(data, this);
+            mWordAdapter.setHasStableIds(true);
+            mWordList.setAdapter(mWordAdapter);
         } else {
-            mWordRecyclerAdapter.swapCursor(data);
+            mWordAdapter.swapCursor(data);
         }
 
-        if (mWordRecyclerAdapter.getItemCount() == 0) {
-            textEmptyWordList.setVisibility(View.VISIBLE);
-        } else if (textEmptyWordList.getVisibility() == View.VISIBLE) {
-            textEmptyWordList.setVisibility(View.INVISIBLE);
+        if (mWordAdapter.getItemCount() == 0) {
+            mTextEmptyWordList.setVisibility(View.VISIBLE);
+        } else {
+            mTextEmptyWordList.setVisibility(View.INVISIBLE);
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        if (mWordRecyclerAdapter != null) {
-            mWordRecyclerAdapter.swapCursor(null);
+        if (mWordAdapter != null) {
+            mWordAdapter.swapCursor(null);
         }
     }
 
+    @Override
+    public void onWordClick(int position) {
+        if (mActionMode != null) {
+            toggleSelection(position);
+        }
+    }
+
+    @Override
+    public boolean onWordLongClick(int position) {
+        if (mActionMode == null) {
+            mActionMode = ((AppCompatActivity)
+                    getActivity()).startSupportActionMode(mActionModeCallback);
+        }
+
+        toggleSelection(position);
+        return true;
+    }
+
     public void changeSortWordList(int sortMode) {
-        mSortMode = sortMode;
+        sSortMode = sortMode;
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
@@ -215,8 +209,9 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
             Toast.makeText(getActivity(), R.string.error_empty_fields, Toast.LENGTH_SHORT).show();
             return false;
         }
+
         mDbAdapter.addRecord(name, translation);
-        mWordListRecycler.scrollToPosition(0);
+        mWordList.scrollToPosition(0);
         getLoaderManager().restartLoader(LOADER_ID, null, this);
         return true;
     }
@@ -226,22 +221,14 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
             Toast.makeText(getActivity(), R.string.error_empty_fields, Toast.LENGTH_SHORT).show();
             return false;
         }
-        mDbAdapter.updateRecord(mRowId, name, translation);
-        getLoaderManager().restartLoader(LOADER_ID, null, this);
-        return true;
-    }
 
-    private boolean deleteWord(long rowId) {
-        if (!mDbAdapter.deleteRecord(rowId)) {
-            Toast.makeText(getActivity(), R.string.error_delete_word, Toast.LENGTH_SHORT).show();
-            return false;
-        }
+        mDbAdapter.updateRecord(mWordId, name, translation);
         getLoaderManager().restartLoader(LOADER_ID, null, this);
         return true;
     }
 
     public String getName() {
-        Cursor cursor = mDbAdapter.fetchRecord(mRowId);
+        Cursor cursor = mDbAdapter.fetchRecord(mWordId);
 
         if (cursor.getCount() > 0) {
             return cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME));
@@ -250,12 +237,48 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     public String getTranslation() {
-        Cursor cursor = mDbAdapter.fetchRecord(mRowId);
+        Cursor cursor = mDbAdapter.fetchRecord(mWordId);
 
         if (cursor.getCount() > 0) {
             return cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION));
         }
         return null;
+    }
+
+    private void toggleSelection(int position) {
+        mWordAdapter.toggleSelection(position);
+        int count = mWordAdapter.getSelectedWordCount();
+
+        if (count == 0) {
+            mActionMode.finish();
+        } else {
+            mActionMode.setTitle(String.valueOf(count));
+            mActionMode.invalidate();
+        }
+    }
+
+    private boolean deleteWords(List<Integer> words) {
+        for (Integer i : words) {
+            mDbAdapter.deleteRecord(mWordAdapter.getItemId(i));
+        }
+
+        getLoaderManager().restartLoader(LOADER_ID, null, this);
+        return true;
+    }
+
+    /**
+     * Gets a single item id from the list of words,
+     * despite the collection that is passed in the parameter
+     *
+     * @param words List of selected words
+     * @return Returns the item id
+     */
+    private long getWordId(List<Integer> words) {
+        long wordId = 0;
+        for (Integer i : words) {
+            wordId = mWordAdapter.getItemId(i);
+        }
+        return wordId;
     }
 
     /**
@@ -272,14 +295,69 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
 
         @Override
         public Cursor loadInBackground() {
-            return mDbAdapter.fetchAllRecords(mSortMode);
+            return mDbAdapter.fetchAllRecords(sSortMode);
+        }
+    }
+
+    /**
+     * Provides support for CAB
+     */
+    private class ActionModeCallback implements ActionMode.Callback {
+
+        private MenuItem mItemEditWord;
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.selected_word, menu);
+            mItemEditWord = menu.findItem(R.id.menu_edit_word);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            // Editing is available only for one selected word
+            if (mWordAdapter.getSelectedWordCount() == 1) {
+                mItemEditWord.setVisible(true);
+            } else {
+                mItemEditWord.setVisible(false);
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.menu_edit_word:
+                    // Saves the id to use to retrieve the selected row
+                    // and paste the edited string into the database.
+                    // Called for only one selected word
+                    mWordId = getWordId(mWordAdapter.getSelectedWords());
+
+                    mListener.onEditWordClick(R.string.title_edit_word,
+                            R.string.action_edit_word,
+                            R.string.action_cancel);
+                    mode.finish();
+                    return true;
+                case R.id.menu_delete_word:
+                    deleteWords(mWordAdapter.getSelectedWords());
+                    mode.finish();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mWordAdapter.clearSelection();
+            mActionMode = null;
         }
     }
 
     /**
      * Used to work with Dialog. Call the methods of the Activity in the Fragment
      */
-    public interface WordClickListener {
+    public interface EditWordClickListener {
         /**
          * Invoked on the event display dialog box
          *
@@ -287,6 +365,6 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
          * @param positiveTextId ID of the text on the positive button of the dialog
          * @param negativeTextId ID of the text on the negative button of the dialog
          */
-        void onWordClick(int titleId, int positiveTextId, int negativeTextId);
+        void onEditWordClick(int titleId, int positiveTextId, int negativeTextId);
     }
 }
