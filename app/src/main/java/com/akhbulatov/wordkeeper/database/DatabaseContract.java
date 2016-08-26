@@ -32,7 +32,7 @@ public final class DatabaseContract {
     static final String SQL_WORD_ADD_COLUMN_DATETIME = "ALTER TABLE " + WordEntry.TABLE_NAME
             + " ADD COLUMN " + WordEntry.COLUMN_DATETIME + " INTEGER;";
 
-    static final String SQL_WORD_ORDER_BY_NAME = WordEntry.COLUMN_NAME + " ASC";
+    static final String SQL_WORD_ORDER_BY_NAME = WordEntry.COLUMN_NAME + " COLLATE NOCASE";
     static final String SQL_WORD_ORDER_BY_DATETIME = WordEntry.COLUMN_DATETIME + " DESC";
 
     // Prevents the initialization of an instance of the class contract

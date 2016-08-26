@@ -51,8 +51,8 @@ public class WordSortDialogFragment extends DialogFragment {
         try {
             mListener = (WordSortDialogListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement WordSortDialogListener");
+            throw new ClassCastException(activity.toString() + " must implement "
+                    + WordSortDialogFragment.class.getName());
         }
     }
 
@@ -74,8 +74,8 @@ public class WordSortDialogFragment extends DialogFragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 mSortMode = which;
-                                dialog.dismiss();
                                 mListener.onSingleChoiceClick(mSortMode);
+                                dialog.dismiss();
                             }
                         })
                 .create();

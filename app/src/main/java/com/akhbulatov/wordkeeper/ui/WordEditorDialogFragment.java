@@ -68,8 +68,8 @@ public class WordEditorDialogFragment extends DialogFragment {
         try {
             mListener = (WordEditorDialogListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + "must implement WordEditorDialogListener");
+            throw new ClassCastException(activity.toString() + " must implement "
+                    + WordEditorDialogFragment.class.getName());
         }
     }
 

@@ -22,14 +22,14 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
 import com.akhbulatov.wordkeeper.R;
-import com.akhbulatov.wordkeeper.adapter.WordRecyclerViewAdapter;
+import com.akhbulatov.wordkeeper.adapter.WordAdapter;
 import com.akhbulatov.wordkeeper.database.DatabaseAdapter;
-import com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
 
 /**
@@ -54,21 +54,18 @@ public class SearchableActivity extends AppCompatActivity {
         DatabaseAdapter dbAdapter = new DatabaseAdapter(this);
         dbAdapter.open();
 
-        ContextMenuRecyclerView wordListRecycler =
-                (ContextMenuRecyclerView) findViewById(R.id.recycler_word_list);
-        wordListRecycler.setHasFixedSize(true);
-        wordListRecycler.addItemDecoration(new DividerItemDecoration(this,
-                LinearLayoutManager.VERTICAL));
-        wordListRecycler.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView wordList = (RecyclerView) findViewById(R.id.recycler_word_list);
+        wordList.setHasFixedSize(true);
+        wordList.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        wordList.setLayoutManager(new LinearLayoutManager(this));
 
-        WordRecyclerViewAdapter wordRecyclerAdapter =
-                new WordRecyclerViewAdapter(dbAdapter.fetchRecordsByName(query));
-        wordRecyclerAdapter.setHasStableIds(true);
-        wordListRecycler.setAdapter(wordRecyclerAdapter);
+        WordAdapter wordAdapter = new WordAdapter(dbAdapter.fetchRecordsByName(query));
+        wordAdapter.setHasStableIds(true);
+        wordList.setAdapter(wordAdapter);
 
         TextView textNoSearchResults = (TextView) findViewById(R.id.text_no_search_results);
 
-        if (wordRecyclerAdapter.getItemCount() == 0) {
+        if (wordAdapter.getItemCount() == 0) {
             String noSearchResults = String.format(getString(R.string.msg_no_search_results), query);
 
             textNoSearchResults.setText(noSearchResults);
