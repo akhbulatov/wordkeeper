@@ -16,38 +16,59 @@
 
 package com.akhbulatov.wordkeeper.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.akhbulatov.wordkeeper.R;
+
 /**
- * Helps with support for databases up to date
+ * Helps to support and update databases
  */
 public class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "wordkeeper.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
+
+    private Context mContext;
 
     DatabaseOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mContext = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        updateDatabase(db, 0, DATABASE_VERSION);
+        updateDatabase(db, 0);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        updateDatabase(db, oldVersion, newVersion);
+        updateDatabase(db, oldVersion);
     }
 
-    private void updateDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
+    private void updateDatabase(SQLiteDatabase db, int oldVersion) {
         if (oldVersion < 1) {
             db.execSQL(DatabaseContract.SQL_CREATE_WORD_ENTRIES);
         }
         if (oldVersion < 2) {
             db.execSQL(DatabaseContract.SQL_WORD_ADD_COLUMN_DATETIME);
         }
+        if (oldVersion < 3) {
+            db.execSQL(DatabaseContract.SQL_WORD_ADD_COLUMN_CATEGORY);
+            db.execSQL(DatabaseContract.SQL_CREATE_CATEGORY_ENTRIES);
+
+            // Creates a default category that cannot be deleted
+            db.insert(DatabaseContract.CategoryEntry.TABLE_NAME, null, createDefaultCategory());
+        }
+    }
+
+    private ContentValues createDefaultCategory() {
+        String defaultCategory = mContext.getResources().getString(R.string.default_category);
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseContract.CategoryEntry.COLUMN_NAME, defaultCategory);
+        return values;
     }
 }

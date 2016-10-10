@@ -31,9 +31,16 @@ public final class DatabaseContract {
 
     static final String SQL_WORD_ADD_COLUMN_DATETIME = "ALTER TABLE " + WordEntry.TABLE_NAME
             + " ADD COLUMN " + WordEntry.COLUMN_DATETIME + " INTEGER;";
+    static final String SQL_WORD_ADD_COLUMN_CATEGORY = "ALTER TABLE " + WordEntry.TABLE_NAME
+            + " ADD COLUMN " + WordEntry.COLUMN_CATEGORY + " TEXT;";
 
     static final String SQL_WORD_ORDER_BY_NAME = WordEntry.COLUMN_NAME + " COLLATE NOCASE";
     static final String SQL_WORD_ORDER_BY_DATETIME = WordEntry.COLUMN_DATETIME + " DESC";
+
+    static final String SQL_CREATE_CATEGORY_ENTRIES =
+            "CREATE TABLE " + CategoryEntry.TABLE_NAME + " ("
+                    + CategoryEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + CategoryEntry.COLUMN_NAME + " TEXT);";
 
     // Prevents the initialization of an instance of the class contract
     private DatabaseContract() {
@@ -45,5 +52,12 @@ public final class DatabaseContract {
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_TRANSLATION = "translation";
         public static final String COLUMN_DATETIME = "datetime";
+        public static final String COLUMN_CATEGORY = "category";
+    }
+
+    public static abstract class CategoryEntry implements BaseColumns {
+
+        public static final String TABLE_NAME = "categories";
+        public static final String COLUMN_NAME = "name";
     }
 }
