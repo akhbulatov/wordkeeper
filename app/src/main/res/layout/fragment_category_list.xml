@@ -1,0 +1,13 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView
+        android:id="@+id/recycler_category_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
+    <include layout="@layout/fab_add_word" />
+
+</FrameLayout>
