@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:minHeight="@dimen/list_item_height"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/list_item_vertical_padding"
-    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-    android:paddingTop="@dimen/list_item_vertical_padding">
+    style="@style/ListItemLayout"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/text_word_name"

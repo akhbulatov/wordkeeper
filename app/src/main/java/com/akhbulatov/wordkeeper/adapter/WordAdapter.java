@@ -32,15 +32,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Provides display list items in RecyclerView.
- * Replaces the text in the view when displaying the item on the screen.
+ * Provides display a list of words in RecyclerView.
  * Saves the state of the selection for ActionMode
  */
 public class WordAdapter extends CursorRecyclerViewAdapter<WordAdapter.WordViewHolder> {
 
     private SparseBooleanArray mSelectedWords;
 
-    private WordViewHolder.WordClickListener mListener;
+    private WordViewHolder.WordAdapterListener mListener;
 
     public WordAdapter(Cursor cursor) {
         super(cursor);
@@ -49,7 +48,7 @@ public class WordAdapter extends CursorRecyclerViewAdapter<WordAdapter.WordViewH
         mListener = null;
     }
 
-    public WordAdapter(Cursor cursor, WordViewHolder.WordClickListener listener) {
+    public WordAdapter(Cursor cursor, WordViewHolder.WordAdapterListener listener) {
         super(cursor);
         mSelectedWords = new SparseBooleanArray();
 
@@ -58,9 +57,9 @@ public class WordAdapter extends CursorRecyclerViewAdapter<WordAdapter.WordViewH
 
     @Override
     public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View wordView = LayoutInflater.from(parent.getContext())
+        View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_word, parent, false);
-        return new WordViewHolder(wordView, mListener);
+        return new WordViewHolder(itemView, mListener);
     }
 
     @Override
@@ -112,38 +111,35 @@ public class WordAdapter extends CursorRecyclerViewAdapter<WordAdapter.WordViewH
         public TextView textWordName;
         public TextView textWordTranslation;
 
-        private WordClickListener mListener;
+        private WordAdapterListener mListener;
 
-        public WordViewHolder(View wordView, WordClickListener listener) {
-            super(wordView);
-            textWordName = (TextView) wordView.findViewById(R.id.text_word_name);
-            textWordTranslation = (TextView) wordView.findViewById(R.id.text_word_translation);
+        public WordViewHolder(View itemView, WordAdapterListener listener) {
+            super(itemView);
+            textWordName = (TextView) itemView.findViewById(R.id.text_word_name);
+            textWordTranslation = (TextView) itemView.findViewById(R.id.text_word_translation);
 
             mListener = listener;
 
-            wordView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mListener != null) {
-                        mListener.onWordClick(getAdapterPosition());
+                        mListener.onWordItemClick(getAdapterPosition());
                     }
                 }
             });
-            wordView.setOnLongClickListener(new View.OnLongClickListener() {
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    if (mListener != null) {
-                        return mListener.onWordLongClick(getAdapterPosition());
-                    }
-                    return false;
+                    return mListener != null && mListener.onWordItemLongClick(getAdapterPosition());
                 }
             });
         }
 
-        public interface WordClickListener {
-            void onWordClick(int position);
+        public interface WordAdapterListener {
+            void onWordItemClick(int position);
 
-            boolean onWordLongClick(int position);
+            boolean onWordItemLongClick(int position);
         }
     }
 }
