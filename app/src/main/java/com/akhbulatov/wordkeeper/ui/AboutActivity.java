@@ -17,7 +17,6 @@
 package com.akhbulatov.wordkeeper.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
@@ -26,7 +25,7 @@ import com.akhbulatov.wordkeeper.BuildConfig;
 import com.akhbulatov.wordkeeper.R;
 
 /**
- * Displays an activity with information about the app
+ * Shows a screen with information about the app
  */
 public class AboutActivity extends AppCompatActivity {
 
@@ -37,8 +36,9 @@ public class AboutActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         String appVersion = String.format(getString(R.string.app_version),
                 BuildConfig.VERSION_NAME,
