@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorAccent">@color/accent</item>
@@ -9,11 +9,21 @@
         <item name="actionModeBackground">@color/primary</item>
         <item name="windowActionModeOverlay">true</item>
 
-        <item name="alertDialogTheme">@style/AppCompatAlertDialog</item>
+        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
+
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
     </style>
 
-    <style name="AppCompatAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/accent</item>
+    </style>
+
+    <style name="AlertDialogTheme.Layout" parent="AlertDialogTheme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">@dimen/dialog_horizontal_padding</item>
+        <item name="android:paddingRight">@dimen/dialog_horizontal_padding</item>
     </style>
 
     <style name="ListItem" parent="android:Widget.TextView">
@@ -29,6 +39,28 @@
 
     <style name="ListItem.Secondary">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+    </style>
+
+    <style name="ListItemLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:clickable">true</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="android:minHeight">@dimen/list_item_height</item>
+        <item name="android:paddingBottom">@dimen/list_item_vertical_padding</item>
+        <item name="android:paddingLeft">?android:attr/listPreferredItemPaddingLeft</item>
+        <item name="android:paddingRight">?android:attr/listPreferredItemPaddingRight</item>
+        <item name="android:paddingTop">@dimen/list_item_vertical_padding</item>
+    </style>
+
+    <style name="TextNoResult" parent="android:Widget.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginLeft">@dimen/no_result_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/no_result_horizontal_margin</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/no_result_text_size</item>
     </style>
 
 </resources>
