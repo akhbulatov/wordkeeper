@@ -16,40 +16,36 @@
 
 package com.akhbulatov.wordkeeper.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.WindowManager;
 
 import com.akhbulatov.wordkeeper.R;
 
 /**
- * Displays editor dialog box to add words and edit words
+ * Shows an editor dialog to add and edit words
  */
 public class WordEditorDialogFragment extends DialogFragment {
 
-    /**
-     * The keys are used as arguments.
-     * Those keys get values sent to dialog box
-     */
-    private static final String ARGUMENT_TITLE_ID = "title";
-    private static final String ARGUMENT_POSITIVE_TEXT_ID = "positiveText";
-    private static final String ARGUMENT_NEGATIVE_TEXT_ID = "negativeText";
+    private static final String ARGUMENT_TITLE_ID = "TitleId";
+    private static final String ARGUMENT_POSITIVE_TEXT_ID = "PositiveTextId";
+    private static final String ARGUMENT_NEGATIVE_TEXT_ID = "NegativeTextId";
 
-    /**
-     * Stores the value obtained in the arguments.
-     * These values are used to set the title and text on the buttons
-     */
     private int mTitleId;
     private int mPositiveTextId;
     private int mNegativeTextId;
 
     private WordEditorDialogListener mListener;
 
-    public static WordEditorDialogFragment newInstance(int titleId, int positiveTextId,
+    public static WordEditorDialogFragment newInstance(int titleId,
+                                                       int positiveTextId,
                                                        int negativeTextId) {
         WordEditorDialogFragment dialog = new WordEditorDialogFragment();
 
@@ -69,7 +65,7 @@ public class WordEditorDialogFragment extends DialogFragment {
             mListener = (WordEditorDialogListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement "
-                    + WordEditorDialogFragment.class.getName());
+                    + WordEditorDialogListener.class.getName());
         }
     }
 
@@ -84,18 +80,20 @@ public class WordEditorDialogFragment extends DialogFragment {
         }
     }
 
+    @NonNull
+    @SuppressLint("InflateParams")
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        return builder.setView(inflater.inflate(R.layout.dialog_word_editor, null))
+        builder.setView(inflater.inflate(R.layout.dialog_word_editor, null))
                 .setTitle(mTitleId)
                 .setPositiveButton(mPositiveTextId, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mListener.onPositiveClick(WordEditorDialogFragment.this, mPositiveTextId);
+                        mListener.onFinishWordEditorDialog(WordEditorDialogFragment.this,
+                                mPositiveTextId);
                     }
                 })
                 .setNegativeButton(mNegativeTextId, new DialogInterface.OnClickListener() {
@@ -103,18 +101,27 @@ public class WordEditorDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
-                })
-                .create();
+                });
+
+        Dialog dialog = builder.create();
+        // Shows the soft keyboard automatically
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        return dialog;
     }
 
-    /**
-     * Delivers information about the event activity or fragment that opened the dialog
-     */
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
     public interface WordEditorDialogListener {
         /**
-         * @param dialog         The dialog box where the event occurred
-         * @param positiveTextId ID of the text on the positive button
+         * Applies the changes to the edited word in the dialog
+         *
+         * @param dialog         The current open dialog
+         * @param positiveTextId The ID of the text on the positive button
          */
-        void onPositiveClick(DialogFragment dialog, int positiveTextId);
+        void onFinishWordEditorDialog(DialogFragment dialog, int positiveTextId);
     }
 }

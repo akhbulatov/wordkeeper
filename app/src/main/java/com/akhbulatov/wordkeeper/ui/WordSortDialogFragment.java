@@ -16,13 +16,13 @@
 
 package com.akhbulatov.wordkeeper.ui;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import com.akhbulatov.wordkeeper.R;
@@ -33,48 +33,46 @@ import com.akhbulatov.wordkeeper.R;
  */
 
 /**
- * Displays a dialog box to select the mode of sorting the words in the list
+ * Shows a dialog to select the mode of sorting the words in the list of words
  */
 public class WordSortDialogFragment extends DialogFragment {
 
-    public static final String PREF_NAME = "wordkeeper_prefs";
+    public static final String PREF_NAME = "wordkeeper.prefs";
     public static final String PREF_SORT_MODE = "sortMode";
+    public static final int DEFAULT_SORT_MODE = 1;
 
     private int mSortMode;
 
-    private WordSortDialogListener mListener;
     private SharedPreferences mPrefs;
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (WordSortDialogListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement "
-                    + WordSortDialogFragment.class.getName());
-        }
-    }
+    private WordSortDialogListener mListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            mListener = (WordSortDialogListener) getTargetFragment();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getTargetFragment().toString() + " must implement "
+                    + WordSortDialogListener.class.getName());
+        }
+
         mPrefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        // If the sort mode is not set use default "Last modified" (value is 1)
-        mSortMode = mPrefs.getInt(PREF_SORT_MODE, 1);
+        mSortMode = mPrefs.getInt(PREF_SORT_MODE, DEFAULT_SORT_MODE);
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        return builder.setTitle(R.string.title_word_sort)
-                .setSingleChoiceItems(R.array.word_sorts, mSortMode,
+        return builder.setTitle(R.string.action_sort_word)
+                .setSingleChoiceItems(R.array.sort_words, mSortMode,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 mSortMode = which;
-                                mListener.onSingleChoiceClick(mSortMode);
+                                mListener.onFinishWordSortDialog(mSortMode);
                                 dialog.dismiss();
                             }
                         })
@@ -87,17 +85,15 @@ public class WordSortDialogFragment extends DialogFragment {
         mPrefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = mPrefs.edit();
         editor.putInt(PREF_SORT_MODE, mSortMode);
-
         editor.apply();
     }
 
-    /**
-     * Uses to refresh the words list when choosing the sort mode
-     */
     public interface WordSortDialogListener {
         /**
-         * @param sortMode The sorting mode for the list of words
+         * Uses to update the list of words when selecting the sort mode
+         *
+         * @param sortMode The sort mode for the list of words
          */
-        void onSingleChoiceClick(int sortMode);
+        void onFinishWordSortDialog(int sortMode);
     }
 }

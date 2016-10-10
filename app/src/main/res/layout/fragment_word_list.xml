@@ -6,21 +6,9 @@
 
     <TextView
         android:id="@+id/text_empty_word_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:gravity="center"
-        android:text="@string/msg_empty_word_list"
-        android:textSize="@dimen/empty_word_list_text_size" />
+        style="@style/TextNoResult"
+        android:text="@string/empty_word_list" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_add_word"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_add" />
+    <include layout="@layout/fab_add_word" />
 
 </FrameLayout>
