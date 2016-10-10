@@ -76,4 +76,8 @@
     </string>
     <string name="confirm_category_action_delete">Удалить</string>
     <string name="confirm_category_action_cancel">Отмена</string>
+
+    <!-- Rate app -->
+    <string name="title_rate_app">Оценить</string>
+    <string name="error_rate_app">Извините, не удалось найти приложение</string>
 </resources>

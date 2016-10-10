@@ -18,6 +18,11 @@
 
     <group android:id="@+id/menu_bottom_group">
         <item
+            android:id="@+id/menu_drawer_rate_app"
+            android:icon="@drawable/ic_stars"
+            android:title="@string/title_rate_app" />
+
+        <item
             android:id="@+id/menu_drawer_about"
             android:icon="@drawable/ic_info"
             android:title="@string/title_about" />

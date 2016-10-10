@@ -17,8 +17,10 @@
 package com.akhbulatov.wordkeeper.ui;
 
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -34,6 +36,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.ui.controller.FabAddWordController;
@@ -187,6 +190,9 @@ public class MainActivity extends AppCompatActivity implements FabAddWordControl
             case R.id.menu_drawer_categories:
                 fragmentClass = CategoryListFragment.class;
                 break;
+            case R.id.menu_drawer_rate_app:
+                showRateApp();
+                break;
             case R.id.menu_drawer_about:
                 showAbout();
                 break;
@@ -250,6 +256,15 @@ public class MainActivity extends AppCompatActivity implements FabAddWordControl
             editName.setText(mWordListFragment.getName());
             editTranslation.setText(mWordListFragment.getTranslation());
             spinnerCategories.setSelection(adapter.getPosition(mWordListFragment.getCategory()));
+        }
+    }
+
+    private void showRateApp() {
+        Uri uri = Uri.parse("market://details?id=" + getPackageName());
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, uri));
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, R.string.error_rate_app, Toast.LENGTH_SHORT).show();
         }
     }
 

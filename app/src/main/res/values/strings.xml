@@ -74,4 +74,8 @@
     </string>
     <string name="confirm_category_action_delete">Delete</string>
     <string name="confirm_category_action_cancel">Cancel</string>
+
+    <!-- Rate app -->
+    <string name="title_rate_app">Rate app</string>
+    <string name="error_rate_app">Sorry, could not find the app</string>
 </resources>
