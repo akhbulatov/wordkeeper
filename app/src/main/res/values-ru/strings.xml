@@ -1,29 +1,79 @@
 <resources>
     <string name="app_name">WordKeeper</string>
-    <string name="msg_empty_word_list">У вас нет добавленных слов с переводами.
-        Чтобы добавить новое слово, нажмите \"+\".</string>
+
+    <!-- The navigation drawer -->
+    <string name="drawer_open">Открыть панель навигации</string>
+    <string name="drawer_close">Закрыть панель навигации</string>
+
+    <!-- The screen "All words" -->
+    <string name="title_all_words">Все слова</string>
     <string name="action_search_word">Поиск</string>
-    <string name="action_word_sort">Сортировать</string>
-    <string name="action_about">О приложении</string>
+    <string name="action_sort_word">Сортировать</string>
     <string name="action_edit_word">Редактировать</string>
     <string name="action_delete_word">Удалить</string>
-    <string name="search_word_hint">Поиск слова</string>
-    <string name="title_searchable">Результаты поиска</string>
-    <string name="msg_no_search_results">По запросу \"%1$s\" ничего не найдено</string>
-    <string name="title_add_word">Добавить слово</string>
-    <string name="title_edit_word">Редактировать слово</string>
-    <string name="editor_name_hint">Название</string>
-    <string name="editor_translation_hint">Перевод</string>
-    <string name="action_add">Добавить</string>
-    <string name="action_cancel">Отмена</string>
-    <string name="title_word_sort">Сортировать</string>
-    <string name="error_empty_fields">Поля не заполнены!</string>
+    <string name="search_word_hint">Поиск слов</string>
+    <string name="empty_word_list">У вас нет добавленных слов с переводами.
+        Чтобы добавить новое слово, нажмите \"+\".
+    </string>
+
+    <!-- The screen "Categories" -->
+    <string name="title_categories">Категории</string>
+    <string name="default_category">Главная</string>
+    <string name="action_add_category">Добавить</string>
+    <string name="action_rename_category">Переименовать</string>
+    <string name="action_delete_category">Удалить</string>
+    <string name="more_options_description">Больше опций</string>
+    <plurals name="number_of_words">
+        <item quantity="one">%d слово</item>
+        <item quantity="few">%d слова</item>
+        <item quantity="many">%d слов</item>
+        <item quantity="other">%d слов</item>
+    </plurals>
+
+    <!-- The screen "Category content" -->
+    <string name="empty_category_content">Нет слов в данной категории</string>
+
+    <!-- The screen "Search" -->
+    <string name="title_search">Результаты поиска</string>
+    <string name="no_search_results">По запросу \"%1$s\" ничего не найдено</string>
+
+    <!-- The screen "About -->
+    <string name="title_about">О приложении</string>
     <string name="app_icon_description">Иконка приложения</string>
     <string name="app_version">Версия %1$s (сборка %2$d)</string>
     <string name="app_author">Alidibir Akhbulatov</string>
 
-    <string-array name="word_sorts">
+    <!-- The dialog "Word editor" -->
+    <string name="title_new_word">Новое слово</string>
+    <string name="title_edit_word">Редактирование слова</string>
+    <string name="word_editor_name_hint">Название</string>
+    <string name="word_editor_translation_hint">Перевод</string>
+    <string name="word_editor_category">Категория</string>
+    <string name="word_editor_action_add">Добавить</string>
+    <string name="word_editor_action_edit">Редактировать</string>
+    <string name="word_editor_action_cancel">Отмена</string>
+    <string name="error_word_editor_empty_fields">Поля не заполнены</string>
+
+    <!-- The dialog "Word sort" -->
+    <string-array name="sort_words">
         <item>По названию</item>
         <item>По дате изменения</item>
     </string-array>
+
+    <!-- The dialog "Category editor" -->
+    <string name="title_new_category">Новая категория</string>
+    <string name="title_rename_category">Переименование категории</string>
+    <string name="category_editor_name_hint">Название</string>
+    <string name="category_editor_action_add">Добавить</string>
+    <string name="category_editor_action_rename">Переименовать</string>
+    <string name="category_editor_action_cancel">Отмена</string>
+    <string name="error_category_editor_empty_field">Поле не заполнено</string>
+
+    <!-- The dialog "Confirm delete category" -->
+    <string name="confirm_category_delete_title">Удалить категорию?</string>
+    <string name="confirm_category_delete_message">Также удалятся все слова,
+        находящиеся в данной категории.
+    </string>
+    <string name="confirm_category_action_delete">Удалить</string>
+    <string name="confirm_category_action_cancel">Отмена</string>
 </resources>
