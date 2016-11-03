@@ -67,9 +67,9 @@ import java.util.List;
 public class WordListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
         WordAdapter.WordViewHolder.WordAdapterListener, WordSortDialogFragment.WordSortDialogListener {
 
-    private static final int LOADER_ID = 0;
+    private static final int LOADER_ID = 1;
 
-    private static final int WORD_SORT_DIALOG_REQUEST = 0;
+    private static final int WORD_SORT_DIALOG_REQUEST = 1;
     private static final String WORD_SORT_DIALOG_ID = WordSortDialogFragment.class.getName();
 
     private static int sSortMode;
