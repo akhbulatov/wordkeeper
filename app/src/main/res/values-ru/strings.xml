@@ -69,13 +69,13 @@
     <string name="category_editor_action_cancel">Отмена</string>
     <string name="error_category_editor_empty_field">Поле не заполнено</string>
 
-    <!-- The dialog "Confirm delete category" -->
-    <string name="confirm_category_delete_title">Удалить категорию?</string>
-    <string name="confirm_category_delete_message">Также удалятся все слова,
+    <!-- The dialog "Delete category" -->
+    <string name="category_delete_title">Удалить категорию?</string>
+    <string name="category_delete_message">Также удалятся все слова,
         находящиеся в данной категории.
     </string>
-    <string name="confirm_category_action_delete">Удалить</string>
-    <string name="confirm_category_action_cancel">Отмена</string>
+    <string name="category_action_delete">Удалить</string>
+    <string name="category_action_cancel">Отмена</string>
 
     <!-- Rate app -->
     <string name="title_rate_app">Оценить</string>

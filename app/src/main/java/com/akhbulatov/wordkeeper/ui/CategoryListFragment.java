@@ -56,17 +56,17 @@ import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
  */
 public class CategoryListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
         CategoryEditorDialogFragment.CategoryEditorDialogListener,
-        CategoryDeleteConfirmDialogFragment.CategoryDeleteConfirmListener {
+        CategoryDeleteDialogFragment.CategoryDeleteListener {
 
-    private static final int LOADER_ID = 0;
+    private static final int LOADER_ID = 1;
 
-    private static final int CATEGORY_EDITOR_DIALOG_REQUEST = 0;
-    private static final int CATEGORY_DELETE_CONFIRM_DIALOG_REQUEST = 1;
+    private static final int CATEGORY_EDITOR_DIALOG_REQUEST = 1;
+    private static final int CATEGORY_DELETE_DIALOG_REQUEST = 2;
 
     private static final String CATEGORY_EDITOR_DIALOG_ID =
             CategoryEditorDialogFragment.class.getName();
-    private static final String CATEGORY_DELETE_CONFIRM_DIALOG_ID =
-            CategoryDeleteConfirmDialogFragment.class.getName();
+    private static final String CATEGORY_DELETE_DIALOG_ID =
+            CategoryDeleteDialogFragment.class.getName();
 
     // Contains the ID of the current selected item (category)
     private long mSelectedItemId;
@@ -187,7 +187,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
                 return true; */
             case R.id.menu_delete_category:
                 mSelectedItemId = info.id;
-                showCategoryDeleteConfirmDialog();
+                showCategoryDeleteDialog();
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -240,7 +240,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     // Confirms delete the category.
     // Also removed all words that are in the category
     @Override
-    public void onFinishCategoryDeleteConfirmDialog(DialogFragment dialog) {
+    public void onFinishCategoryDeleteDialog(DialogFragment dialog) {
         deleteCategory();
     }
 
@@ -319,10 +319,10 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
         } */
     }
 
-    private void showCategoryDeleteConfirmDialog() {
-        DialogFragment dialog = new CategoryDeleteConfirmDialogFragment();
-        dialog.setTargetFragment(CategoryListFragment.this, CATEGORY_DELETE_CONFIRM_DIALOG_REQUEST);
-        dialog.show(getActivity().getSupportFragmentManager(), CATEGORY_DELETE_CONFIRM_DIALOG_ID);
+    private void showCategoryDeleteDialog() {
+        DialogFragment dialog = new CategoryDeleteDialogFragment();
+        dialog.setTargetFragment(CategoryListFragment.this, CATEGORY_DELETE_DIALOG_REQUEST);
+        dialog.show(getActivity().getSupportFragmentManager(), CATEGORY_DELETE_DIALOG_ID);
     }
 
     /**

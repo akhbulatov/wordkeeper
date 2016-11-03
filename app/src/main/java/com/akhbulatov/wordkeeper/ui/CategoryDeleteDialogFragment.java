@@ -34,18 +34,18 @@ import com.akhbulatov.wordkeeper.R;
 /**
  * Shows a dialog to confirm deletion of category
  */
-public class CategoryDeleteConfirmDialogFragment extends DialogFragment {
+public class CategoryDeleteDialogFragment extends DialogFragment {
 
-    private CategoryDeleteConfirmListener mListener;
+    private CategoryDeleteListener mListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            mListener = (CategoryDeleteConfirmListener) getTargetFragment();
+            mListener = (CategoryDeleteListener) getTargetFragment();
         } catch (ClassCastException e) {
             throw new ClassCastException(getTargetFragment().toString() + " must implement "
-                    + CategoryDeleteConfirmListener.class.getName());
+                    + CategoryDeleteListener.class.getName());
         }
     }
 
@@ -53,17 +53,17 @@ public class CategoryDeleteConfirmDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        return builder.setTitle(R.string.confirm_category_delete_title)
-                .setMessage(R.string.confirm_category_delete_message)
-                .setPositiveButton(R.string.confirm_category_action_delete,
+        return builder.setTitle(R.string.category_delete_title)
+                .setMessage(R.string.category_delete_message)
+                .setPositiveButton(R.string.category_action_delete,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mListener.onFinishCategoryDeleteConfirmDialog(
-                                        CategoryDeleteConfirmDialogFragment.this);
+                                mListener.onFinishCategoryDeleteDialog(
+                                        CategoryDeleteDialogFragment.this);
                             }
                         })
-                .setNegativeButton(R.string.confirm_category_action_cancel,
+                .setNegativeButton(R.string.category_action_cancel,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -73,12 +73,12 @@ public class CategoryDeleteConfirmDialogFragment extends DialogFragment {
                 .create();
     }
 
-    public interface CategoryDeleteConfirmListener {
+    public interface CategoryDeleteListener {
         /**
          * Applies the changes when the category is deleted
          *
          * @param dialog The current open dialog
          */
-        void onFinishCategoryDeleteConfirmDialog(DialogFragment dialog);
+        void onFinishCategoryDeleteDialog(DialogFragment dialog);
     }
 }

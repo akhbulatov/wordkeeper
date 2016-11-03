@@ -67,13 +67,13 @@
     <string name="category_editor_action_cancel">Cancel</string>
     <string name="error_category_editor_empty_field">The field is not filled</string>
 
-    <!-- The dialog "Confirm delete category" -->
-    <string name="confirm_category_delete_title">Delete category?</string>
-    <string name="confirm_category_delete_message">Also removed all words
+    <!-- The dialog "Delete category" -->
+    <string name="category_delete_title">Delete category?</string>
+    <string name="category_delete_message">Also removed all words
         that are in this category.
     </string>
-    <string name="confirm_category_action_delete">Delete</string>
-    <string name="confirm_category_action_cancel">Cancel</string>
+    <string name="category_action_delete">Delete</string>
+    <string name="category_action_cancel">Cancel</string>
 
     <!-- Rate app -->
     <string name="title_rate_app">Rate app</string>
