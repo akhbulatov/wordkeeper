@@ -26,7 +26,7 @@ import android.database.sqlite.SQLiteDatabase;
 public abstract class DatabaseAdapter {
 
     private Context mContext;
-    private DatabaseOpenHelper mDbHelper;
+    private DatabaseHelper mDbHelper;
     protected SQLiteDatabase mDatabase;
 
     public DatabaseAdapter(Context context) {
@@ -34,7 +34,7 @@ public abstract class DatabaseAdapter {
     }
 
     public void open() throws SQLException {
-        mDbHelper = new DatabaseOpenHelper(mContext);
+        mDbHelper = new DatabaseHelper(mContext);
         mDatabase = mDbHelper.getWritableDatabase();
     }
 

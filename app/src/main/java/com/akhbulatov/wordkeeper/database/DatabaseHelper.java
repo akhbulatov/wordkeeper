@@ -26,14 +26,14 @@ import com.akhbulatov.wordkeeper.R;
 /**
  * Helps to support and update databases
  */
-public class DatabaseOpenHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "wordkeeper.db";
     private static final int DATABASE_VERSION = 3;
 
     private Context mContext;
 
-    DatabaseOpenHelper(Context context) {
+    DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         mContext = context;
     }
