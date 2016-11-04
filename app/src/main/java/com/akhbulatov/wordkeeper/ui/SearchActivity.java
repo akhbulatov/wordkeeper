@@ -58,7 +58,7 @@ public class SearchActivity extends AppCompatActivity {
         DatabaseWordAdapter dbWordAdapter = new DatabaseWordAdapter(this);
         dbWordAdapter.open();
 
-        WordAdapter wordAdapter = new WordAdapter(dbWordAdapter.fetchRecordsByName(query));
+        WordAdapter wordAdapter = new WordAdapter(this, dbWordAdapter.fetchRecordsByName(query));
         wordAdapter.setHasStableIds(true);
         wordList.setAdapter(wordAdapter);
 

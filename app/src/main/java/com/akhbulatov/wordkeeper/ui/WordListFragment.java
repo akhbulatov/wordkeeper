@@ -202,7 +202,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (mWordAdapter == null) {
             // The adapter is created only the first time retrieving data from the database
-            mWordAdapter = new WordAdapter(data, this);
+            mWordAdapter = new WordAdapter(getActivity(), data, this);
             mWordAdapter.setHasStableIds(true);
             mWordList.setAdapter(mWordAdapter);
         } else {

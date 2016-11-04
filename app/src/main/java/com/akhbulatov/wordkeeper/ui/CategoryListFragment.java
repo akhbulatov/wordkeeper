@@ -296,7 +296,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     private void deleteCategory() {
         // First, deletes all words that are in the deleted category
         Cursor cursor = mDbWordAdapter.fetchRecordsByCategory(getName());
-        WordAdapter wordAdapter = new WordAdapter(cursor);
+        WordAdapter wordAdapter = new WordAdapter(getActivity(), cursor);
 
         for (int i = 0; i < cursor.getCount(); i++) {
             mDbWordAdapter.deleteRecord(wordAdapter.getItemId(cursor.getPosition()));

@@ -16,8 +16,10 @@
 
 package com.akhbulatov.wordkeeper.adapter;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -37,21 +39,21 @@ import java.util.List;
  */
 public class WordAdapter extends CursorRecyclerViewAdapter<WordAdapter.WordViewHolder> {
 
+    private Context mContext;
     private SparseBooleanArray mSelectedWords;
-
     private WordViewHolder.WordAdapterListener mListener;
 
-    public WordAdapter(Cursor cursor) {
+    public WordAdapter(Context context, Cursor cursor) {
         super(cursor);
+        mContext = context;
         mSelectedWords = new SparseBooleanArray();
-
         mListener = null;
     }
 
-    public WordAdapter(Cursor cursor, WordViewHolder.WordAdapterListener listener) {
+    public WordAdapter(Context context, Cursor cursor, WordViewHolder.WordAdapterListener listener) {
         super(cursor);
+        mContext = context;
         mSelectedWords = new SparseBooleanArray();
-
         mListener = listener;
     }
 
@@ -69,8 +71,9 @@ public class WordAdapter extends CursorRecyclerViewAdapter<WordAdapter.WordViewH
         viewHolder.textWordTranslation.
                 setText(cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION)));
 
-        viewHolder.itemView.setBackgroundColor(isSelected(cursor
-                .getPosition()) ? Color.LTGRAY : Color.TRANSPARENT);
+        int selectedItemColor = ContextCompat.getColor(mContext, R.color.selected_list_item);
+        viewHolder.itemView.setBackgroundColor(isSelected(cursor.getPosition()) ?
+                selectedItemColor : Color.TRANSPARENT);
     }
 
     public List<Integer> getSelectedWords() {
