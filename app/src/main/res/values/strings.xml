@@ -60,10 +60,10 @@
 
     <!-- The dialog "Category editor" -->
     <string name="title_new_category">New category</string>
-    <!-- <string name="title_rename_category">Rename category</string> -->
+    <string name="title_rename_category">Rename category</string>
     <string name="category_editor_name_hint">Name</string>
     <string name="category_editor_action_add">Add</string>
-    <!-- <string name="category_editor_action_rename">Rename</string> -->
+    <string name="category_editor_action_rename">Rename</string>
     <string name="category_editor_action_cancel">Cancel</string>
     <string name="error_category_editor_empty_field">The field is not filled</string>
 

@@ -62,10 +62,10 @@
 
     <!-- The dialog "Category editor" -->
     <string name="title_new_category">Новая категория</string>
-    <!-- <string name="title_rename_category">Переименование категории</string> -->
+    <string name="title_rename_category">Переименование категории</string>
     <string name="category_editor_name_hint">Название</string>
     <string name="category_editor_action_add">Добавить</string>
-    <!-- <string name="category_editor_action_rename">Переименовать</string> -->
+    <string name="category_editor_action_rename">Переименовать</string>
     <string name="category_editor_action_cancel">Отмена</string>
     <string name="error_category_editor_empty_field">Поле не заполнено</string>
 

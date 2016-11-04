@@ -41,11 +41,11 @@ public class DatabaseCategoryAdapter extends DatabaseAdapter {
         return mDatabase.insert(CategoryEntry.TABLE_NAME, null, values);
     }
 
-    /* public boolean updateRecord(long rowId, String name) {
+    public boolean updateRecord(long rowId, String name) {
         ContentValues values = createContentValues(name);
         return mDatabase.update(CategoryEntry.TABLE_NAME, values,
                 CategoryEntry._ID + "=" + rowId, null) > 0;
-    } */
+    }
 
     public boolean deleteRecord(long rowId) {
         return mDatabase.delete(CategoryEntry.TABLE_NAME, CategoryEntry._ID + "=" + rowId, null) > 0;

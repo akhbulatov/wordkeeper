@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- <item
+    <item
         android:id="@+id/menu_rename_category"
         android:title="@string/action_rename_category"
-        app:showAsAction="never" /> -->
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_delete_category"

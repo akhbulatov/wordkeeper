@@ -43,6 +43,7 @@ import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.adapter.CategoryAdapter;
 import com.akhbulatov.wordkeeper.adapter.WordAdapter;
 import com.akhbulatov.wordkeeper.database.DatabaseCategoryAdapter;
+import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.CategoryEntry;
 import com.akhbulatov.wordkeeper.database.DatabaseWordAdapter;
 import com.akhbulatov.wordkeeper.ui.controller.FabAddWordController;
@@ -179,12 +180,12 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
         ContextMenuRecyclerView.RecyclerContextMenuInfo info =
                 (ContextMenuRecyclerView.RecyclerContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
-            /* case R.id.menu_rename_category:
+            case R.id.menu_rename_category:
                 mSelectedItemId = info.id;
                 showCategoryEditorDialog(R.string.title_rename_category,
                         R.string.category_editor_action_rename,
                         R.string.category_editor_action_cancel);
-                return true; */
+                return true;
             case R.id.menu_delete_category:
                 mSelectedItemId = info.id;
                 showCategoryDeleteDialog();
@@ -227,14 +228,14 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
         // Add the category
         if (positiveTextId == R.string.category_editor_action_add) {
             addCategory(dialog);
-        } /* else {
+        } else {
             // Edit the category
             Dialog dialogView = dialog.getDialog();
             EditText editName = (EditText) dialogView.findViewById(R.id.edit_category_name);
             String name = editName.getText().toString();
 
             renameCategory(name);
-        } */
+        }
     }
 
     // Confirms delete the category.
@@ -266,17 +267,31 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
         }
     }
 
-    /* private void renameCategory(String name) {
+    private void renameCategory(String name) {
         if (name.isEmpty()) {
             Toast.makeText(getActivity(),
                     R.string.error_category_editor_empty_field,
                     Toast.LENGTH_SHORT)
                     .show();
         } else {
+            // First updates all words from the category with the new category name
+            Cursor cursor = mDbWordAdapter.fetchRecordsByCategory(getName());
+
+            for (int i = 0; i < cursor.getCount(); i++) {
+                int wordId = cursor.getInt(cursor.getColumnIndex(WordEntry._ID));
+                String wordName =
+                        cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME));
+                String wordTranslation =
+                        cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION));
+
+                mDbWordAdapter.updateRecord(wordId, wordName, wordTranslation, name);
+                cursor.moveToNext();
+            }
+
             mDbCategoryAdapter.updateRecord(mSelectedItemId, name);
             getLoaderManager().restartLoader(LOADER_ID, null, this);
         }
-    } */
+    }
 
     private void deleteCategory() {
         // First, deletes all words that are in the deleted category
@@ -309,14 +324,14 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
 
         // Receives and shows data of the selected category to edit in the dialog
         // Data is the name of the category
-        /* if (positiveTextId == R.string.category_editor_action_rename) {
+        if (positiveTextId == R.string.category_editor_action_rename) {
             // NOTE! If the method is not called, the app crashes
             getActivity().getSupportFragmentManager().executePendingTransactions();
 
             Dialog dialogView = dialog.getDialog();
             EditText editName = (EditText) dialogView.findViewById(R.id.edit_category_name);
             editName.setText(getName());
-        } */
+        }
     }
 
     private void showCategoryDeleteDialog() {
