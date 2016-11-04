@@ -9,12 +9,15 @@
     <string name="title_all_words">All words</string>
     <string name="action_search_word">Search</string>
     <string name="action_sort_word">Sort by</string>
+    <string name="action_move_word">Move to</string>
     <string name="action_edit_word">Edit</string>
     <string name="action_delete_word">Delete</string>
     <string name="search_word_hint">Search words</string>
     <string name="empty_word_list">You have not added words with translations.
         To add a new word, press the \"+\".
     </string>
+    <string name="success_move_word">Move successfully completed</string>
+    <string name="error_move_word">Move failed</string>
 
     <!-- The screen "Categories" -->
     <string name="title_categories">Categories</string>
@@ -57,6 +60,10 @@
         <item>Name</item>
         <item>Last modified</item>
     </string-array>
+
+    <!-- The dialog "Category list" -->
+    <string name="category_list_title">Move to category</string>
+    <string name="category_list_action_cancel">Cancel</string>
 
     <!-- The dialog "Category editor" -->
     <string name="title_new_category">New category</string>

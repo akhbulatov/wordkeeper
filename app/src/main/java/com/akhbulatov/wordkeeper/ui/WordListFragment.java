@@ -65,12 +65,16 @@ import java.util.List;
  * NOT the ContentProvider (temporary solution)
  */
 public class WordListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
-        WordAdapter.WordViewHolder.WordAdapterListener, WordSortDialogFragment.WordSortDialogListener {
+        WordAdapter.WordViewHolder.WordAdapterListener, WordSortDialogFragment.WordSortDialogListener,
+        CategoryListDialogFragment.CategoryListDialogListener {
 
     private static final int LOADER_ID = 1;
 
     private static final int WORD_SORT_DIALOG_REQUEST = 1;
+    private static final int CATEGORY_LIST_DIALOG_REQUEST = 2;
+
     private static final String WORD_SORT_DIALOG_ID = WordSortDialogFragment.class.getName();
+    private static final String CATEGORY_LIST_DIALOG_ID = CategoryListDialogFragment.class.getName();
 
     private static int sSortMode;
 
@@ -244,6 +248,31 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
+    // Moves the marked words in the selected category
+    @Override
+    public void onFinishCategoryListDialog(String category) {
+        Cursor cursor = null;
+
+        for (Integer i : mWordAdapter.getSelectedWords()) {
+            long id = mWordAdapter.getItemId(i);
+            cursor = mDbWordAdapter.fetchRecord(id);
+
+            String name = cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME));
+            String translation = cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION));
+
+            mDbWordAdapter.updateRecord(id, name, translation, category);
+        }
+
+        mActionMode.finish();
+
+        if (cursor != null) {
+            cursor.close();
+            Toast.makeText(getActivity(), R.string.success_move_word, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), R.string.error_move_word, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     /**
      * Receives the entered data (word) and saves in the database
      *
@@ -367,6 +396,12 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         dialog.show(getActivity().getSupportFragmentManager(), WORD_SORT_DIALOG_ID);
     }
 
+    private void showCategoryListDialog() {
+        DialogFragment dialog = new CategoryListDialogFragment();
+        dialog.setTargetFragment(WordListFragment.this, CATEGORY_LIST_DIALOG_REQUEST);
+        dialog.show(getActivity().getSupportFragmentManager(), CATEGORY_LIST_DIALOG_ID);
+    }
+
     /**
      * Used to work with a Loader instead of a ContentProvider
      */
@@ -413,6 +448,9 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
+                case R.id.menu_move_word:
+                    showCategoryListDialog();
+                    return true;
                 case R.id.menu_edit_word:
                     // Saves the id to use to retrieve the selected row
                     // and paste the edited string into the database.

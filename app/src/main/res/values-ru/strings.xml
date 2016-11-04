@@ -9,12 +9,15 @@
     <string name="title_all_words">Все слова</string>
     <string name="action_search_word">Поиск</string>
     <string name="action_sort_word">Сортировать</string>
+    <string name="action_move_word">Переместить</string>
     <string name="action_edit_word">Редактировать</string>
     <string name="action_delete_word">Удалить</string>
     <string name="search_word_hint">Поиск слов</string>
     <string name="empty_word_list">У вас нет добавленных слов с переводами.
         Чтобы добавить новое слово, нажмите \"+\".
     </string>
+    <string name="success_move_word">Перемещение успешно завершено</string>
+    <string name="error_move_word">Перемещение не удалось выполнить</string>
 
     <!-- The screen "Categories" -->
     <string name="title_categories">Категории</string>
@@ -59,6 +62,10 @@
         <item>По названию</item>
         <item>По дате изменения</item>
     </string-array>
+
+    <!-- The dialog "Category list" -->
+    <string name="category_list_title">Переместить в категорию</string>
+    <string name="category_list_action_cancel">Отмена</string>
 
     <!-- The dialog "Category editor" -->
     <string name="title_new_category">Новая категория</string>
