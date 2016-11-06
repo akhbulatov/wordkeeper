@@ -6,8 +6,6 @@
         android:id="@+id/recycler_category_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/list_vertical_margin"
-        android:paddingTop="@dimen/list_vertical_margin"
         android:scrollbars="vertical" />
 
     <include layout="@layout/fab_add_word" />
