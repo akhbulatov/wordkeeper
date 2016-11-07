@@ -30,9 +30,9 @@ import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
 /**
  * Provides functionality to work with the table "Words"
  */
-public class DatabaseWordAdapter extends DatabaseAdapter {
+public class WordDatabaseAdapter extends DatabaseAdapter {
 
-    public DatabaseWordAdapter(Context context) {
+    public WordDatabaseAdapter(Context context) {
         super(context);
     }
 

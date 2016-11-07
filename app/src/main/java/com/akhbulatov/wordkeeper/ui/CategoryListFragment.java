@@ -43,10 +43,10 @@ import android.widget.Toast;
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.adapter.CategoryAdapter;
 import com.akhbulatov.wordkeeper.adapter.WordAdapter;
-import com.akhbulatov.wordkeeper.database.DatabaseCategoryAdapter;
+import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.CategoryEntry;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
-import com.akhbulatov.wordkeeper.database.DatabaseWordAdapter;
+import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
@@ -75,8 +75,8 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
 
     private ContextMenuRecyclerView mCategoryList;
     private CategoryAdapter mCategoryAdapter;
-    private DatabaseCategoryAdapter mDbCategoryAdapter;
-    private DatabaseWordAdapter mDbWordAdapter;
+    private CategoryDatabaseAdapter mCategoryDbAdapter;
+    private WordDatabaseAdapter mWordDbAdapter;
 
     private FabAddWordListener mListener;
 
@@ -97,11 +97,11 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        mDbCategoryAdapter = new DatabaseCategoryAdapter(getActivity());
-        mDbCategoryAdapter.open();
+        mCategoryDbAdapter = new CategoryDatabaseAdapter(getActivity());
+        mCategoryDbAdapter.open();
 
-        mDbWordAdapter = new DatabaseWordAdapter(getActivity());
-        mDbWordAdapter.open();
+        mWordDbAdapter = new WordDatabaseAdapter(getActivity());
+        mWordDbAdapter.open();
     }
 
     @Override
@@ -142,8 +142,8 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mDbCategoryAdapter.close();
-        mDbWordAdapter.close();
+        mCategoryDbAdapter.close();
+        mWordDbAdapter.close();
     }
 
     @Override
@@ -200,14 +200,14 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // Returns the cursor with all records from the database.
         // Uses own class instead of a ContentProvider
-        return new SimpleCursorLoader(getActivity(), mDbCategoryAdapter);
+        return new SimpleCursorLoader(getActivity(), mCategoryDbAdapter);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (mCategoryAdapter == null) {
             // The adapter is created only the first time retrieving data from the database
-            mCategoryAdapter = new CategoryAdapter(getActivity(), data, mDbWordAdapter);
+            mCategoryAdapter = new CategoryAdapter(getActivity(), data, mWordDbAdapter);
             mCategoryAdapter.setHasStableIds(true);
             mCategoryList.setAdapter(mCategoryAdapter);
         } else {
@@ -262,7 +262,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
                     Toast.LENGTH_SHORT)
                     .show();
         } else {
-            mDbCategoryAdapter.addRecord(name);
+            mCategoryDbAdapter.addRecord(name);
             mCategoryList.scrollToPosition(0);
             getLoaderManager().restartLoader(LOADER_ID, null, this);
         }
@@ -276,7 +276,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
                     .show();
         } else {
             // First updates all words from the category with the new category name
-            Cursor cursor = mDbWordAdapter.fetchRecordsByCategory(getName());
+            Cursor cursor = mWordDbAdapter.fetchRecordsByCategory(getName());
 
             for (int i = 0; i < cursor.getCount(); i++) {
                 int wordId = cursor.getInt(cursor.getColumnIndex(WordEntry._ID));
@@ -285,32 +285,32 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
                 String wordTranslation =
                         cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION));
 
-                mDbWordAdapter.updateRecord(wordId, wordName, wordTranslation, name);
+                mWordDbAdapter.updateRecord(wordId, wordName, wordTranslation, name);
                 cursor.moveToNext();
             }
 
-            mDbCategoryAdapter.updateRecord(mSelectedItemId, name);
+            mCategoryDbAdapter.updateRecord(mSelectedItemId, name);
             getLoaderManager().restartLoader(LOADER_ID, null, this);
         }
     }
 
     private void deleteCategory() {
         // First, deletes all words that are in the deleted category
-        Cursor cursor = mDbWordAdapter.fetchRecordsByCategory(getName());
+        Cursor cursor = mWordDbAdapter.fetchRecordsByCategory(getName());
         WordAdapter wordAdapter = new WordAdapter(getActivity(), cursor);
 
         for (int i = 0; i < cursor.getCount(); i++) {
-            mDbWordAdapter.deleteRecord(wordAdapter.getItemId(cursor.getPosition()));
+            mWordDbAdapter.deleteRecord(wordAdapter.getItemId(cursor.getPosition()));
             cursor.moveToNext();
         }
 
-        mDbCategoryAdapter.deleteRecord(mSelectedItemId);
+        mCategoryDbAdapter.deleteRecord(mSelectedItemId);
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
     @Nullable
     private String getName() {
-        Cursor cursor = mDbCategoryAdapter.fetchRecord(mSelectedItemId);
+        Cursor cursor = mCategoryDbAdapter.fetchRecord(mSelectedItemId);
         if (cursor.getCount() > 0) {
             return cursor.getString(cursor.getColumnIndex(CategoryEntry.COLUMN_NAME));
         }
@@ -346,16 +346,16 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
      */
     private static class SimpleCursorLoader extends CursorLoader {
 
-        private DatabaseCategoryAdapter mDbCategoryAdapter;
+        private CategoryDatabaseAdapter mCategoryDbAdapter;
 
-        public SimpleCursorLoader(Context context, DatabaseCategoryAdapter dbCategoryAdapter) {
+        public SimpleCursorLoader(Context context, CategoryDatabaseAdapter сategoryDbAdapter) {
             super(context);
-            mDbCategoryAdapter = dbCategoryAdapter;
+            mCategoryDbAdapter = сategoryDbAdapter;
         }
 
         @Override
         public Cursor loadInBackground() {
-            return mDbCategoryAdapter.fetchAllRecords();
+            return mCategoryDbAdapter.fetchAllRecords();
         }
     }
 }

@@ -52,9 +52,9 @@ import android.widget.Toast;
 
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.adapter.WordAdapter;
-import com.akhbulatov.wordkeeper.database.DatabaseCategoryAdapter;
+import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
-import com.akhbulatov.wordkeeper.database.DatabaseWordAdapter;
+import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
 
@@ -84,7 +84,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
 
     private RecyclerView mWordList;
     private WordAdapter mWordAdapter;
-    private DatabaseWordAdapter mDbWordAdapter;
+    private WordDatabaseAdapter mWordDbAdapter;
     private TextView mTextEmptyWordList;
 
     private ActionModeCallback mActionModeCallback;
@@ -109,8 +109,8 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        mDbWordAdapter = new DatabaseWordAdapter(getActivity());
-        mDbWordAdapter.open();
+        mWordDbAdapter = new WordDatabaseAdapter(getActivity());
+        mWordDbAdapter.open();
 
         SharedPreferences mPrefs = getActivity()
                 .getSharedPreferences(WordSortDialogFragment.PREF_NAME, Context.MODE_PRIVATE);
@@ -157,7 +157,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mDbWordAdapter.close();
+        mWordDbAdapter.close();
     }
 
     @Override
@@ -196,7 +196,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // Returns the cursor with all records from the database.
         // Uses own class instead of a ContentProvider
-        return new SimpleCursorLoader(getActivity(), mDbWordAdapter);
+        return new SimpleCursorLoader(getActivity(), mWordDbAdapter);
     }
 
     @Override
@@ -256,12 +256,12 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
 
         for (Integer i : mWordAdapter.getSelectedWords()) {
             long id = mWordAdapter.getItemId(i);
-            cursor = mDbWordAdapter.fetchRecord(id);
+            cursor = mWordDbAdapter.fetchRecord(id);
 
             String name = cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME));
             String translation = cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION));
 
-            mDbWordAdapter.updateRecord(id, name, translation, category);
+            mWordDbAdapter.updateRecord(id, name, translation, category);
         }
 
         mActionMode.finish();
@@ -297,7 +297,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
                     Toast.LENGTH_SHORT)
                     .show();
         } else {
-            mDbWordAdapter.addRecord(name, translation, category);
+            mWordDbAdapter.addRecord(name, translation, category);
             // Checked for null in case this method is called from the screen "Categories"
             if (mWordList != null) {
                 mWordList.scrollToPosition(0);
@@ -314,13 +314,13 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
                     Toast.LENGTH_SHORT)
                     .show();
         } else {
-            mDbWordAdapter.updateRecord(mSelectedItemId, name, translation, category);
+            mWordDbAdapter.updateRecord(mSelectedItemId, name, translation, category);
             getLoaderManager().restartLoader(LOADER_ID, null, this);
         }
     }
 
     public String getName() {
-        Cursor cursor = mDbWordAdapter.fetchRecord(mSelectedItemId);
+        Cursor cursor = mWordDbAdapter.fetchRecord(mSelectedItemId);
         if (cursor.getCount() > 0) {
             return cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME));
         }
@@ -328,7 +328,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     public String getTranslation() {
-        Cursor cursor = mDbWordAdapter.fetchRecord(mSelectedItemId);
+        Cursor cursor = mWordDbAdapter.fetchRecord(mSelectedItemId);
         if (cursor.getCount() > 0) {
             return cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION));
         }
@@ -336,7 +336,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     public String getCategory() {
-        Cursor cursor = mDbWordAdapter.fetchRecord(mSelectedItemId);
+        Cursor cursor = mWordDbAdapter.fetchRecord(mSelectedItemId);
         if (cursor.getCount() > 0) {
             return cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_CATEGORY));
         }
@@ -344,10 +344,10 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     public String[] getCategories() {
-        DatabaseCategoryAdapter mDbCategoryAdapter = new DatabaseCategoryAdapter(getActivity());
-        mDbCategoryAdapter.open();
+        CategoryDatabaseAdapter categoryDbAdapter = new CategoryDatabaseAdapter(getActivity());
+        categoryDbAdapter.open();
 
-        Cursor cursor = mDbCategoryAdapter.fetchAllRecords();
+        Cursor cursor = categoryDbAdapter.fetchAllRecords();
         String[] categories = new String[cursor.getCount()];
 
         for (int i = 0; i < cursor.getCount(); i++) {
@@ -355,7 +355,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
             cursor.moveToNext();
         }
 
-        mDbCategoryAdapter.close();
+        categoryDbAdapter.close();
         return categories;
     }
 
@@ -373,7 +373,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
 
     private void deleteWords(List<Integer> words) {
         for (Integer i : words) {
-            mDbWordAdapter.deleteRecord(mWordAdapter.getItemId(i));
+            mWordDbAdapter.deleteRecord(mWordAdapter.getItemId(i));
         }
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
@@ -410,16 +410,16 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
      */
     private static class SimpleCursorLoader extends CursorLoader {
 
-        private DatabaseWordAdapter mDbWordAdapter;
+        private WordDatabaseAdapter mWordDbAdapter;
 
-        public SimpleCursorLoader(Context context, DatabaseWordAdapter dbWordAdapter) {
+        public SimpleCursorLoader(Context context, WordDatabaseAdapter wordDbAdapter) {
             super(context);
-            mDbWordAdapter = dbWordAdapter;
+            mWordDbAdapter = wordDbAdapter;
         }
 
         @Override
         public Cursor loadInBackground() {
-            return mDbWordAdapter.fetchAllRecords(sSortMode);
+            return mWordDbAdapter.fetchAllRecords(sSortMode);
         }
     }
 

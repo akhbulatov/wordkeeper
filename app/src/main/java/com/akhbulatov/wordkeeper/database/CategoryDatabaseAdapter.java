@@ -30,9 +30,9 @@ import com.akhbulatov.wordkeeper.database.DatabaseContract.CategoryEntry;
 /**
  * Provides functionality to work with the table "Categories"
  */
-public class DatabaseCategoryAdapter extends DatabaseAdapter {
+public class CategoryDatabaseAdapter extends DatabaseAdapter {
 
-    public DatabaseCategoryAdapter(Context context) {
+    public CategoryDatabaseAdapter(Context context) {
         super(context);
     }
 

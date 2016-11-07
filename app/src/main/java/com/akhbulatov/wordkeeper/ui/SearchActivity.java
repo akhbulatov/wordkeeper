@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.adapter.WordAdapter;
-import com.akhbulatov.wordkeeper.database.DatabaseWordAdapter;
+import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
 
 /**
@@ -55,10 +55,10 @@ public class SearchActivity extends AppCompatActivity {
                 DividerItemDecoration.VERTICAL_LIST));
         wordList.setLayoutManager(new LinearLayoutManager(this));
 
-        DatabaseWordAdapter dbWordAdapter = new DatabaseWordAdapter(this);
-        dbWordAdapter.open();
+        WordDatabaseAdapter wordDbAdapter = new WordDatabaseAdapter(this);
+        wordDbAdapter.open();
 
-        WordAdapter wordAdapter = new WordAdapter(this, dbWordAdapter.fetchRecordsByName(query));
+        WordAdapter wordAdapter = new WordAdapter(this, wordDbAdapter.fetchRecordsByName(query));
         wordAdapter.setHasStableIds(true);
         wordList.setAdapter(wordAdapter);
 
@@ -74,6 +74,6 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         // Closes the database already here, as it is no longer needed
-        dbWordAdapter.close();
+        wordDbAdapter.close();
     }
 }
