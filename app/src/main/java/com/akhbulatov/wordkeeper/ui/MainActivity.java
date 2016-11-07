@@ -39,15 +39,15 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.akhbulatov.wordkeeper.R;
-import com.akhbulatov.wordkeeper.ui.controller.FabAddWordController;
+import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 
 /**
  * Provides navigation drawer to switch between screens
  */
-public class MainActivity extends AppCompatActivity implements FabAddWordController,
+public class MainActivity extends AppCompatActivity implements FabAddWordListener,
         WordEditorDialogFragment.WordEditorDialogListener {
 
-    private static final String BUNDLE_SCREEN_TITLE = "ScreenTitle";
+    private static final String BUNDLE_SCREEN_TITLE = "BUNDLE_SCREEN_TITLE";
 
     private static final String WORD_LIST_FRAGMENT_TAG = WordListFragment.class.getName();
     private static final String CATEGORY_LIST_FRAGMENT_TAG = CategoryListFragment.class.getName();

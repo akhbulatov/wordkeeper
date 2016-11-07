@@ -37,6 +37,7 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,7 +55,7 @@ import com.akhbulatov.wordkeeper.adapter.WordAdapter;
 import com.akhbulatov.wordkeeper.database.DatabaseCategoryAdapter;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
 import com.akhbulatov.wordkeeper.database.DatabaseWordAdapter;
-import com.akhbulatov.wordkeeper.ui.controller.FabAddWordController;
+import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
 
 import java.util.List;
@@ -89,17 +90,17 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     private ActionModeCallback mActionModeCallback;
     private ActionMode mActionMode;
 
-    private FabAddWordController mListener;
+    private FabAddWordListener mListener;
 
     @SuppressWarnings("deprecation")
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (FabAddWordController) activity;
+            mListener = (FabAddWordListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement "
-                    + FabAddWordController.class.getName());
+                    + FabAddWordListener.class.getName());
         }
     }
 
@@ -289,7 +290,8 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         String translation = editTranslation.getText().toString();
         String category = spinnerCategory.getSelectedItem().toString();
 
-        if ((name.isEmpty() & translation.isEmpty()) | (name.isEmpty() | translation.isEmpty())) {
+        if ((TextUtils.isEmpty(name) & TextUtils.isEmpty(translation))
+                | (TextUtils.isEmpty(name) | TextUtils.isEmpty(translation))) {
             Toast.makeText(getActivity(),
                     R.string.error_word_editor_empty_fields,
                     Toast.LENGTH_SHORT)
@@ -305,7 +307,8 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     public void editWord(String name, String translation, String category) {
-        if ((name.isEmpty() & translation.isEmpty()) | (name.isEmpty() | translation.isEmpty())) {
+        if ((TextUtils.isEmpty(name) & TextUtils.isEmpty(translation))
+                | (TextUtils.isEmpty(name) | TextUtils.isEmpty(translation))) {
             Toast.makeText(getActivity(),
                     R.string.error_word_editor_empty_fields,
                     Toast.LENGTH_SHORT)

@@ -29,6 +29,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,7 +47,7 @@ import com.akhbulatov.wordkeeper.database.DatabaseCategoryAdapter;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.CategoryEntry;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
 import com.akhbulatov.wordkeeper.database.DatabaseWordAdapter;
-import com.akhbulatov.wordkeeper.ui.controller.FabAddWordController;
+import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
 
@@ -77,17 +78,17 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     private DatabaseCategoryAdapter mDbCategoryAdapter;
     private DatabaseWordAdapter mDbWordAdapter;
 
-    private FabAddWordController mListener;
+    private FabAddWordListener mListener;
 
     @SuppressWarnings("deprecation")
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (FabAddWordController) activity;
+            mListener = (FabAddWordListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement "
-                    + FabAddWordController.class.getName());
+                    + FabAddWordListener.class.getName());
         }
     }
 
@@ -255,7 +256,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
         EditText editName = (EditText) dialogView.findViewById(R.id.edit_category_name);
         String name = editName.getText().toString();
 
-        if (name.isEmpty()) {
+        if (TextUtils.isEmpty(name)) {
             Toast.makeText(getActivity(),
                     R.string.error_category_editor_empty_field,
                     Toast.LENGTH_SHORT)
@@ -268,7 +269,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     }
 
     private void renameCategory(String name) {
-        if (name.isEmpty()) {
+        if (TextUtils.isEmpty(name)) {
             Toast.makeText(getActivity(),
                     R.string.error_category_editor_empty_field,
                     Toast.LENGTH_SHORT)

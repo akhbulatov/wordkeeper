@@ -38,7 +38,7 @@ import com.akhbulatov.wordkeeper.R;
 public class WordSortDialogFragment extends DialogFragment {
 
     public static final String PREF_NAME = "wordkeeper.prefs";
-    public static final String PREF_SORT_MODE = "sortMode";
+    public static final String PREF_SORT_MODE = "PREF_SORT_MODE";
     public static final int DEFAULT_SORT_MODE = 1;
 
     private int mSortMode;

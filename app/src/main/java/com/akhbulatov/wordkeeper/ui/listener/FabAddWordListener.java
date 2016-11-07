@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.akhbulatov.wordkeeper.ui.controller;
+package com.akhbulatov.wordkeeper.ui.listener;
 
 /**
  * @author Alidibir Akhbulatov
  * @since 04.10.2016
  */
-public interface FabAddWordController {
+public interface FabAddWordListener {
     /**
      * Called when clicks on FAB to add a word
      *

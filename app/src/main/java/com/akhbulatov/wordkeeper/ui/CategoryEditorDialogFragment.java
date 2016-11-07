@@ -37,9 +37,9 @@ import com.akhbulatov.wordkeeper.R;
  */
 public class CategoryEditorDialogFragment extends DialogFragment {
 
-    private static final String ARGUMENT_TITLE_ID = "TitleId";
-    private static final String ARGUMENT_POSITIVE_TEXT_ID = "PositiveTextId";
-    private static final String ARGUMENT_NEGATIVE_TEXT_ID = "NegativeTextId";
+    private static final String ARGUMENT_TITLE_ID = "ARGUMENT_TITLE_ID";
+    private static final String ARGUMENT_POSITIVE_TEXT_ID = "ARGUMENT_POSITIVE_TEXT_ID";
+    private static final String ARGUMENT_NEGATIVE_TEXT_ID = "ARGUMENT_NEGATIVE_TEXT_ID";
 
     private int mTitleId;
     private int mPositiveTextId;
