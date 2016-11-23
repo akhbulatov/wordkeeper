@@ -55,6 +55,7 @@ import com.akhbulatov.wordkeeper.adapter.WordAdapter;
 import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
 import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
+import com.akhbulatov.wordkeeper.model.Category;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
 
@@ -347,14 +348,14 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         CategoryDatabaseAdapter categoryDbAdapter = new CategoryDatabaseAdapter(getActivity());
         categoryDbAdapter.open();
 
-        Cursor cursor = categoryDbAdapter.fetchAllRecords();
-        String[] categories = new String[cursor.getCount()];
-
-        for (int i = 0; i < cursor.getCount(); i++) {
-            categories[i] = cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME));
-            cursor.moveToNext();
+        Cursor cursor = categoryDbAdapter.getAllRecords();
+        List<Category> categoryList = Category.getCategories(cursor);
+        String[] categories = new String[categoryList.size()];
+        for (int i = 0; i < categoryList.size(); i++) {
+            categories[i] = categoryList.get(i).getName();
         }
 
+        cursor.close();
         categoryDbAdapter.close();
         return categories;
     }

@@ -41,7 +41,7 @@ import com.akhbulatov.wordkeeper.ui.CategoryContentActivity;
  */
 public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.CategoryViewHolder> {
 
-    public static final String EXTRA_CATEGORY_NAME = "com.akhbulatov.wordkeeper.CategoryName";
+    public static final String EXTRA_CATEGORY_NAME = "com.akhbulatov.wordkeeper.EXTRA_CATEGORY_NAME";
 
     private Context mContext;
     private WordDatabaseAdapter mWordDbAdapter;
@@ -73,8 +73,8 @@ public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.C
     }
 
     private String getNumberOfWords(Cursor cursor) {
-        Cursor cursorRecords = mWordDbAdapter.fetchRecordsByCategory(
-                cursor.getString(cursor.getColumnIndex(CategoryEntry.COLUMN_NAME)));
+        String categoryName = cursor.getString(cursor.getColumnIndex(CategoryEntry.COLUMN_NAME));
+        Cursor cursorRecords = mWordDbAdapter.fetchRecordsByCategory(categoryName);
 
         int count = cursorRecords.getCount();
         return mContext.getResources().getQuantityString(R.plurals.number_of_words, count, count);

@@ -44,9 +44,9 @@ import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.adapter.CategoryAdapter;
 import com.akhbulatov.wordkeeper.adapter.WordAdapter;
 import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
-import com.akhbulatov.wordkeeper.database.DatabaseContract.CategoryEntry;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
 import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
+import com.akhbulatov.wordkeeper.model.Category;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
@@ -262,7 +262,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
                     Toast.LENGTH_SHORT)
                     .show();
         } else {
-            mCategoryDbAdapter.addRecord(name);
+            mCategoryDbAdapter.addRecord(new Category(name));
             mCategoryList.scrollToPosition(0);
             getLoaderManager().restartLoader(LOADER_ID, null, this);
         }
@@ -289,7 +289,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
                 cursor.moveToNext();
             }
 
-            mCategoryDbAdapter.updateRecord(mSelectedItemId, name);
+            mCategoryDbAdapter.updateRecord(new Category(mSelectedItemId, name));
             getLoaderManager().restartLoader(LOADER_ID, null, this);
         }
     }
@@ -304,17 +304,14 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
             cursor.moveToNext();
         }
 
-        mCategoryDbAdapter.deleteRecord(mSelectedItemId);
+        mCategoryDbAdapter.deleteRecord(new Category(mSelectedItemId));
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
     @Nullable
     private String getName() {
-        Cursor cursor = mCategoryDbAdapter.fetchRecord(mSelectedItemId);
-        if (cursor.getCount() > 0) {
-            return cursor.getString(cursor.getColumnIndex(CategoryEntry.COLUMN_NAME));
-        }
-        return null;
+        Category category = mCategoryDbAdapter.getRecord(mSelectedItemId);
+        return category.getName();
     }
 
     private void showCategoryEditorDialog(int titleId, int positiveTextId, int negativeTextId) {
@@ -355,7 +352,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
 
         @Override
         public Cursor loadInBackground() {
-            return mCategoryDbAdapter.fetchAllRecords();
+            return mCategoryDbAdapter.getAllRecords();
         }
     }
 }

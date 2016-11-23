@@ -27,7 +27,9 @@ import android.support.v7.app.AlertDialog;
 
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
-import com.akhbulatov.wordkeeper.database.DatabaseContract;
+import com.akhbulatov.wordkeeper.model.Category;
+
+import java.util.List;
 
 /**
  * @author Alidibir Akhbulatov
@@ -53,13 +55,11 @@ public class CategoryListDialogFragment extends DialogFragment {
         CategoryDatabaseAdapter categoryDbAdapter = new CategoryDatabaseAdapter(getActivity());
         categoryDbAdapter.open();
 
-        Cursor cursor = categoryDbAdapter.fetchAllRecords();
-        mCategories = new String[cursor.getCount()];
-
-        for (int i = 0; i < cursor.getCount(); i++) {
-            mCategories[i] = cursor.getString(
-                    cursor.getColumnIndex(DatabaseContract.CategoryEntry.COLUMN_NAME));
-            cursor.moveToNext();
+        Cursor cursor = categoryDbAdapter.getAllRecords();
+        List<Category> categoryList = Category.getCategories(cursor);
+        mCategories = new String[categoryList.size()];
+        for (int i = 0; i < categoryList.size(); i++) {
+            mCategories[i] = categoryList.get(i).getName();
         }
 
         cursor.close();

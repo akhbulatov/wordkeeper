@@ -19,8 +19,10 @@ package com.akhbulatov.wordkeeper.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.akhbulatov.wordkeeper.database.DatabaseContract.CategoryEntry;
+import com.akhbulatov.wordkeeper.model.Category;
 
 /**
  * @author Alidibir Akhbulatov
@@ -32,26 +34,32 @@ import com.akhbulatov.wordkeeper.database.DatabaseContract.CategoryEntry;
  */
 public class CategoryDatabaseAdapter extends DatabaseAdapter {
 
+    private static final String TAG = CategoryDatabaseAdapter.class.getSimpleName();
+
     public CategoryDatabaseAdapter(Context context) {
         super(context);
     }
 
-    public long addRecord(String name) {
-        ContentValues values = createContentValues(name);
+    public long addRecord(Category category) {
+        ContentValues values = createContentValues(category);
         return mDatabase.insert(CategoryEntry.TABLE_NAME, null, values);
     }
 
-    public boolean updateRecord(long rowId, String name) {
-        ContentValues values = createContentValues(name);
-        return mDatabase.update(CategoryEntry.TABLE_NAME, values,
-                CategoryEntry._ID + "=" + rowId, null) > 0;
+    public int updateRecord(Category category) {
+        ContentValues values = createContentValues(category);
+        return mDatabase.update(CategoryEntry.TABLE_NAME,
+                values,
+                CategoryEntry._ID + " = ?",
+                new String[]{String.valueOf(category.getId())});
     }
 
-    public boolean deleteRecord(long rowId) {
-        return mDatabase.delete(CategoryEntry.TABLE_NAME, CategoryEntry._ID + "=" + rowId, null) > 0;
+    public int deleteRecord(Category category) {
+        return mDatabase.delete(CategoryEntry.TABLE_NAME,
+                CategoryEntry._ID + " = ?",
+                new String[]{String.valueOf(category.getId())});
     }
 
-    public Cursor fetchAllRecords() {
+    public Cursor getAllRecords() {
         Cursor cursor = mDatabase.query(CategoryEntry.TABLE_NAME,
                 new String[]{CategoryEntry._ID, CategoryEntry.COLUMN_NAME},
                 null, null, null, null, null);
@@ -62,21 +70,30 @@ public class CategoryDatabaseAdapter extends DatabaseAdapter {
         return cursor;
     }
 
-    public Cursor fetchRecord(long rowId) {
+    public Category getRecord(long rowId) {
+        Category category = null;
         Cursor cursor = mDatabase.query(true, CategoryEntry.TABLE_NAME,
                 new String[]{CategoryEntry._ID, CategoryEntry.COLUMN_NAME},
-                CategoryEntry._ID + "=" + rowId,
+                CategoryEntry._ID + " = " + rowId,
                 null, null, null, null, null);
 
-        if (cursor != null) {
+        try {
             cursor.moveToFirst();
+            category = new Category();
+            category.setName(cursor.getString(cursor.getColumnIndex(CategoryEntry.COLUMN_NAME)));
+        } catch (Exception e) {
+            Log.e(TAG, "Could not get the record");
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
-        return cursor;
+        return category;
     }
 
-    private ContentValues createContentValues(String name) {
+    private ContentValues createContentValues(Category category) {
         ContentValues values = new ContentValues();
-        values.put(CategoryEntry.COLUMN_NAME, name);
+        values.put(CategoryEntry.COLUMN_NAME, category.getName());
         return values;
     }
 }
