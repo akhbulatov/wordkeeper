@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_search_category"
+        android:icon="@drawable/ic_search"
+        android:title="@string/action_search_category"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="collapseActionView|ifRoom" />
+
+    <item
         android:id="@+id/menu_add_category"
         android:icon="@drawable/ic_add"
         android:title="@string/action_add_category"

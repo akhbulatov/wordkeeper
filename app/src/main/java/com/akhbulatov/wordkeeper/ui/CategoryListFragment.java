@@ -18,6 +18,8 @@ package com.akhbulatov.wordkeeper.ui;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -28,7 +30,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -37,6 +41,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -44,12 +49,14 @@ import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.adapter.CategoryAdapter;
 import com.akhbulatov.wordkeeper.adapter.WordAdapter;
 import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
+import com.akhbulatov.wordkeeper.database.DatabaseContract.CategoryEntry;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
 import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
 import com.akhbulatov.wordkeeper.model.Category;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
+import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
 
 /**
  * Shows a list of categories from the database.
@@ -155,6 +162,33 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.fragment_category_list, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.menu_search_category);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        SearchManager searchManager = (SearchManager)
+                getActivity().getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager
+                .getSearchableInfo(new ComponentName(getActivity(), MainActivity.class)));
+        searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                final Cursor cursor = mCategoryDbAdapter.getAllRecords();
+                final int column = cursor.getColumnIndex(CategoryEntry.COLUMN_NAME);
+                if (newText.length() > 0) {
+                    mCategoryAdapter.swapCursor(new FilterCursorWrapper(cursor, newText, column));
+                } else {
+                    mCategoryAdapter.swapCursor(cursor);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+        });
     }
 
     @Override

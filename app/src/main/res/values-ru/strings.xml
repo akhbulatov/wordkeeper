@@ -22,9 +22,11 @@
     <!-- The screen "Categories" -->
     <string name="title_categories">Категории</string>
     <string name="default_category">Главная</string>
+    <string name="action_search_category">Поиск</string>
     <string name="action_add_category">Добавить</string>
     <string name="action_rename_category">Переименовать</string>
     <string name="action_delete_category">Удалить</string>
+    <string name="search_category_hint">Поиск категорий</string>
     <string name="more_options_description">Больше опций</string>
     <plurals name="number_of_words">
         <item quantity="one">%d слово</item>

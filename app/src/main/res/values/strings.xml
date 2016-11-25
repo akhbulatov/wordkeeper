@@ -22,9 +22,11 @@
     <!-- The screen "Categories" -->
     <string name="title_categories">Categories</string>
     <string name="default_category">Main</string>
+    <string name="action_search_category">Search</string>
     <string name="action_add_category">Add</string>
     <string name="action_rename_category">Rename</string>
     <string name="action_delete_category">Delete</string>
+    <string name="search_category_hint">Search categories</string>
     <string name="more_options_description">More options</string>
     <plurals name="number_of_words">
         <item quantity="one">%d word</item>
