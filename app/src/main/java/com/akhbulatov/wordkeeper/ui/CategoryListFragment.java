@@ -43,6 +43,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.akhbulatov.wordkeeper.R;
@@ -81,6 +82,8 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     private long mSelectedItemId;
 
     private ContextMenuRecyclerView mCategoryList;
+    private TextView mTextNoResultsCategory;
+
     private CategoryAdapter mCategoryAdapter;
     private CategoryDatabaseAdapter mCategoryDbAdapter;
     private WordDatabaseAdapter mWordDbAdapter;
@@ -126,8 +129,10 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
         mCategoryList.addItemDecoration(new DividerItemDecoration(getActivity(),
                 DividerItemDecoration.VERTICAL_LIST));
         mCategoryList.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         registerForContextMenu(mCategoryList);
+
+        mTextNoResultsCategory = (TextView) view.findViewById(R.id.text_no_results_category);
+        mTextNoResultsCategory.setVisibility(View.GONE);
 
         FloatingActionButton fabAddWord = (FloatingActionButton) view.findViewById(R.id.fab_add_word);
         fabAddWord.setOnClickListener(new View.OnClickListener() {
@@ -178,8 +183,14 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
                 final int column = cursor.getColumnIndex(CategoryEntry.COLUMN_NAME);
                 if (newText.length() > 0) {
                     mCategoryAdapter.swapCursor(new FilterCursorWrapper(cursor, newText, column));
+                    if (mCategoryAdapter.getItemCount() == 0) {
+                        mTextNoResultsCategory.setVisibility(View.VISIBLE);
+                    } else {
+                        mTextNoResultsCategory.setVisibility(View.GONE);
+                    }
                 } else {
                     mCategoryAdapter.swapCursor(cursor);
+                    mTextNoResultsCategory.setVisibility(View.GONE);
                 }
                 return true;
             }

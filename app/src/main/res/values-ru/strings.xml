@@ -28,6 +28,7 @@
     <string name="action_delete_category">Удалить</string>
     <string name="search_category_hint">Поиск категорий</string>
     <string name="more_options_description">Больше опций</string>
+    <string name="no_results_category">Ничего не найдено</string>
     <plurals name="number_of_words">
         <item quantity="one">%d слово</item>
         <item quantity="few">%d слова</item>

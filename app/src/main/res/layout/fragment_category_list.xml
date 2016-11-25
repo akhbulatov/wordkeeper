@@ -8,6 +8,11 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical" />
 
+    <TextView
+        android:id="@+id/text_no_results_category"
+        style="@style/TextNoResult"
+        android:text="@string/no_results_category" />
+
     <include layout="@layout/fab_add_word" />
 
 </FrameLayout>
