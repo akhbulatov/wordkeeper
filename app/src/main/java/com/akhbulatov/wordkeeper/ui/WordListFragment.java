@@ -214,7 +214,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         if (mWordAdapter.getItemCount() == 0) {
             mTextEmptyWordList.setVisibility(View.VISIBLE);
         } else {
-            mTextEmptyWordList.setVisibility(View.INVISIBLE);
+            mTextEmptyWordList.setVisibility(View.GONE);
         }
     }
 
