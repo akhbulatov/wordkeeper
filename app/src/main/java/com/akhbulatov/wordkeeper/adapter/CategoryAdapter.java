@@ -70,6 +70,9 @@ public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.C
         if (defaultCategory.equals(categoryName)) {
             viewHolder.imageMoreOptions.setVisibility(View.GONE);
             viewHolder.itemView.setLongClickable(false);
+        } else {
+            viewHolder.imageMoreOptions.setVisibility(View.VISIBLE);
+            viewHolder.itemView.setLongClickable(true);
         }
     }
 
