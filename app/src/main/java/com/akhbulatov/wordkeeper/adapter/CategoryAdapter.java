@@ -61,12 +61,13 @@ public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.C
 
     @Override
     public void onBindViewHolder(CategoryViewHolder viewHolder, Cursor cursor) {
-        viewHolder.textCategoryName
-                .setText(cursor.getString(cursor.getColumnIndex(CategoryEntry.COLUMN_NAME)));
+        String categoryName = cursor.getString(cursor.getColumnIndex(CategoryEntry.COLUMN_NAME));
+        viewHolder.textCategoryName.setText(categoryName);
         viewHolder.textNumberOfWords.setText(getNumberOfWords(cursor));
 
-        // Makes the first category of non-editable
-        if (cursor.getPosition() == 0) {
+        // Makes the default category of non-editable
+        String defaultCategory = mContext.getResources().getString(R.string.default_category);
+        if (defaultCategory.equals(categoryName)) {
             viewHolder.imageMoreOptions.setVisibility(View.GONE);
             viewHolder.itemView.setLongClickable(false);
         }
