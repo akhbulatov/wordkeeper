@@ -10,9 +10,12 @@
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="windowActionModeOverlay">true</item>
 
-        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
-
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
+    </style>
+
+    <style name="NavDrawerTheme" parent="AppTheme">
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent
+        </item>
     </style>
 
     <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">

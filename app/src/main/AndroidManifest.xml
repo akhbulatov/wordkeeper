@@ -12,7 +12,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustPan">
+            android:theme="@style/NavDrawerTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
