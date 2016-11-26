@@ -204,6 +204,7 @@ public class WordFragment extends Fragment implements LoaderManager.LoaderCallba
                 if (newText.length() > 0) {
                     mWordAdapter.swapCursor(new FilterCursorWrapper(cursor, newText, column));
 
+                    mTextEmptyWordList.setVisibility(View.GONE);
                     if (mWordAdapter.getItemCount() == 0) {
                         String escapedNewText = TextUtils.htmlEncode(newText);
                         String formattedNoResults = String.format(
@@ -217,7 +218,11 @@ public class WordFragment extends Fragment implements LoaderManager.LoaderCallba
                     }
                 } else {
                     mWordAdapter.swapCursor(cursor);
+
                     mTextNoResultsWord.setVisibility(View.GONE);
+                    if (mWordAdapter.getItemCount() == 0) {
+                        mTextEmptyWordList.setVisibility(View.VISIBLE);
+                    }
                 }
                 return true;
             }
