@@ -33,6 +33,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -181,9 +182,16 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
             public boolean onQueryTextChange(String newText) {
                 final Cursor cursor = mCategoryDbAdapter.getAllRecords();
                 final int column = cursor.getColumnIndex(CategoryEntry.COLUMN_NAME);
-                if (newText.length() > 0) {
+                if (newText.length() > 1) {
                     mCategoryAdapter.swapCursor(new FilterCursorWrapper(cursor, newText, column));
+
                     if (mCategoryAdapter.getItemCount() == 0) {
+                        String escapedNewText = TextUtils.htmlEncode(newText);
+                        String formattedNoResults = String.format(
+                                getString(R.string.no_results_category), escapedNewText);
+                        CharSequence styledNoResults = Html.fromHtml(formattedNoResults);
+
+                        mTextNoResultsCategory.setText(styledNoResults);
                         mTextNoResultsCategory.setVisibility(View.VISIBLE);
                     } else {
                         mTextNoResultsCategory.setVisibility(View.GONE);
