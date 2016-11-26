@@ -55,6 +55,7 @@ import com.akhbulatov.wordkeeper.database.DatabaseContract.CategoryEntry;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
 import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
 import com.akhbulatov.wordkeeper.model.Category;
+import com.akhbulatov.wordkeeper.model.Word;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
@@ -329,16 +330,15 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
                     .show();
         } else {
             // First updates all words from the category with the new category name
-            Cursor cursor = mWordDbAdapter.fetchRecordsByCategory(getName());
-
-            for (int i = 0; i < cursor.getCount(); i++) {
-                int wordId = cursor.getInt(cursor.getColumnIndex(WordEntry._ID));
+            Cursor cursor = mWordDbAdapter.getRecordsByCategory(getName());
+            while (!cursor.isAfterLast()) {
+                long id = cursor.getLong(cursor.getColumnIndex(WordEntry._ID));
                 String wordName =
                         cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME));
                 String wordTranslation =
                         cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION));
 
-                mWordDbAdapter.updateRecord(wordId, wordName, wordTranslation, name);
+                mWordDbAdapter.updateRecord(new Word(id, wordName, wordTranslation, name));
                 cursor.moveToNext();
             }
 
@@ -349,11 +349,11 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
 
     private void deleteCategory() {
         // First, deletes all words that are in the deleted category
-        Cursor cursor = mWordDbAdapter.fetchRecordsByCategory(getName());
+        Cursor cursor = mWordDbAdapter.getRecordsByCategory(getName());
         WordAdapter wordAdapter = new WordAdapter(getActivity(), cursor);
-
-        for (int i = 0; i < cursor.getCount(); i++) {
-            mWordDbAdapter.deleteRecord(wordAdapter.getItemId(cursor.getPosition()));
+        while (!cursor.isAfterLast()) {
+            long id = wordAdapter.getItemId(cursor.getPosition());
+            mWordDbAdapter.deleteRecord(new Word(id));
             cursor.moveToNext();
         }
 
@@ -363,8 +363,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
 
     @Nullable
     private String getName() {
-        Category category = mCategoryDbAdapter.getRecord(mSelectedItemId);
-        return category.getName();
+        return mCategoryDbAdapter.getRecord(mSelectedItemId).getName();
     }
 
     private void showCategoryEditorDialog(int titleId, int positiveTextId, int negativeTextId) {

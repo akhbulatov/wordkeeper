@@ -80,6 +80,7 @@ public class CategoryDatabaseAdapter extends DatabaseAdapter {
         try {
             cursor.moveToFirst();
             category = new Category();
+            category.setId(cursor.getLong(cursor.getColumnIndex(CategoryEntry._ID)));
             category.setName(cursor.getString(cursor.getColumnIndex(CategoryEntry.COLUMN_NAME)));
         } catch (Exception e) {
             Log.e(TAG, "Could not get the record");
