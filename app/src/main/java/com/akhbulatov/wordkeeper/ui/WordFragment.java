@@ -370,7 +370,7 @@ public class WordFragment extends Fragment implements LoaderManager.LoaderCallba
         CategoryDatabaseAdapter categoryDbAdapter = new CategoryDatabaseAdapter(getActivity());
         categoryDbAdapter.open();
 
-        Cursor cursor = categoryDbAdapter.getAllRecords();
+        Cursor cursor = categoryDbAdapter.getAll();
         List<Category> categoryList = Category.getCategories(cursor);
         String[] categories = new String[categoryList.size()];
         for (int i = 0; i < categoryList.size(); i++) {

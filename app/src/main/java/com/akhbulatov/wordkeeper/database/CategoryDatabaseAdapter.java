@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.akhbulatov.wordkeeper.database.DatabaseContract.CategoryEntry;
+import com.akhbulatov.wordkeeper.database.dao.CategoryDao;
 import com.akhbulatov.wordkeeper.model.Category;
 
 /**
@@ -32,7 +33,7 @@ import com.akhbulatov.wordkeeper.model.Category;
 /**
  * Provides functionality to work with the table "Categories"
  */
-public class CategoryDatabaseAdapter extends DatabaseAdapter {
+public class CategoryDatabaseAdapter extends DatabaseAdapter implements CategoryDao {
 
     private static final String TAG = CategoryDatabaseAdapter.class.getSimpleName();
 
@@ -40,12 +41,14 @@ public class CategoryDatabaseAdapter extends DatabaseAdapter {
         super(context);
     }
 
-    public long addRecord(Category category) {
+    @Override
+    public long insert(Category category) {
         ContentValues values = createContentValues(category);
         return mDatabase.insert(CategoryEntry.TABLE_NAME, null, values);
     }
 
-    public int updateRecord(Category category) {
+    @Override
+    public int update(Category category) {
         ContentValues values = createContentValues(category);
         return mDatabase.update(CategoryEntry.TABLE_NAME,
                 values,
@@ -53,13 +56,15 @@ public class CategoryDatabaseAdapter extends DatabaseAdapter {
                 new String[]{String.valueOf(category.getId())});
     }
 
-    public int deleteRecord(Category category) {
+    @Override
+    public int delete(Category category) {
         return mDatabase.delete(CategoryEntry.TABLE_NAME,
                 CategoryEntry._ID + " = ?",
                 new String[]{String.valueOf(category.getId())});
     }
 
-    public Cursor getAllRecords() {
+    @Override
+    public Cursor getAll() {
         Cursor cursor = mDatabase.query(CategoryEntry.TABLE_NAME,
                 new String[]{CategoryEntry._ID, CategoryEntry.COLUMN_NAME},
                 null, null, null, null, null);
@@ -70,11 +75,12 @@ public class CategoryDatabaseAdapter extends DatabaseAdapter {
         return cursor;
     }
 
-    public Category getRecord(long rowId) {
+    @Override
+    public Category get(long id) {
         Category category = null;
         Cursor cursor = mDatabase.query(true, CategoryEntry.TABLE_NAME,
                 new String[]{CategoryEntry._ID, CategoryEntry.COLUMN_NAME},
-                CategoryEntry._ID + " = " + rowId,
+                CategoryEntry._ID + " = " + id,
                 null, null, null, null, null);
 
         try {

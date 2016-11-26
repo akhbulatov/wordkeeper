@@ -181,7 +181,7 @@ public class CategoryFragment extends Fragment implements LoaderManager.LoaderCa
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String newText) {
-                final Cursor cursor = mCategoryDbAdapter.getAllRecords();
+                final Cursor cursor = mCategoryDbAdapter.getAll();
                 final int column = cursor.getColumnIndex(CategoryEntry.COLUMN_NAME);
                 if (newText.length() > 0) {
                     mCategoryAdapter.swapCursor(new FilterCursorWrapper(cursor, newText, column));
@@ -316,7 +316,7 @@ public class CategoryFragment extends Fragment implements LoaderManager.LoaderCa
                     Toast.LENGTH_SHORT)
                     .show();
         } else {
-            mCategoryDbAdapter.addRecord(new Category(name));
+            mCategoryDbAdapter.insert(new Category(name));
             mCategoryList.scrollToPosition(0);
             getLoaderManager().restartLoader(LOADER_ID, null, this);
         }
@@ -342,7 +342,7 @@ public class CategoryFragment extends Fragment implements LoaderManager.LoaderCa
                 cursor.moveToNext();
             }
 
-            mCategoryDbAdapter.updateRecord(new Category(mSelectedItemId, name));
+            mCategoryDbAdapter.update(new Category(mSelectedItemId, name));
             getLoaderManager().restartLoader(LOADER_ID, null, this);
         }
     }
@@ -357,13 +357,13 @@ public class CategoryFragment extends Fragment implements LoaderManager.LoaderCa
             cursor.moveToNext();
         }
 
-        mCategoryDbAdapter.deleteRecord(new Category(mSelectedItemId));
+        mCategoryDbAdapter.delete(new Category(mSelectedItemId));
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
     @Nullable
     private String getName() {
-        return mCategoryDbAdapter.getRecord(mSelectedItemId).getName();
+        return mCategoryDbAdapter.get(mSelectedItemId).getName();
     }
 
     private void showCategoryEditorDialog(int titleId, int positiveTextId, int negativeTextId) {
@@ -404,7 +404,7 @@ public class CategoryFragment extends Fragment implements LoaderManager.LoaderCa
 
         @Override
         public Cursor loadInBackground() {
-            return mCategoryDbAdapter.getAllRecords();
+            return mCategoryDbAdapter.getAll();
         }
     }
 }
