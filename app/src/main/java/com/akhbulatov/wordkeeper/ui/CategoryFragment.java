@@ -338,7 +338,7 @@ public class CategoryFragment extends Fragment implements LoaderManager.LoaderCa
                 String wordTranslation =
                         cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION));
 
-                mWordDbAdapter.updateRecord(new Word(id, wordName, wordTranslation, name));
+                mWordDbAdapter.update(new Word(id, wordName, wordTranslation, name));
                 cursor.moveToNext();
             }
 
@@ -353,7 +353,7 @@ public class CategoryFragment extends Fragment implements LoaderManager.LoaderCa
         WordAdapter wordAdapter = new WordAdapter(getActivity(), cursor);
         while (!cursor.isAfterLast()) {
             long id = wordAdapter.getItemId(cursor.getPosition());
-            mWordDbAdapter.deleteRecord(new Word(id));
+            mWordDbAdapter.delete(new Word(id));
             cursor.moveToNext();
         }
 

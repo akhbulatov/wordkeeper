@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
+import com.akhbulatov.wordkeeper.database.dao.WordDao;
 import com.akhbulatov.wordkeeper.model.Word;
 
 /**
@@ -32,7 +33,7 @@ import com.akhbulatov.wordkeeper.model.Word;
 /**
  * Provides functionality to work with the table "Words"
  */
-public class WordDatabaseAdapter extends DatabaseAdapter {
+public class WordDatabaseAdapter extends DatabaseAdapter implements WordDao {
 
     private static final String TAG = WordDatabaseAdapter.class.getSimpleName();
 
@@ -40,12 +41,14 @@ public class WordDatabaseAdapter extends DatabaseAdapter {
         super(context);
     }
 
-    public long addRecord(Word word) {
+    @Override
+    public long insert(Word word) {
         ContentValues values = createContentValues(word);
         return mDatabase.insert(WordEntry.TABLE_NAME, null, values);
     }
 
-    public int updateRecord(Word word) {
+    @Override
+    public int update(Word word) {
         ContentValues values = createContentValues(word);
         return mDatabase.update(WordEntry.TABLE_NAME,
                 values,
@@ -53,13 +56,15 @@ public class WordDatabaseAdapter extends DatabaseAdapter {
                 new String[]{String.valueOf(word.getId())});
     }
 
-    public int deleteRecord(Word word) {
+    @Override
+    public int delete(Word word) {
         return mDatabase.delete(WordEntry.TABLE_NAME,
                 WordEntry._ID + " = ?",
                 new String[]{String.valueOf(word.getId())});
     }
 
-    public Cursor getAllRecords(int sortMode) {
+    @Override
+    public Cursor getAll(int sortMode) {
         String orderBy;
         // Uses only 2 sort mode
         // For sorting by name value is 0 and by last modified is value 1
@@ -82,14 +87,15 @@ public class WordDatabaseAdapter extends DatabaseAdapter {
         return cursor;
     }
 
-    public Word getRecord(long rowId) {
+    @Override
+    public Word get(long id) {
         Word word = null;
         Cursor cursor = mDatabase.query(true, WordEntry.TABLE_NAME,
                 new String[]{WordEntry._ID,
                         WordEntry.COLUMN_NAME,
                         WordEntry.COLUMN_TRANSLATION,
                         WordEntry.COLUMN_CATEGORY},
-                WordEntry._ID + " = " + rowId,
+                WordEntry._ID + " = " + id,
                 null, null, null, null, null);
 
         try {
