@@ -145,6 +145,8 @@ public class WordFragment extends Fragment implements LoaderManager.LoaderCallba
         mWordList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mTextEmptyWordList = (TextView) view.findViewById(R.id.text_empty_word_list);
+        mTextEmptyWordList.setVisibility(View.GONE);
+
         mTextNoResultsWord = (TextView) view.findViewById(R.id.text_no_results_word);
         mTextNoResultsWord.setVisibility(View.GONE);
 
