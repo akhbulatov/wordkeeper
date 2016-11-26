@@ -9,6 +9,11 @@
         style="@style/TextNoResult"
         android:text="@string/empty_word_list" />
 
+    <TextView
+        android:id="@+id/text_no_results_word"
+        style="@style/TextNoResult"
+        android:text="@string/no_results_word" />
+
     <include layout="@layout/fab_add_word" />
 
 </FrameLayout>

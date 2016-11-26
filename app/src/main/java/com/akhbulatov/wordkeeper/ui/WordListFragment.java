@@ -37,6 +37,7 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -58,6 +59,7 @@ import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
 import com.akhbulatov.wordkeeper.model.Category;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
+import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
 
 import java.util.List;
 
@@ -84,9 +86,11 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     private long mSelectedItemId;
 
     private RecyclerView mWordList;
+    private TextView mTextEmptyWordList;
+    private TextView mTextNoResultsWord;
+
     private WordAdapter mWordAdapter;
     private WordDatabaseAdapter mWordDbAdapter;
-    private TextView mTextEmptyWordList;
 
     private ActionModeCallback mActionModeCallback;
     private ActionMode mActionMode;
@@ -137,6 +141,8 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         mWordList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mTextEmptyWordList = (TextView) view.findViewById(R.id.text_empty_word_list);
+        mTextNoResultsWord = (TextView) view.findViewById(R.id.text_no_results_word);
+        mTextNoResultsWord.setVisibility(View.GONE);
 
         FloatingActionButton fabAddWord = (FloatingActionButton) view.findViewById(R.id.fab_add_word);
         fabAddWord.setOnClickListener(new View.OnClickListener() {
@@ -176,10 +182,40 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
 
         SearchManager searchManager = (SearchManager)
                 getActivity().getSystemService(Context.SEARCH_SERVICE);
-        // Create intent for launching search results screen
         searchView.setSearchableInfo(searchManager
-                .getSearchableInfo(new ComponentName(getActivity(), SearchActivity.class)));
+                .getSearchableInfo(new ComponentName(getActivity(), MainActivity.class)));
         searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                final Cursor cursor = mWordDbAdapter.fetchAllRecords(sSortMode);
+                final int column = cursor.getColumnIndex(WordEntry.COLUMN_NAME);
+                if (newText.length() > 0) {
+                    mWordAdapter.swapCursor(new FilterCursorWrapper(cursor, newText, column));
+
+                    if (mWordAdapter.getItemCount() == 0) {
+                        String escapedNewText = TextUtils.htmlEncode(newText);
+                        String formattedNoResults = String.format(
+                                getString(R.string.no_results_word), escapedNewText);
+                        CharSequence styledNoResults = Html.fromHtml(formattedNoResults);
+
+                        mTextNoResultsWord.setText(styledNoResults);
+                        mTextNoResultsWord.setVisibility(View.VISIBLE);
+                    } else {
+                        mTextNoResultsWord.setVisibility(View.GONE);
+                    }
+                } else {
+                    mWordAdapter.swapCursor(cursor);
+                    mTextNoResultsWord.setVisibility(View.GONE);
+                }
+                return true;
+            }
+        });
     }
 
     @Override

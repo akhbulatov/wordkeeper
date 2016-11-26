@@ -5,6 +5,9 @@
     <string name="drawer_open">Открыть панель навигации</string>
     <string name="drawer_close">Закрыть панель навигации</string>
 
+    <!-- Main activity -->
+    <string name="search_hint">Поиск</string>
+
     <!-- The screen "All words" -->
     <string name="title_all_words">Все слова</string>
     <string name="action_search_word">Поиск</string>
@@ -12,10 +15,10 @@
     <string name="action_move_word">Переместить</string>
     <string name="action_edit_word">Редактировать</string>
     <string name="action_delete_word">Удалить</string>
-    <string name="search_word_hint">Поиск слов</string>
     <string name="empty_word_list">У вас нет добавленных слов с переводами.
         Чтобы добавить новое слово, нажмите \"+\".
     </string>
+    <string name="no_results_word">По запросу \"&lt;b>%1$s&lt;/b>\" ничего не найдено</string>
     <string name="success_move_word">Перемещение успешно завершено</string>
     <string name="error_move_word">Перемещение не удалось выполнить</string>
 
@@ -26,7 +29,6 @@
     <string name="action_add_category">Добавить</string>
     <string name="action_rename_category">Переименовать</string>
     <string name="action_delete_category">Удалить</string>
-    <string name="search_category_hint">Поиск категорий</string>
     <string name="more_options_description">Больше опций</string>
     <string name="no_results_category">По запросу \"&lt;b>%1$s&lt;/b>\" ничего не найдено</string>
     <plurals name="number_of_words">
@@ -38,10 +40,6 @@
 
     <!-- The screen "Category content" -->
     <string name="empty_category_content">Нет слов в данной категории</string>
-
-    <!-- The screen "Search" -->
-    <string name="title_search">Результаты поиска</string>
-    <string name="no_search_results">По запросу \"%1$s\" ничего не найдено</string>
 
     <!-- The screen "About -->
     <string name="title_about">О приложении</string>

@@ -5,6 +5,9 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
+    <!-- Main activity -->
+    <string name="search_hint">Search</string>
+
     <!-- The screen "All words" -->
     <string name="title_all_words">All words</string>
     <string name="action_search_word">Search</string>
@@ -12,10 +15,10 @@
     <string name="action_move_word">Move to</string>
     <string name="action_edit_word">Edit</string>
     <string name="action_delete_word">Delete</string>
-    <string name="search_word_hint">Search words</string>
     <string name="empty_word_list">You have not added words with translations.
         To add a new word, press the \"+\".
     </string>
+    <string name="no_results_word">No results found for \"&lt;b>%1$s&lt;/b>\"</string>
     <string name="success_move_word">Move successfully completed</string>
     <string name="error_move_word">Move failed</string>
 
@@ -26,7 +29,6 @@
     <string name="action_add_category">Add</string>
     <string name="action_rename_category">Rename</string>
     <string name="action_delete_category">Delete</string>
-    <string name="search_category_hint">Search categories</string>
     <string name="more_options_description">More options</string>
     <string name="no_results_category">No results found for \"&lt;b>%1$s&lt;/b>\"</string>
     <plurals name="number_of_words">
@@ -36,10 +38,6 @@
 
     <!-- The screen "Category content" -->
     <string name="empty_category_content">No words in this category</string>
-
-    <!-- The screen "Search" -->
-    <string name="title_search">Search results</string>
-    <string name="no_search_results">Search for \"%1$s\" no results</string>
 
     <!-- The screen "About -->
     <string name="title_about">About</string>

@@ -24,29 +24,13 @@
 
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable_category" />
+                android:resource="@xml/searchable" />
         </activity>
         <activity
             android:name=".ui.AboutActivity"
             android:label="@string/title_about"
             android:parentActivityName=".ui.MainActivity"
             tools:ignore="UnusedAttribute">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.MainActivity" />
-        </activity>
-        <activity
-            android:name=".ui.SearchActivity"
-            android:label="@string/title_search"
-            android:parentActivityName=".ui.MainActivity"
-            tools:ignore="UnusedAttribute">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable_word" />
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
