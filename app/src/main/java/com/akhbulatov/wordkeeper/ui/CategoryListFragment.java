@@ -182,7 +182,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
             public boolean onQueryTextChange(String newText) {
                 final Cursor cursor = mCategoryDbAdapter.getAllRecords();
                 final int column = cursor.getColumnIndex(CategoryEntry.COLUMN_NAME);
-                if (newText.length() > 1) {
+                if (newText.length() > 0) {
                     mCategoryAdapter.swapCursor(new FilterCursorWrapper(cursor, newText, column));
 
                     if (mCategoryAdapter.getItemCount() == 0) {
