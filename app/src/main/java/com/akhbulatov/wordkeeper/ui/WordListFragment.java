@@ -57,6 +57,7 @@ import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
 import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
 import com.akhbulatov.wordkeeper.model.Category;
+import com.akhbulatov.wordkeeper.model.Word;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
 import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
@@ -193,7 +194,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                final Cursor cursor = mWordDbAdapter.fetchAllRecords(sSortMode);
+                final Cursor cursor = mWordDbAdapter.getAllRecords(sSortMode);
                 final int column = cursor.getColumnIndex(WordEntry.COLUMN_NAME);
                 if (newText.length() > 0) {
                     mWordAdapter.swapCursor(new FilterCursorWrapper(cursor, newText, column));
@@ -289,22 +290,19 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     // Moves the marked words in the selected category
     @Override
     public void onFinishCategoryListDialog(String category) {
-        Cursor cursor = null;
-
+        Word word = null;
         for (Integer i : mWordAdapter.getSelectedWords()) {
-            long id = mWordAdapter.getItemId(i);
-            cursor = mWordDbAdapter.fetchRecord(id);
-
-            String name = cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME));
-            String translation = cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION));
-
-            mWordDbAdapter.updateRecord(id, name, translation, category);
+            word = mWordDbAdapter.getRecord(mWordAdapter.getItemId(i));
+            mWordDbAdapter.updateRecord(new Word(
+                    word.getId(),
+                    word.getName(),
+                    word.getTranslation(),
+                    category));
         }
 
         mActionMode.finish();
 
-        if (cursor != null) {
-            cursor.close();
+        if (word != null) {
             Toast.makeText(getActivity(), R.string.success_move_word, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getActivity(), R.string.error_move_word, Toast.LENGTH_SHORT).show();
@@ -334,7 +332,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
                     Toast.LENGTH_SHORT)
                     .show();
         } else {
-            mWordDbAdapter.addRecord(name, translation, category);
+            mWordDbAdapter.addRecord(new Word(name, translation, category));
             // Checked for null in case this method is called from the screen "Categories"
             if (mWordList != null) {
                 mWordList.scrollToPosition(0);
@@ -351,33 +349,21 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
                     Toast.LENGTH_SHORT)
                     .show();
         } else {
-            mWordDbAdapter.updateRecord(mSelectedItemId, name, translation, category);
+            mWordDbAdapter.updateRecord(new Word(mSelectedItemId, name, translation, category));
             getLoaderManager().restartLoader(LOADER_ID, null, this);
         }
     }
 
     public String getName() {
-        Cursor cursor = mWordDbAdapter.fetchRecord(mSelectedItemId);
-        if (cursor.getCount() > 0) {
-            return cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME));
-        }
-        return null;
+        return mWordDbAdapter.getRecord(mSelectedItemId).getName();
     }
 
     public String getTranslation() {
-        Cursor cursor = mWordDbAdapter.fetchRecord(mSelectedItemId);
-        if (cursor.getCount() > 0) {
-            return cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION));
-        }
-        return null;
+        return mWordDbAdapter.getRecord(mSelectedItemId).getTranslation();
     }
 
     public String getCategory() {
-        Cursor cursor = mWordDbAdapter.fetchRecord(mSelectedItemId);
-        if (cursor.getCount() > 0) {
-            return cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_CATEGORY));
-        }
-        return null;
+        return mWordDbAdapter.getRecord(mSelectedItemId).getCategory();
     }
 
     public String[] getCategories() {
@@ -410,7 +396,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
 
     private void deleteWords(List<Integer> words) {
         for (Integer i : words) {
-            mWordDbAdapter.deleteRecord(mWordAdapter.getItemId(i));
+            mWordDbAdapter.deleteRecord(new Word(mWordAdapter.getItemId(i)));
         }
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
@@ -456,7 +442,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
 
         @Override
         public Cursor loadInBackground() {
-            return mWordDbAdapter.fetchAllRecords(sSortMode);
+            return mWordDbAdapter.getAllRecords(sSortMode);
         }
     }
 

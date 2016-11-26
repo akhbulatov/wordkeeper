@@ -78,7 +78,7 @@ public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.C
 
     private String getNumberOfWords(Cursor cursor) {
         String categoryName = cursor.getString(cursor.getColumnIndex(CategoryEntry.COLUMN_NAME));
-        Cursor cursorRecords = mWordDbAdapter.fetchRecordsByCategory(categoryName);
+        Cursor cursorRecords = mWordDbAdapter.getRecordsByCategory(categoryName);
 
         int count = cursorRecords.getCount();
         return mContext.getResources().getQuantityString(R.plurals.number_of_words, count, count);

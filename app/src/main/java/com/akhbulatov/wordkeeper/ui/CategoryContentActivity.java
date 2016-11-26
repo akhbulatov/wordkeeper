@@ -59,7 +59,7 @@ public class CategoryContentActivity extends AppCompatActivity {
         wordDbAdapter.open();
 
         WordAdapter wordAdapter =
-                new WordAdapter(this, wordDbAdapter.fetchRecordsByCategory(categoryName));
+                new WordAdapter(this, wordDbAdapter.getRecordsByCategory(categoryName));
         wordAdapter.setHasStableIds(true);
         wordList.setAdapter(wordAdapter);
 

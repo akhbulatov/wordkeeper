@@ -19,8 +19,10 @@ package com.akhbulatov.wordkeeper.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
+import com.akhbulatov.wordkeeper.model.Word;
 
 /**
  * @author Alidibir Akhbulatov
@@ -32,25 +34,32 @@ import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
  */
 public class WordDatabaseAdapter extends DatabaseAdapter {
 
+    private static final String TAG = WordDatabaseAdapter.class.getSimpleName();
+
     public WordDatabaseAdapter(Context context) {
         super(context);
     }
 
-    public long addRecord(String name, String translation, String category) {
-        ContentValues values = createContentValues(name, translation, category);
+    public long addRecord(Word word) {
+        ContentValues values = createContentValues(word);
         return mDatabase.insert(WordEntry.TABLE_NAME, null, values);
     }
 
-    public boolean updateRecord(long rowId, String name, String translation, String category) {
-        ContentValues values = createContentValues(name, translation, category);
-        return mDatabase.update(WordEntry.TABLE_NAME, values, WordEntry._ID + "=" + rowId, null) > 0;
+    public int updateRecord(Word word) {
+        ContentValues values = createContentValues(word);
+        return mDatabase.update(WordEntry.TABLE_NAME,
+                values,
+                WordEntry._ID + " = ?",
+                new String[]{String.valueOf(word.getId())});
     }
 
-    public boolean deleteRecord(long rowId) {
-        return mDatabase.delete(WordEntry.TABLE_NAME, WordEntry._ID + "=" + rowId, null) > 0;
+    public int deleteRecord(Word word) {
+        return mDatabase.delete(WordEntry.TABLE_NAME,
+                WordEntry._ID + " = ?",
+                new String[]{String.valueOf(word.getId())});
     }
 
-    public Cursor fetchAllRecords(int sortMode) {
+    public Cursor getAllRecords(int sortMode) {
         String orderBy;
         // Uses only 2 sort mode
         // For sorting by name value is 0 and by last modified is value 1
@@ -73,44 +82,40 @@ public class WordDatabaseAdapter extends DatabaseAdapter {
         return cursor;
     }
 
-    public Cursor fetchRecord(long rowId) {
+    public Word getRecord(long rowId) {
+        Word word = null;
         Cursor cursor = mDatabase.query(true, WordEntry.TABLE_NAME,
                 new String[]{WordEntry._ID,
                         WordEntry.COLUMN_NAME,
                         WordEntry.COLUMN_TRANSLATION,
                         WordEntry.COLUMN_CATEGORY},
-                WordEntry._ID + "=" + rowId,
+                WordEntry._ID + " = " + rowId,
                 null, null, null, null, null);
 
-        if (cursor != null) {
+        try {
             cursor.moveToFirst();
+            word = new Word();
+            word.setId(cursor.getLong(cursor.getColumnIndex(WordEntry._ID)));
+            word.setName(cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME)));
+            word.setTranslation(cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION)));
+            word.setCategory(cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_CATEGORY)));
+        } catch (Exception e) {
+            Log.e(TAG, "Could not get the record");
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
-        return cursor;
+        return word;
     }
 
-    public Cursor fetchRecordsByName(String name) {
-        Cursor cursor = mDatabase.query(WordEntry.TABLE_NAME,
-                new String[]{WordEntry._ID,
-                        WordEntry.COLUMN_NAME,
-                        WordEntry.COLUMN_TRANSLATION},
-                WordEntry.COLUMN_NAME + "=? COLLATE NOCASE",
-                new String[]{name},
-                null, null,
-                DatabaseContract.SQL_WORD_ORDER_BY_NAME);
-
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-        return cursor;
-    }
-
-    public Cursor fetchRecordsByCategory(String category) {
+    public Cursor getRecordsByCategory(String category) {
         Cursor cursor = mDatabase.query(WordEntry.TABLE_NAME,
                 new String[]{WordEntry._ID,
                         WordEntry.COLUMN_NAME,
                         WordEntry.COLUMN_TRANSLATION,
                         WordEntry.COLUMN_CATEGORY},
-                WordEntry.COLUMN_CATEGORY + "=?",
+                WordEntry.COLUMN_CATEGORY + " = ?",
                 new String[]{category},
                 null, null, null, null);
 
@@ -120,12 +125,12 @@ public class WordDatabaseAdapter extends DatabaseAdapter {
         return cursor;
     }
 
-    private ContentValues createContentValues(String name, String translation, String category) {
+    private ContentValues createContentValues(Word word) {
         ContentValues values = new ContentValues();
-        values.put(WordEntry.COLUMN_NAME, name);
-        values.put(WordEntry.COLUMN_TRANSLATION, translation);
+        values.put(WordEntry.COLUMN_NAME, word.getName());
+        values.put(WordEntry.COLUMN_TRANSLATION, word.getTranslation());
         values.put(WordEntry.COLUMN_DATETIME, System.currentTimeMillis());
-        values.put(WordEntry.COLUMN_CATEGORY, category);
+        values.put(WordEntry.COLUMN_CATEGORY, word.getCategory());
         return values;
     }
 }
