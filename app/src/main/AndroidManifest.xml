@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/NavDrawerTheme">
             <intent-filter>
@@ -27,21 +27,21 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".ui.AboutActivity"
+            android:name=".ui.activity.AboutActivity"
             android:label="@string/title_about"
-            android:parentActivityName=".ui.MainActivity"
+            android:parentActivityName=".ui.activity.MainActivity"
             tools:ignore="UnusedAttribute">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.MainActivity" />
+                android:value=".ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name=".ui.CategoryContentActivity"
-            android:parentActivityName=".ui.MainActivity"
+            android:name=".ui.activity.CategoryContentActivity"
+            android:parentActivityName=".ui.activity.MainActivity"
             tools:ignore="UnusedAttribute">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.MainActivity" />
+                android:value=".ui.activity.MainActivity" />
         </activity>
     </application>
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.akhbulatov.wordkeeper.ui;
+package com.akhbulatov.wordkeeper.ui.fragment;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -56,6 +56,9 @@ import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
 import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
 import com.akhbulatov.wordkeeper.model.Category;
 import com.akhbulatov.wordkeeper.model.Word;
+import com.akhbulatov.wordkeeper.ui.activity.MainActivity;
+import com.akhbulatov.wordkeeper.ui.dialog.CategoryDeleteDialogFragment;
+import com.akhbulatov.wordkeeper.ui.dialog.CategoryEditorDialogFragment;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;

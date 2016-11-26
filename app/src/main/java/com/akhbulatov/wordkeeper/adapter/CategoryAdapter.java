@@ -29,7 +29,7 @@ import android.widget.TextView;
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.CategoryEntry;
 import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
-import com.akhbulatov.wordkeeper.ui.CategoryContentActivity;
+import com.akhbulatov.wordkeeper.ui.activity.CategoryContentActivity;
 
 /**
  * @author Alidibir Akhbulatov

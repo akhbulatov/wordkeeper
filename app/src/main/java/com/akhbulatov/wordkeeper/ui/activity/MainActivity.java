@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.akhbulatov.wordkeeper.ui;
+package com.akhbulatov.wordkeeper.ui.activity;
 
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
@@ -41,6 +41,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.akhbulatov.wordkeeper.R;
+import com.akhbulatov.wordkeeper.ui.dialog.WordEditorDialogFragment;
+import com.akhbulatov.wordkeeper.ui.fragment.CategoryFragment;
+import com.akhbulatov.wordkeeper.ui.fragment.WordFragment;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 
 /**
