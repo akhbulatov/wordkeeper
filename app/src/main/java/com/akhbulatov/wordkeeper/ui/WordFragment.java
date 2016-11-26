@@ -69,7 +69,7 @@ import java.util.List;
  * Loader uses a custom class for working with the database,
  * NOT the ContentProvider (temporary solution)
  */
-public class WordListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+public class WordFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
         WordAdapter.WordViewHolder.WordAdapterListener, WordSortDialogFragment.WordSortDialogListener,
         CategoryListDialogFragment.CategoryListDialogListener {
 
@@ -129,7 +129,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_word_list, container, false);
+        return inflater.inflate(R.layout.fragment_word, container, false);
     }
 
     @Override
@@ -176,7 +176,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.fragment_word_list, menu);
+        inflater.inflate(R.menu.fragment_word, menu);
 
         MenuItem searchItem = menu.findItem(R.id.menu_search_word);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
@@ -418,13 +418,13 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
 
     private void showWordSortDialog() {
         DialogFragment dialog = new WordSortDialogFragment();
-        dialog.setTargetFragment(WordListFragment.this, WORD_SORT_DIALOG_REQUEST);
+        dialog.setTargetFragment(WordFragment.this, WORD_SORT_DIALOG_REQUEST);
         dialog.show(getActivity().getSupportFragmentManager(), WORD_SORT_DIALOG_ID);
     }
 
     private void showCategoryListDialog() {
         DialogFragment dialog = new CategoryListDialogFragment();
-        dialog.setTargetFragment(WordListFragment.this, CATEGORY_LIST_DIALOG_REQUEST);
+        dialog.setTargetFragment(WordFragment.this, CATEGORY_LIST_DIALOG_REQUEST);
         dialog.show(getActivity().getSupportFragmentManager(), CATEGORY_LIST_DIALOG_ID);
     }
 

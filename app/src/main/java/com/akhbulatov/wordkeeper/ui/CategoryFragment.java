@@ -66,7 +66,7 @@ import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
  * Loader uses a custom class for working with the database,
  * NOT the ContentProvider (temporary solution)
  */
-public class CategoryListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+public class CategoryFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
         CategoryEditorDialogFragment.CategoryEditorDialogListener,
         CategoryDeleteDialogFragment.CategoryDeleteListener {
 
@@ -119,7 +119,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_category_list, container, false);
+        return inflater.inflate(R.layout.fragment_category, container, false);
     }
 
     @Override
@@ -168,7 +168,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.fragment_category_list, menu);
+        inflater.inflate(R.menu.fragment_category, menu);
 
         MenuItem searchItem = menu.findItem(R.id.menu_search_category);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
@@ -369,7 +369,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     private void showCategoryEditorDialog(int titleId, int positiveTextId, int negativeTextId) {
         DialogFragment dialog =
                 CategoryEditorDialogFragment.newInstance(titleId, positiveTextId, negativeTextId);
-        dialog.setTargetFragment(CategoryListFragment.this, CATEGORY_EDITOR_DIALOG_REQUEST);
+        dialog.setTargetFragment(CategoryFragment.this, CATEGORY_EDITOR_DIALOG_REQUEST);
         dialog.show(getActivity().getSupportFragmentManager(), CATEGORY_EDITOR_DIALOG_ID);
 
         // Receives and shows data of the selected category to edit in the dialog
@@ -386,7 +386,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
 
     private void showCategoryDeleteDialog() {
         DialogFragment dialog = new CategoryDeleteDialogFragment();
-        dialog.setTargetFragment(CategoryListFragment.this, CATEGORY_DELETE_DIALOG_REQUEST);
+        dialog.setTargetFragment(CategoryFragment.this, CATEGORY_DELETE_DIALOG_REQUEST);
         dialog.show(getActivity().getSupportFragmentManager(), CATEGORY_DELETE_DIALOG_ID);
     }
 
