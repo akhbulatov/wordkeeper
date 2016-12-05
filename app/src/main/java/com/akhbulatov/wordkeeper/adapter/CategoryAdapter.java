@@ -43,12 +43,10 @@ public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.C
 
     public static final String EXTRA_CATEGORY_NAME = "com.akhbulatov.wordkeeper.EXTRA_CATEGORY_NAME";
 
-    private Context mContext;
     private WordDatabaseAdapter mWordDbAdapter;
 
-    public CategoryAdapter(Context context, Cursor cursor, WordDatabaseAdapter wordDbAdapter) {
+    public CategoryAdapter(Cursor cursor, WordDatabaseAdapter wordDbAdapter) {
         super(cursor);
-        mContext = context;
         mWordDbAdapter = wordDbAdapter;
     }
 
@@ -56,17 +54,19 @@ public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.C
     public CategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_category, parent, false);
-        return new CategoryViewHolder(mContext, itemView);
+        return new CategoryViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(CategoryViewHolder viewHolder, Cursor cursor) {
+        Context context = viewHolder.itemView.getContext();
+
         String categoryName = cursor.getString(cursor.getColumnIndex(CategoryEntry.COLUMN_NAME));
         viewHolder.textCategoryName.setText(categoryName);
-        viewHolder.textNumberOfWords.setText(getNumberOfWords(cursor));
+        viewHolder.textNumberOfWords.setText(getNumberOfWords(context, cursor));
 
         // Makes the default category of non-editable
-        String defaultCategory = mContext.getResources().getString(R.string.default_category);
+        String defaultCategory = context.getResources().getString(R.string.default_category);
         if (defaultCategory.equals(categoryName)) {
             viewHolder.imageMoreOptions.setVisibility(View.GONE);
             viewHolder.itemView.setLongClickable(false);
@@ -76,12 +76,12 @@ public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.C
         }
     }
 
-    private String getNumberOfWords(Cursor cursor) {
+    private String getNumberOfWords(Context context, Cursor cursor) {
         String categoryName = cursor.getString(cursor.getColumnIndex(CategoryEntry.COLUMN_NAME));
         Cursor cursorRecords = mWordDbAdapter.getRecordsByCategory(categoryName);
 
         int count = cursorRecords.getCount();
-        return mContext.getResources().getQuantityString(R.plurals.number_of_words, count, count);
+        return context.getResources().getQuantityString(R.plurals.number_of_words, count, count);
     }
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
@@ -90,7 +90,7 @@ public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.C
         public TextView textNumberOfWords;
         public ImageView imageMoreOptions;
 
-        public CategoryViewHolder(final Context context, final View itemView) {
+        public CategoryViewHolder(final View itemView) {
             super(itemView);
             textCategoryName = (TextView) itemView.findViewById(R.id.text_category_name);
             textNumberOfWords = (TextView) itemView.findViewById(R.id.text_number_of_words);
@@ -100,6 +100,7 @@ public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.C
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Context context = itemView.getContext();
                     Intent intent = new Intent(context, CategoryContentActivity.class);
                     intent.putExtra(EXTRA_CATEGORY_NAME, textCategoryName.getText().toString());
                     context.startActivity(intent);

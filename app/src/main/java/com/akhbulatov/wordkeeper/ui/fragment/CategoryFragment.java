@@ -264,7 +264,7 @@ public class CategoryFragment extends Fragment implements LoaderManager.LoaderCa
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (mCategoryAdapter == null) {
             // The adapter is created only the first time retrieving data from the database
-            mCategoryAdapter = new CategoryAdapter(getActivity(), data, mWordDbAdapter);
+            mCategoryAdapter = new CategoryAdapter(data, mWordDbAdapter);
             mCategoryAdapter.setHasStableIds(true);
             mCategoryList.setAdapter(mCategoryAdapter);
         } else {
@@ -353,7 +353,7 @@ public class CategoryFragment extends Fragment implements LoaderManager.LoaderCa
     private void deleteCategory() {
         // First, deletes all words that are in the deleted category
         Cursor cursor = mWordDbAdapter.getRecordsByCategory(getName());
-        WordAdapter wordAdapter = new WordAdapter(getActivity(), cursor);
+        WordAdapter wordAdapter = new WordAdapter(cursor);
         while (!cursor.isAfterLast()) {
             long id = wordAdapter.getItemId(cursor.getPosition());
             mWordDbAdapter.delete(new Word(id));
