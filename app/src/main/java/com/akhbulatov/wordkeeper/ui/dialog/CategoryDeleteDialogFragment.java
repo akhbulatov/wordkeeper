@@ -63,7 +63,7 @@ public class CategoryDeleteDialogFragment extends DialogFragment {
                                         CategoryDeleteDialogFragment.this);
                             }
                         })
-                .setNegativeButton(R.string.category_action_cancel,
+                .setNegativeButton(R.string.dialog_action_cancel,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

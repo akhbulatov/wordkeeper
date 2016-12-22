@@ -45,6 +45,9 @@
     <string name="app_version">Version %1$s (build %2$d)</string>
     <string name="app_author">Alidibir Akhbulatov</string>
 
+    <!-- For all dialogs -->
+    <string name="dialog_action_cancel">Cancel</string>
+
     <!-- The dialog "Word editor" -->
     <string name="title_new_word">New word</string>
     <string name="title_edit_word">Edit word</string>
@@ -53,7 +56,6 @@
     <string name="word_editor_category">Category</string>
     <string name="word_editor_action_add">Add</string>
     <string name="word_editor_action_edit">Edit</string>
-    <string name="word_editor_action_cancel">Cancel</string>
     <string name="error_word_editor_empty_fields">The fields are not filled</string>
 
     <!-- The dialog "Word sort" -->
@@ -64,7 +66,6 @@
 
     <!-- The dialog "Category list" -->
     <string name="category_list_title">Move to category</string>
-    <string name="category_list_action_cancel">Cancel</string>
 
     <!-- The dialog "Category editor" -->
     <string name="title_new_category">New category</string>
@@ -72,7 +73,6 @@
     <string name="category_editor_name_hint">Name</string>
     <string name="category_editor_action_add">Add</string>
     <string name="category_editor_action_rename">Rename</string>
-    <string name="category_editor_action_cancel">Cancel</string>
     <string name="error_category_editor_empty_field">The field is not filled</string>
 
     <!-- The dialog "Delete category" -->
@@ -81,7 +81,6 @@
         that are in this category.
     </string>
     <string name="category_action_delete">Delete</string>
-    <string name="category_action_cancel">Cancel</string>
 
     <!-- Rate app -->
     <string name="title_rate_app">Rate app</string>

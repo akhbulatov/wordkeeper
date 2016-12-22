@@ -47,6 +47,9 @@
     <string name="app_version">Версия %1$s (сборка %2$d)</string>
     <string name="app_author">Alidibir Akhbulatov</string>
 
+    <!-- For all dialogs -->
+    <string name="dialog_action_cancel">Отмена</string>
+
     <!-- The dialog "Word editor" -->
     <string name="title_new_word">Новое слово</string>
     <string name="title_edit_word">Редактирование слова</string>
@@ -55,7 +58,6 @@
     <string name="word_editor_category">Категория</string>
     <string name="word_editor_action_add">Добавить</string>
     <string name="word_editor_action_edit">Редактировать</string>
-    <string name="word_editor_action_cancel">Отмена</string>
     <string name="error_word_editor_empty_fields">Поля не заполнены</string>
 
     <!-- The dialog "Word sort" -->
@@ -66,7 +68,6 @@
 
     <!-- The dialog "Category list" -->
     <string name="category_list_title">Переместить в категорию</string>
-    <string name="category_list_action_cancel">Отмена</string>
 
     <!-- The dialog "Category editor" -->
     <string name="title_new_category">Новая категория</string>
@@ -74,7 +75,6 @@
     <string name="category_editor_name_hint">Название</string>
     <string name="category_editor_action_add">Добавить</string>
     <string name="category_editor_action_rename">Переименовать</string>
-    <string name="category_editor_action_cancel">Отмена</string>
     <string name="error_category_editor_empty_field">Поле не заполнено</string>
 
     <!-- The dialog "Delete category" -->
@@ -83,7 +83,6 @@
         находящиеся в данной категории.
     </string>
     <string name="category_action_delete">Удалить</string>
-    <string name="category_action_cancel">Отмена</string>
 
     <!-- Rate app -->
     <string name="title_rate_app">Оценить</string>

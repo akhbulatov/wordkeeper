@@ -76,6 +76,13 @@ public class WordSortDialogFragment extends DialogFragment {
                                 dialog.dismiss();
                             }
                         })
+                .setNegativeButton(R.string.dialog_action_cancel,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
                 .create();
     }
 

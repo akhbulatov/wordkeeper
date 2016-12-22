@@ -156,7 +156,7 @@ public class WordFragment extends Fragment implements LoaderManager.LoaderCallba
             public void onClick(View view) {
                 mListener.onFabAddWordClick(R.string.title_new_word,
                         R.string.word_editor_action_add,
-                        R.string.word_editor_action_cancel);
+                        R.string.dialog_action_cancel);
             }
         });
     }
@@ -495,7 +495,7 @@ public class WordFragment extends Fragment implements LoaderManager.LoaderCallba
 
                     mListener.onFabAddWordClick(R.string.title_edit_word,
                             R.string.word_editor_action_edit,
-                            R.string.word_editor_action_cancel);
+                            R.string.dialog_action_cancel);
                     mode.finish();
                     return true;
                 case R.id.menu_delete_word:

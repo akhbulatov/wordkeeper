@@ -145,7 +145,7 @@ public class CategoryFragment extends Fragment implements LoaderManager.LoaderCa
             public void onClick(View view) {
                 mListener.onFabAddWordClick(R.string.title_new_word,
                         R.string.word_editor_action_add,
-                        R.string.word_editor_action_cancel);
+                        R.string.dialog_action_cancel);
             }
         });
     }
@@ -220,7 +220,7 @@ public class CategoryFragment extends Fragment implements LoaderManager.LoaderCa
             case R.id.menu_add_category:
                 showCategoryEditorDialog(R.string.title_new_category,
                         R.string.category_editor_action_add,
-                        R.string.category_editor_action_cancel);
+                        R.string.dialog_action_cancel);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -242,7 +242,7 @@ public class CategoryFragment extends Fragment implements LoaderManager.LoaderCa
                 mSelectedItemId = info.id;
                 showCategoryEditorDialog(R.string.title_rename_category,
                         R.string.category_editor_action_rename,
-                        R.string.category_editor_action_cancel);
+                        R.string.dialog_action_cancel);
                 return true;
             case R.id.menu_delete_category:
                 mSelectedItemId = info.id;
