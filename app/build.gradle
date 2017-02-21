@@ -19,8 +19,8 @@ android {
         applicationId "com.akhbulatov.wordkeeper"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 7
-        versionName "1.4.2"
+        versionCode 8
+        versionName "1.4.3"
         resConfigs "en", "ru"
     }
     buildTypes {
