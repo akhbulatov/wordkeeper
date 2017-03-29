@@ -62,16 +62,16 @@ public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.C
         Context context = viewHolder.itemView.getContext();
 
         String categoryName = cursor.getString(cursor.getColumnIndex(CategoryEntry.COLUMN_NAME));
-        viewHolder.textCategoryName.setText(categoryName);
-        viewHolder.textNumberOfWords.setText(getNumberOfWords(context, cursor));
+        viewHolder.setCategoryName(categoryName);
+        viewHolder.setNumberOfWords(getNumberOfWords(context, cursor));
 
         // Makes the default category of non-editable
         String defaultCategory = context.getResources().getString(R.string.default_category);
         if (defaultCategory.equals(categoryName)) {
-            viewHolder.imageMoreOptions.setVisibility(View.GONE);
+            viewHolder.setMoreOptionsVisibility(View.GONE);
             viewHolder.itemView.setLongClickable(false);
         } else {
-            viewHolder.imageMoreOptions.setVisibility(View.VISIBLE);
+            viewHolder.setMoreOptionsVisibility(View.VISIBLE);
             viewHolder.itemView.setLongClickable(true);
         }
     }
@@ -86,15 +86,15 @@ public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.C
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView textCategoryName;
-        public TextView textNumberOfWords;
-        public ImageView imageMoreOptions;
+        private TextView mTextCategoryName;
+        private TextView mTextNumberOfWords;
+        private ImageView mImageMoreOptions;
 
         public CategoryViewHolder(final View itemView) {
             super(itemView);
-            textCategoryName = (TextView) itemView.findViewById(R.id.text_category_name);
-            textNumberOfWords = (TextView) itemView.findViewById(R.id.text_number_of_words);
-            imageMoreOptions = (ImageView) itemView.findViewById(R.id.image_more_options);
+            mTextCategoryName = (TextView) itemView.findViewById(R.id.text_category_name);
+            mTextNumberOfWords = (TextView) itemView.findViewById(R.id.text_number_of_words);
+            mImageMoreOptions = (ImageView) itemView.findViewById(R.id.image_more_options);
 
             itemView.setLongClickable(true);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -102,16 +102,28 @@ public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.C
                 public void onClick(View v) {
                     Context context = itemView.getContext();
                     Intent intent = new Intent(context, CategoryContentActivity.class);
-                    intent.putExtra(EXTRA_CATEGORY_NAME, textCategoryName.getText().toString());
+                    intent.putExtra(EXTRA_CATEGORY_NAME, mTextCategoryName.getText().toString());
                     context.startActivity(intent);
                 }
             });
-            imageMoreOptions.setOnClickListener(new View.OnClickListener() {
+            mImageMoreOptions.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     itemView.showContextMenu();
                 }
             });
+        }
+
+        public void setCategoryName(String name) {
+            mTextCategoryName.setText(name);
+        }
+
+        public void setNumberOfWords(String number) {
+            mTextNumberOfWords.setText(number);
+        }
+
+        public void setMoreOptionsVisibility(int visibility) {
+            mImageMoreOptions.setVisibility(visibility);
         }
     }
 }

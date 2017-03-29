@@ -62,10 +62,8 @@ public class WordAdapter extends CursorRecyclerViewAdapter<WordAdapter.WordViewH
 
     @Override
     public void onBindViewHolder(WordViewHolder viewHolder, Cursor cursor) {
-        viewHolder.textWordName.
-                setText(cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME)));
-        viewHolder.textWordTranslation.
-                setText(cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION)));
+        viewHolder.setWordName(cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME)));
+        viewHolder.setWordTranslation(cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION)));
 
         int selectedItemColor =
                 ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.selected_list_item);
@@ -108,15 +106,15 @@ public class WordAdapter extends CursorRecyclerViewAdapter<WordAdapter.WordViewH
 
     public static class WordViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView textWordName;
-        public TextView textWordTranslation;
+        private TextView mTextWordName;
+        private TextView mTextWordTranslation;
 
         private WordAdapterListener mListener;
 
         public WordViewHolder(View itemView, WordAdapterListener listener) {
             super(itemView);
-            textWordName = (TextView) itemView.findViewById(R.id.text_word_name);
-            textWordTranslation = (TextView) itemView.findViewById(R.id.text_word_translation);
+            mTextWordName = (TextView) itemView.findViewById(R.id.text_word_name);
+            mTextWordTranslation = (TextView) itemView.findViewById(R.id.text_word_translation);
 
             mListener = listener;
 
@@ -134,6 +132,14 @@ public class WordAdapter extends CursorRecyclerViewAdapter<WordAdapter.WordViewH
                     return mListener != null && mListener.onWordItemLongClick(getAdapterPosition());
                 }
             });
+        }
+
+        public void setWordName(String name) {
+            mTextWordName.setText(name);
+        }
+
+        public void setWordTranslation(String translation) {
+            mTextWordTranslation.setText(translation);
         }
 
         public interface WordAdapterListener {
