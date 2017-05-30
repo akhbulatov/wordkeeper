@@ -72,7 +72,7 @@ import java.util.List;
  * Loader uses a custom class for working with the database,
  * NOT the ContentProvider (temporary solution)
  */
-public class WordFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+public class WordListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
         WordAdapter.WordViewHolder.WordAdapterListener, WordSortDialogFragment.WordSortDialogListener,
         CategoryListDialogFragment.CategoryListDialogListener {
 
@@ -132,7 +132,7 @@ public class WordFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_word, container, false);
+        return inflater.inflate(R.layout.fragment_word_list, container, false);
     }
 
     @Override
@@ -428,13 +428,13 @@ public class WordFragment extends Fragment implements LoaderManager.LoaderCallba
 
     private void showWordSortDialog() {
         DialogFragment dialog = new WordSortDialogFragment();
-        dialog.setTargetFragment(WordFragment.this, WORD_SORT_DIALOG_REQUEST);
+        dialog.setTargetFragment(WordListFragment.this, WORD_SORT_DIALOG_REQUEST);
         dialog.show(getActivity().getSupportFragmentManager(), WORD_SORT_DIALOG_ID);
     }
 
     private void showCategoryListDialog() {
         DialogFragment dialog = new CategoryListDialogFragment();
-        dialog.setTargetFragment(WordFragment.this, CATEGORY_LIST_DIALOG_REQUEST);
+        dialog.setTargetFragment(WordListFragment.this, CATEGORY_LIST_DIALOG_REQUEST);
         dialog.show(getActivity().getSupportFragmentManager(), CATEGORY_LIST_DIALOG_ID);
     }
 

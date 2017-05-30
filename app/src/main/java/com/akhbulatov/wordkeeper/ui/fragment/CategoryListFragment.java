@@ -69,7 +69,7 @@ import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
  * Loader uses a custom class for working with the database,
  * NOT the ContentProvider (temporary solution)
  */
-public class CategoryFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+public class CategoryListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
         CategoryEditorDialogFragment.CategoryEditorDialogListener,
         CategoryDeleteDialogFragment.CategoryDeleteListener {
 
@@ -122,7 +122,7 @@ public class CategoryFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_category, container, false);
+        return inflater.inflate(R.layout.fragment_category_list, container, false);
     }
 
     @Override
@@ -372,7 +372,7 @@ public class CategoryFragment extends Fragment implements LoaderManager.LoaderCa
     private void showCategoryEditorDialog(int titleId, int positiveTextId, int negativeTextId) {
         DialogFragment dialog =
                 CategoryEditorDialogFragment.newInstance(titleId, positiveTextId, negativeTextId);
-        dialog.setTargetFragment(CategoryFragment.this, CATEGORY_EDITOR_DIALOG_REQUEST);
+        dialog.setTargetFragment(CategoryListFragment.this, CATEGORY_EDITOR_DIALOG_REQUEST);
         dialog.show(getActivity().getSupportFragmentManager(), CATEGORY_EDITOR_DIALOG_ID);
 
         // Receives and shows data of the selected category to edit in the dialog
@@ -389,7 +389,7 @@ public class CategoryFragment extends Fragment implements LoaderManager.LoaderCa
 
     private void showCategoryDeleteDialog() {
         DialogFragment dialog = new CategoryDeleteDialogFragment();
-        dialog.setTargetFragment(CategoryFragment.this, CATEGORY_DELETE_DIALOG_REQUEST);
+        dialog.setTargetFragment(CategoryListFragment.this, CATEGORY_DELETE_DIALOG_REQUEST);
         dialog.show(getActivity().getSupportFragmentManager(), CATEGORY_DELETE_DIALOG_ID);
     }
 
