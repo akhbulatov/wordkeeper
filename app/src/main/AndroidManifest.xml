@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.akhbulatov.wordkeeper">
+          package="com.akhbulatov.wordkeeper">
 
     <application
         android:allowBackup="true"
@@ -14,35 +13,23 @@
             android:launchMode="singleTop"
             android:theme="@style/NavDrawerTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.SEARCH"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+                android:resource="@xml/searchable"/>
         </activity>
         <activity
             android:name=".ui.activity.AboutActivity"
             android:label="@string/title_about"
-            android:parentActivityName=".ui.activity.MainActivity"
-            tools:ignore="UnusedAttribute">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activity.MainActivity" />
-        </activity>
+            android:parentActivityName=".ui.activity.MainActivity"/>
         <activity
             android:name=".ui.activity.CategoryContentActivity"
-            android:parentActivityName=".ui.activity.MainActivity"
-            tools:ignore="UnusedAttribute">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activity.MainActivity" />
-        </activity>
+            android:parentActivityName=".ui.activity.MainActivity"/>
     </application>
 
 </manifest>
