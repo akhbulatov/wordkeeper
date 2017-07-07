@@ -59,8 +59,8 @@ import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
 import com.akhbulatov.wordkeeper.model.Category;
 import com.akhbulatov.wordkeeper.model.Word;
 import com.akhbulatov.wordkeeper.ui.activity.MainActivity;
-import com.akhbulatov.wordkeeper.ui.dialog.CategoryListDialogFragment;
-import com.akhbulatov.wordkeeper.ui.dialog.WordSortDialogFragment;
+import com.akhbulatov.wordkeeper.ui.dialog.CategoryListDialog;
+import com.akhbulatov.wordkeeper.ui.dialog.WordSortDialog;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
 import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
@@ -73,16 +73,16 @@ import java.util.List;
  * NOT the ContentProvider (temporary solution)
  */
 public class WordListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
-        WordAdapter.WordViewHolder.WordAdapterListener, WordSortDialogFragment.WordSortDialogListener,
-        CategoryListDialogFragment.CategoryListDialogListener {
+        WordAdapter.WordViewHolder.WordAdapterListener, WordSortDialog.WordSortDialogListener,
+        CategoryListDialog.CategoryListDialogListener {
 
     private static final int LOADER_ID = 1;
 
     private static final int WORD_SORT_DIALOG_REQUEST = 1;
     private static final int CATEGORY_LIST_DIALOG_REQUEST = 2;
 
-    private static final String WORD_SORT_DIALOG_ID = WordSortDialogFragment.class.getName();
-    private static final String CATEGORY_LIST_DIALOG_ID = CategoryListDialogFragment.class.getName();
+    private static final String WORD_SORT_DIALOG_ID = WordSortDialog.class.getName();
+    private static final String CATEGORY_LIST_DIALOG_ID = CategoryListDialog.class.getName();
 
     private static int sSortMode;
 
@@ -121,10 +121,8 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         mWordDbAdapter = new WordDatabaseAdapter(getActivity());
         mWordDbAdapter.open();
 
-        SharedPreferences mPrefs = getActivity()
-                .getSharedPreferences(WordSortDialogFragment.PREF_NAME, Context.MODE_PRIVATE);
-        sSortMode = mPrefs.getInt(WordSortDialogFragment.PREF_SORT_MODE,
-                WordSortDialogFragment.DEFAULT_SORT_MODE);
+        SharedPreferences mPrefs = getActivity().getSharedPreferences(WordSortDialog.PREF_NAME, Context.MODE_PRIVATE);
+        sSortMode = mPrefs.getInt(WordSortDialog.PREF_SORT_MODE, WordSortDialog.DEFAULT_SORT_MODE);
 
         mActionModeCallback = new ActionModeCallback();
     }
@@ -427,13 +425,13 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     private void showWordSortDialog() {
-        DialogFragment dialog = new WordSortDialogFragment();
+        DialogFragment dialog = new WordSortDialog();
         dialog.setTargetFragment(WordListFragment.this, WORD_SORT_DIALOG_REQUEST);
         dialog.show(getActivity().getSupportFragmentManager(), WORD_SORT_DIALOG_ID);
     }
 
     private void showCategoryListDialog() {
-        DialogFragment dialog = new CategoryListDialogFragment();
+        DialogFragment dialog = new CategoryListDialog();
         dialog.setTargetFragment(WordListFragment.this, CATEGORY_LIST_DIALOG_REQUEST);
         dialog.show(getActivity().getSupportFragmentManager(), CATEGORY_LIST_DIALOG_ID);
     }

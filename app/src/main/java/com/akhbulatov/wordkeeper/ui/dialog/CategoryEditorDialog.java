@@ -35,7 +35,7 @@ import com.akhbulatov.wordkeeper.R;
 /**
  * Shows an editor dialog to add and edit categories
  */
-public class CategoryEditorDialogFragment extends DialogFragment {
+public class CategoryEditorDialog extends DialogFragment {
 
     private static final String ARGUMENT_TITLE_ID = "ARGUMENT_TITLE_ID";
     private static final String ARGUMENT_POSITIVE_TEXT_ID = "ARGUMENT_POSITIVE_TEXT_ID";
@@ -47,10 +47,10 @@ public class CategoryEditorDialogFragment extends DialogFragment {
 
     private CategoryEditorDialogListener mListener;
 
-    public static CategoryEditorDialogFragment newInstance(int titleId,
-                                                           int positiveTextId,
-                                                           int negativeTextId) {
-        CategoryEditorDialogFragment dialog = new CategoryEditorDialogFragment();
+    public static CategoryEditorDialog newInstance(int titleId,
+                                                   int positiveTextId,
+                                                   int negativeTextId) {
+        CategoryEditorDialog dialog = new CategoryEditorDialog();
 
         Bundle args = new Bundle();
         args.putInt(ARGUMENT_TITLE_ID, titleId);
@@ -90,7 +90,7 @@ public class CategoryEditorDialogFragment extends DialogFragment {
                 .setPositiveButton(mPositiveTextId, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mListener.onFinishCategoryEditorDialog(CategoryEditorDialogFragment.this,
+                        mListener.onFinishCategoryEditorDialog(CategoryEditorDialog.this,
                                 mPositiveTextId);
                     }
                 })

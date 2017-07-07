@@ -18,7 +18,6 @@ package com.akhbulatov.wordkeeper.ui.dialog;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,59 +25,43 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import com.akhbulatov.wordkeeper.R;
-import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
-import com.akhbulatov.wordkeeper.model.Category;
-
-import java.util.List;
 
 /**
  * @author Alidibir Akhbulatov
- * @since 04.11.2016
+ * @since 24.09.2016
  */
-public class CategoryListDialogFragment extends DialogFragment {
 
-    private String[] mCategories;
+/**
+ * Shows a dialog to confirm deletion of category
+ */
+public class CategoryDeleteDialog extends DialogFragment {
 
-    private CategoryListDialogListener mListener;
+    private CategoryDeleteListener mListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            mListener = (CategoryListDialogListener) getTargetFragment();
+            mListener = (CategoryDeleteListener) getTargetFragment();
         } catch (ClassCastException e) {
             throw new ClassCastException(getTargetFragment().toString() + " must implement "
-                    + CategoryListDialogListener.class.getName());
+                    + CategoryDeleteListener.class.getName());
         }
-
-        // Gets category list from the database
-        CategoryDatabaseAdapter categoryDbAdapter = new CategoryDatabaseAdapter(getActivity());
-        categoryDbAdapter.open();
-
-        Cursor cursor = categoryDbAdapter.getAll();
-        List<Category> categoryList = Category.getCategories(cursor);
-        mCategories = new String[categoryList.size()];
-        for (int i = 0; i < categoryList.size(); i++) {
-            mCategories[i] = categoryList.get(i).getName();
-        }
-
-        cursor.close();
-        categoryDbAdapter.close();
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        return builder.setTitle(R.string.category_list_title)
-                .setItems(mCategories, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mListener.onFinishCategoryListDialog(mCategories[which]);
-                        dialog.dismiss();
-                    }
-                })
+        return builder.setTitle(R.string.category_delete_title)
+                .setMessage(R.string.category_delete_message)
+                .setPositiveButton(R.string.category_action_delete,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mListener.onFinishCategoryDeleteDialog(CategoryDeleteDialog.this);
+                            }
+                        })
                 .setNegativeButton(R.string.dialog_action_cancel,
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -89,7 +72,12 @@ public class CategoryListDialogFragment extends DialogFragment {
                 .create();
     }
 
-    public interface CategoryListDialogListener {
-        void onFinishCategoryListDialog(String category);
+    public interface CategoryDeleteListener {
+        /**
+         * Applies the changes when the category is deleted
+         *
+         * @param dialog The current open dialog
+         */
+        void onFinishCategoryDeleteDialog(DialogFragment dialog);
     }
 }

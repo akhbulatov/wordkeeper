@@ -57,8 +57,8 @@ import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
 import com.akhbulatov.wordkeeper.model.Category;
 import com.akhbulatov.wordkeeper.model.Word;
 import com.akhbulatov.wordkeeper.ui.activity.MainActivity;
-import com.akhbulatov.wordkeeper.ui.dialog.CategoryDeleteDialogFragment;
-import com.akhbulatov.wordkeeper.ui.dialog.CategoryEditorDialogFragment;
+import com.akhbulatov.wordkeeper.ui.dialog.CategoryDeleteDialog;
+import com.akhbulatov.wordkeeper.ui.dialog.CategoryEditorDialog;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
@@ -70,18 +70,15 @@ import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
  * NOT the ContentProvider (temporary solution)
  */
 public class CategoryListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
-        CategoryEditorDialogFragment.CategoryEditorDialogListener,
-        CategoryDeleteDialogFragment.CategoryDeleteListener {
+        CategoryEditorDialog.CategoryEditorDialogListener, CategoryDeleteDialog.CategoryDeleteListener {
 
     private static final int LOADER_ID = 1;
 
     private static final int CATEGORY_EDITOR_DIALOG_REQUEST = 1;
     private static final int CATEGORY_DELETE_DIALOG_REQUEST = 2;
 
-    private static final String CATEGORY_EDITOR_DIALOG_ID =
-            CategoryEditorDialogFragment.class.getName();
-    private static final String CATEGORY_DELETE_DIALOG_ID =
-            CategoryDeleteDialogFragment.class.getName();
+    private static final String CATEGORY_EDITOR_DIALOG_ID = CategoryEditorDialog.class.getName();
+    private static final String CATEGORY_DELETE_DIALOG_ID = CategoryDeleteDialog.class.getName();
 
     // Contains the ID of the current selected item (category)
     private long mSelectedItemId;
@@ -370,8 +367,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     }
 
     private void showCategoryEditorDialog(int titleId, int positiveTextId, int negativeTextId) {
-        DialogFragment dialog =
-                CategoryEditorDialogFragment.newInstance(titleId, positiveTextId, negativeTextId);
+        DialogFragment dialog = CategoryEditorDialog.newInstance(titleId, positiveTextId, negativeTextId);
         dialog.setTargetFragment(CategoryListFragment.this, CATEGORY_EDITOR_DIALOG_REQUEST);
         dialog.show(getActivity().getSupportFragmentManager(), CATEGORY_EDITOR_DIALOG_ID);
 
@@ -388,7 +384,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     }
 
     private void showCategoryDeleteDialog() {
-        DialogFragment dialog = new CategoryDeleteDialogFragment();
+        DialogFragment dialog = new CategoryDeleteDialog();
         dialog.setTargetFragment(CategoryListFragment.this, CATEGORY_DELETE_DIALOG_REQUEST);
         dialog.show(getActivity().getSupportFragmentManager(), CATEGORY_DELETE_DIALOG_ID);
     }

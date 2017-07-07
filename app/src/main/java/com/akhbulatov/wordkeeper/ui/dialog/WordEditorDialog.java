@@ -32,7 +32,7 @@ import com.akhbulatov.wordkeeper.R;
 /**
  * Shows an editor dialog to add and edit words
  */
-public class WordEditorDialogFragment extends DialogFragment {
+public class WordEditorDialog extends DialogFragment {
 
     private static final String ARGUMENT_TITLE_ID = "ARGUMENT_TITLE_ID";
     private static final String ARGUMENT_POSITIVE_TEXT_ID = "ARGUMENT_POSITIVE_TEXT_ID";
@@ -44,10 +44,10 @@ public class WordEditorDialogFragment extends DialogFragment {
 
     private WordEditorDialogListener mListener;
 
-    public static WordEditorDialogFragment newInstance(int titleId,
-                                                       int positiveTextId,
-                                                       int negativeTextId) {
-        WordEditorDialogFragment dialog = new WordEditorDialogFragment();
+    public static WordEditorDialog newInstance(int titleId,
+                                               int positiveTextId,
+                                               int negativeTextId) {
+        WordEditorDialog dialog = new WordEditorDialog();
 
         Bundle args = new Bundle();
         args.putInt(ARGUMENT_TITLE_ID, titleId);
@@ -92,7 +92,7 @@ public class WordEditorDialogFragment extends DialogFragment {
                 .setPositiveButton(mPositiveTextId, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mListener.onFinishWordEditorDialog(WordEditorDialogFragment.this,
+                        mListener.onFinishWordEditorDialog(WordEditorDialog.this,
                                 mPositiveTextId);
                     }
                 })

@@ -35,7 +35,7 @@ import com.akhbulatov.wordkeeper.R;
 /**
  * Shows a dialog to select the mode of sorting the words in the list of words
  */
-public class WordSortDialogFragment extends DialogFragment {
+public class WordSortDialog extends DialogFragment {
 
     public static final String PREF_NAME = "wordkeeper.prefs";
     public static final String PREF_SORT_MODE = "PREF_SORT_MODE";

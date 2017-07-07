@@ -41,7 +41,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.akhbulatov.wordkeeper.R;
-import com.akhbulatov.wordkeeper.ui.dialog.WordEditorDialogFragment;
+import com.akhbulatov.wordkeeper.ui.dialog.WordEditorDialog;
 import com.akhbulatov.wordkeeper.ui.fragment.CategoryListFragment;
 import com.akhbulatov.wordkeeper.ui.fragment.WordListFragment;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
@@ -50,14 +50,14 @@ import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
  * Provides navigation drawer to switch between screens
  */
 public class MainActivity extends AppCompatActivity implements FabAddWordListener,
-        WordEditorDialogFragment.WordEditorDialogListener {
+        WordEditorDialog.WordEditorDialogListener {
 
     private static final String BUNDLE_SCREEN_TITLE = "BUNDLE_SCREEN_TITLE";
 
     private static final String WORD_LIST_FRAGMENT_TAG = WordListFragment.class.getName();
     private static final String CATEGORY_LIST_FRAGMENT_TAG = CategoryListFragment.class.getName();
 
-    private static final String WORD_EDITOR_DIALOG_ID = WordEditorDialogFragment.class.getName();
+    private static final String WORD_EDITOR_DIALOG_ID = WordEditorDialog.class.getName();
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
@@ -242,8 +242,7 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
     }
 
     private void showWordEditorDialog(int titleId, int positiveTextId, int negativeTextId) {
-        DialogFragment dialog = WordEditorDialogFragment
-                .newInstance(titleId, positiveTextId, negativeTextId);
+        DialogFragment dialog = WordEditorDialog.newInstance(titleId, positiveTextId, negativeTextId);
         dialog.show(getSupportFragmentManager(), WORD_EDITOR_DIALOG_ID);
         // NOTE! If the method is not called, the app crashes
         getSupportFragmentManager().executePendingTransactions();
