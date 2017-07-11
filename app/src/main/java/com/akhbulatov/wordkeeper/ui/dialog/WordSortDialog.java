@@ -26,6 +26,9 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import com.akhbulatov.wordkeeper.R;
+import com.akhbulatov.wordkeeper.event.SortEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * @author Alidibir Akhbulatov
@@ -45,18 +48,9 @@ public class WordSortDialog extends DialogFragment {
 
     private SharedPreferences mPrefs;
 
-    private WordSortDialogListener mListener;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            mListener = (WordSortDialogListener) getTargetFragment();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getTargetFragment().toString() + " must implement "
-                    + WordSortDialogListener.class.getName());
-        }
-
         mPrefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         mSortMode = mPrefs.getInt(PREF_SORT_MODE, DEFAULT_SORT_MODE);
     }
@@ -72,7 +66,7 @@ public class WordSortDialog extends DialogFragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 mSortMode = which;
-                                mListener.onFinishWordSortDialog(mSortMode);
+                                EventBus.getDefault().post(new SortEvent(mSortMode));
                                 dialog.dismiss();
                             }
                         })
@@ -93,14 +87,5 @@ public class WordSortDialog extends DialogFragment {
         SharedPreferences.Editor editor = mPrefs.edit();
         editor.putInt(PREF_SORT_MODE, mSortMode);
         editor.apply();
-    }
-
-    public interface WordSortDialogListener {
-        /**
-         * Uses to update the list of words when selecting the sort mode
-         *
-         * @param sortMode The sort mode for the list of words
-         */
-        void onFinishWordSortDialog(int sortMode);
     }
 }

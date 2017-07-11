@@ -27,7 +27,10 @@ import android.support.v7.app.AlertDialog;
 
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
+import com.akhbulatov.wordkeeper.event.CategoryEvent;
 import com.akhbulatov.wordkeeper.model.Category;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -39,18 +42,9 @@ public class CategoryListDialog extends DialogFragment {
 
     private String[] mCategories;
 
-    private CategoryListDialogListener mListener;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            mListener = (CategoryListDialogListener) getTargetFragment();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getTargetFragment().toString() + " must implement "
-                    + CategoryListDialogListener.class.getName());
-        }
-
         // Gets category list from the database
         CategoryDatabaseAdapter categoryDbAdapter = new CategoryDatabaseAdapter(getActivity());
         categoryDbAdapter.open();
@@ -75,7 +69,7 @@ public class CategoryListDialog extends DialogFragment {
                 .setItems(mCategories, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mListener.onFinishCategoryListDialog(mCategories[which]);
+                        EventBus.getDefault().post(new CategoryEvent(mCategories[which]));
                         dialog.dismiss();
                     }
                 })
@@ -87,9 +81,5 @@ public class CategoryListDialog extends DialogFragment {
                             }
                         })
                 .create();
-    }
-
-    public interface CategoryListDialogListener {
-        void onFinishCategoryListDialog(String category);
     }
 }

@@ -16,3 +16,8 @@
 #   public *;
 #}
 -keep class android.support.v7.widget.SearchView { *; }
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }

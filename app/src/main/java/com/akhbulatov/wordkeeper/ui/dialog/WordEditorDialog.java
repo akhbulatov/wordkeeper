@@ -17,7 +17,6 @@
 package com.akhbulatov.wordkeeper.ui.dialog;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -28,6 +27,9 @@ import android.view.LayoutInflater;
 import android.view.WindowManager;
 
 import com.akhbulatov.wordkeeper.R;
+import com.akhbulatov.wordkeeper.event.WordEditEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Shows an editor dialog to add and edit words
@@ -42,31 +44,17 @@ public class WordEditorDialog extends DialogFragment {
     private int mPositiveTextId;
     private int mNegativeTextId;
 
-    private WordEditorDialogListener mListener;
-
     public static WordEditorDialog newInstance(int titleId,
                                                int positiveTextId,
                                                int negativeTextId) {
-        WordEditorDialog dialog = new WordEditorDialog();
-
         Bundle args = new Bundle();
         args.putInt(ARGUMENT_TITLE_ID, titleId);
         args.putInt(ARGUMENT_POSITIVE_TEXT_ID, positiveTextId);
         args.putInt(ARGUMENT_NEGATIVE_TEXT_ID, negativeTextId);
+
+        WordEditorDialog dialog = new WordEditorDialog();
         dialog.setArguments(args);
-
         return dialog;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (WordEditorDialogListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement "
-                    + WordEditorDialogListener.class.getName());
-        }
     }
 
     @Override
@@ -92,8 +80,7 @@ public class WordEditorDialog extends DialogFragment {
                 .setPositiveButton(mPositiveTextId, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mListener.onFinishWordEditorDialog(WordEditorDialog.this,
-                                mPositiveTextId);
+                        EventBus.getDefault().post(new WordEditEvent(WordEditorDialog.this, mPositiveTextId));
                     }
                 })
                 .setNegativeButton(mNegativeTextId, new DialogInterface.OnClickListener() {
@@ -107,21 +94,5 @@ public class WordEditorDialog extends DialogFragment {
         // Shows the soft keyboard automatically
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return dialog;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface WordEditorDialogListener {
-        /**
-         * Applies the changes to the edited word in the dialog
-         *
-         * @param dialog         The current open dialog
-         * @param positiveTextId The ID of the text on the positive button
-         */
-        void onFinishWordEditorDialog(DialogFragment dialog, int positiveTextId);
     }
 }

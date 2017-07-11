@@ -56,6 +56,8 @@ import com.akhbulatov.wordkeeper.adapter.WordAdapter;
 import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
 import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
+import com.akhbulatov.wordkeeper.event.CategoryEvent;
+import com.akhbulatov.wordkeeper.event.SortEvent;
 import com.akhbulatov.wordkeeper.model.Category;
 import com.akhbulatov.wordkeeper.model.Word;
 import com.akhbulatov.wordkeeper.ui.activity.MainActivity;
@@ -65,6 +67,9 @@ import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
 import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.List;
 
 /**
@@ -73,8 +78,7 @@ import java.util.List;
  * NOT the ContentProvider (temporary solution)
  */
 public class WordListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
-        WordAdapter.WordViewHolder.WordAdapterListener, WordSortDialog.WordSortDialogListener,
-        CategoryListDialog.CategoryListDialogListener {
+        WordAdapter.WordViewHolder.WordAdapterListener {
 
     private static final int LOADER_ID = 1;
 
@@ -163,6 +167,18 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(LOADER_ID, null, this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override
@@ -288,16 +304,16 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     // Updates the word list with the new sort mode
-    @Override
-    public void onFinishWordSortDialog(int sortMode) {
+    @Subscribe
+    public void onSortWordsSelected(SortEvent event) {
         // Saves to pass to the inner class SimpleCursorLoader
-        sSortMode = sortMode;
+        sSortMode = event.getMode();
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
     // Moves the marked words in the selected category
-    @Override
-    public void onFinishCategoryListDialog(String category) {
+    @Subscribe
+    public void onMoveWordsSelected(CategoryEvent event) {
         Word word = null;
         for (Integer i : mWordAdapter.getSelectedWords()) {
             word = mWordDbAdapter.get(mWordAdapter.getItemId(i));
@@ -305,7 +321,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
                     word.getId(),
                     word.getName(),
                     word.getTranslation(),
-                    category));
+                    event.getName()));
         }
 
         mActionMode.finish();

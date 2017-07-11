@@ -20,11 +20,13 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import com.akhbulatov.wordkeeper.R;
+import com.akhbulatov.wordkeeper.event.CategoryEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * @author Alidibir Akhbulatov
@@ -36,19 +38,6 @@ import com.akhbulatov.wordkeeper.R;
  */
 public class CategoryDeleteDialog extends DialogFragment {
 
-    private CategoryDeleteListener mListener;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        try {
-            mListener = (CategoryDeleteListener) getTargetFragment();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(getTargetFragment().toString() + " must implement "
-                    + CategoryDeleteListener.class.getName());
-        }
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -59,7 +48,7 @@ public class CategoryDeleteDialog extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mListener.onFinishCategoryDeleteDialog(CategoryDeleteDialog.this);
+                                EventBus.getDefault().post(new CategoryEvent(null));
                             }
                         })
                 .setNegativeButton(R.string.dialog_action_cancel,
@@ -70,14 +59,5 @@ public class CategoryDeleteDialog extends DialogFragment {
                             }
                         })
                 .create();
-    }
-
-    public interface CategoryDeleteListener {
-        /**
-         * Applies the changes when the category is deleted
-         *
-         * @param dialog The current open dialog
-         */
-        void onFinishCategoryDeleteDialog(DialogFragment dialog);
     }
 }

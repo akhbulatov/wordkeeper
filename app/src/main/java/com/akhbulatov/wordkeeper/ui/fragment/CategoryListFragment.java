@@ -54,6 +54,8 @@ import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.CategoryEntry;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
 import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
+import com.akhbulatov.wordkeeper.event.CategoryEditEvent;
+import com.akhbulatov.wordkeeper.event.CategoryEvent;
 import com.akhbulatov.wordkeeper.model.Category;
 import com.akhbulatov.wordkeeper.model.Word;
 import com.akhbulatov.wordkeeper.ui.activity.MainActivity;
@@ -64,13 +66,15 @@ import com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView;
 import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
 import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 /**
  * Shows a list of categories from the database.
  * Loader uses a custom class for working with the database,
  * NOT the ContentProvider (temporary solution)
  */
-public class CategoryListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
-        CategoryEditorDialog.CategoryEditorDialogListener, CategoryDeleteDialog.CategoryDeleteListener {
+public class CategoryListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int LOADER_ID = 1;
 
@@ -151,6 +155,18 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(LOADER_ID, null, this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override
@@ -276,16 +292,16 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
         }
     }
 
-    // Passes the ID of the text on the positive button
-    // to determine which the dialog (category) button was pressed: add or edit
-    @Override
-    public void onFinishCategoryEditorDialog(DialogFragment dialog, int positiveTextId) {
-        // Add the category
-        if (positiveTextId == R.string.category_editor_action_add) {
-            addCategory(dialog);
-        } else {
-            // Edit the category
-            Dialog dialogView = dialog.getDialog();
+    @Subscribe
+    public void onCategoryEditSelected(CategoryEditEvent event) {
+        /*
+        uses the ID of the text on the positive button
+        to determine which the dialog (category) button was pressed: add or edit
+         */
+        if (event.getPositiveTextId() == R.string.category_editor_action_add) {  // add the category
+            addCategory(event.getDialog());
+        } else {  // edit the category
+            Dialog dialogView = event.getDialog().getDialog();
             EditText editName = (EditText) dialogView.findViewById(R.id.edit_category_name);
             String name = editName.getText().toString();
 
@@ -295,8 +311,8 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
 
     // Confirms delete the category.
     // Also removed all words that are in the category
-    @Override
-    public void onFinishCategoryDeleteDialog(DialogFragment dialog) {
+    @Subscribe
+    public void onCategoryDeleteSelected(CategoryEvent event) {
         deleteCategory();
     }
 
