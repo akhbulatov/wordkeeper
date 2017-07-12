@@ -30,6 +30,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.text.Html;
@@ -138,6 +139,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
         mUnbinder = ButterKnife.bind(this, view);
 
         categoryList.setHasFixedSize(true);
+        categoryList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         categoryList.setLayoutManager(new LinearLayoutManager(getActivity()));
         registerForContextMenu(categoryList);
 

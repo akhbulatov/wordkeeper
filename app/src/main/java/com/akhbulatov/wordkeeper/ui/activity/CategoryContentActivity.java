@@ -18,6 +18,7 @@ package com.akhbulatov.wordkeeper.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -28,7 +29,6 @@ import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.adapter.CategoryAdapter;
 import com.akhbulatov.wordkeeper.adapter.WordAdapter;
 import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
-import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
 
 import butterknife.ButterKnife;
 
@@ -51,7 +51,7 @@ public class CategoryContentActivity extends AppCompatActivity {
 
         RecyclerView wordList = ButterKnife.findById(this, R.id.recycler_word_list);
         wordList.setHasFixedSize(true);
-        wordList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+        wordList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         wordList.setLayoutManager(new LinearLayoutManager(this));
 
         WordDatabaseAdapter wordDbAdapter = new WordDatabaseAdapter(this);

@@ -33,6 +33,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -63,7 +64,6 @@ import com.akhbulatov.wordkeeper.ui.activity.MainActivity;
 import com.akhbulatov.wordkeeper.ui.dialog.CategoryListDialog;
 import com.akhbulatov.wordkeeper.ui.dialog.WordSortDialog;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
-import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
 import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
 
 import org.greenrobot.eventbus.EventBus;
@@ -151,8 +151,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         mUnbinder = ButterKnife.bind(this, view);
 
         wordList.setHasFixedSize(true);
-        wordList.addItemDecoration(new DividerItemDecoration(getActivity(),
-                DividerItemDecoration.VERTICAL_LIST));
+        wordList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         wordList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         textEmptyWordList.setVisibility(View.GONE);
