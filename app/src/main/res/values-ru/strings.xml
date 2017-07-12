@@ -47,9 +47,6 @@
     <string name="app_version">Версия %1$s (сборка %2$d)</string>
     <string name="app_author">Alidibir Akhbulatov</string>
 
-    <!-- For all dialogs -->
-    <string name="dialog_action_cancel">Отмена</string>
-
     <!-- The dialog "Word editor" -->
     <string name="title_new_word">Новое слово</string>
     <string name="title_edit_word">Редактирование слова</string>

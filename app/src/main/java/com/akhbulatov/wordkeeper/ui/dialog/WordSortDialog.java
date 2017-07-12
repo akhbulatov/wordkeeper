@@ -70,7 +70,7 @@ public class WordSortDialog extends DialogFragment {
                                 dialog.dismiss();
                             }
                         })
-                .setNegativeButton(R.string.dialog_action_cancel,
+                .setNegativeButton(android.R.string.cancel,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

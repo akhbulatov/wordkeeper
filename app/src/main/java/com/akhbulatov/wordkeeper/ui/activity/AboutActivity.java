@@ -24,6 +24,8 @@ import android.widget.TextView;
 import com.akhbulatov.wordkeeper.BuildConfig;
 import com.akhbulatov.wordkeeper.R;
 
+import butterknife.ButterKnife;
+
 /**
  * Shows a screen with information about the app
  */
@@ -34,17 +36,15 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         String appVersion = String.format(getString(R.string.app_version),
                 BuildConfig.VERSION_NAME,
                 BuildConfig.VERSION_CODE);
 
-        TextView textAppVersion = (TextView) findViewById(R.id.text_app_version);
+        TextView textAppVersion = ButterKnife.findById(this, R.id.text_app_version);
         textAppVersion.setText(appVersion);
     }
 }

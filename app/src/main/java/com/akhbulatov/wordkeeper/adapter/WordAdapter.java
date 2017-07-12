@@ -32,6 +32,9 @@ import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Provides display a list of words in RecyclerView.
  * Saves the state of the selection for ActionMode
@@ -106,15 +109,16 @@ public class WordAdapter extends CursorRecyclerViewAdapter<WordAdapter.WordViewH
 
     public static class WordViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView mTextWordName;
-        private TextView mTextWordTranslation;
+        @BindView(R.id.text_word_name)
+        TextView textWordName;
+        @BindView(R.id.text_word_translation)
+        TextView textWordTranslation;
 
         private WordAdapterListener mListener;
 
         public WordViewHolder(View itemView, WordAdapterListener listener) {
             super(itemView);
-            mTextWordName = (TextView) itemView.findViewById(R.id.text_word_name);
-            mTextWordTranslation = (TextView) itemView.findViewById(R.id.text_word_translation);
+            ButterKnife.bind(this, itemView);
 
             mListener = listener;
 
@@ -135,11 +139,11 @@ public class WordAdapter extends CursorRecyclerViewAdapter<WordAdapter.WordViewH
         }
 
         public void setWordName(String name) {
-            mTextWordName.setText(name);
+            textWordName.setText(name);
         }
 
         public void setWordTranslation(String translation) {
-            mTextWordTranslation.setText(translation);
+            textWordTranslation.setText(translation);
         }
 
         public interface WordAdapterListener {

@@ -50,6 +50,9 @@ import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Provides navigation drawer to switch between screens
  */
@@ -62,8 +65,10 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
 
     private static final String WORD_EDITOR_DIALOG_ID = WordEditorDialog.class.getName();
 
-    private DrawerLayout mDrawerLayout;
-    private NavigationView mNavigationView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
     private ActionBarDrawerToggle mDrawerToggle;
 
     private WordListFragment mWordListFragment;
@@ -73,8 +78,9 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
         setSupportActionBar(toolbar);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -82,17 +88,15 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         // Also sets Toolbar's navigation click listener to toggle the drawer when it is clicked
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.drawer_open, R.string.drawer_close);
 
         // Creates an animation of the hamburger icon
         // for opening and closing the drawer
-        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        drawerLayout.addDrawerListener(mDrawerToggle);
 
-        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
-        mNavigationView.setNavigationItemSelectedListener(
+        navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem item) {
@@ -141,8 +145,8 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
 
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
             getSupportFragmentManager().popBackStack();
             // Returns to the main fragment and shows it
@@ -151,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
                     .replace(R.id.layout_root_container, mWordListFragment, WORD_LIST_FRAGMENT_TAG)
                     .commit();
 
-            mNavigationView.setCheckedItem(R.id.menu_drawer_all_words);
+            navigationView.setCheckedItem(R.id.menu_drawer_all_words);
             setTitle(R.string.title_all_words);
         } else {
             super.onBackPressed();
@@ -253,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
             setTitle(item.getTitle());
         }
 
-        mDrawerLayout.closeDrawers();
+        drawerLayout.closeDrawers();
     }
 
     private void showWordEditorDialog(int titleId, int positiveTextId, int negativeTextId) {

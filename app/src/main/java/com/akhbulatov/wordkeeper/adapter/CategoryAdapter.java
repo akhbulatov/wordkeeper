@@ -31,6 +31,10 @@ import com.akhbulatov.wordkeeper.database.DatabaseContract.CategoryEntry;
 import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
 import com.akhbulatov.wordkeeper.ui.activity.CategoryContentActivity;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * @author Alidibir Akhbulatov
  * @since 18.09.2016
@@ -86,15 +90,16 @@ public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.C
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView mTextCategoryName;
-        private TextView mTextNumberOfWords;
-        private ImageView mImageMoreOptions;
+        @BindView(R.id.text_category_name)
+        TextView textCategoryName;
+        @BindView(R.id.text_number_of_words)
+        TextView textNumberOfWords;
+        @BindView(R.id.image_more_options)
+        ImageView imageMoreOptions;
 
         public CategoryViewHolder(final View itemView) {
             super(itemView);
-            mTextCategoryName = (TextView) itemView.findViewById(R.id.text_category_name);
-            mTextNumberOfWords = (TextView) itemView.findViewById(R.id.text_number_of_words);
-            mImageMoreOptions = (ImageView) itemView.findViewById(R.id.image_more_options);
+            ButterKnife.bind(this, itemView);
 
             itemView.setLongClickable(true);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -102,28 +107,27 @@ public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.C
                 public void onClick(View v) {
                     Context context = itemView.getContext();
                     Intent intent = new Intent(context, CategoryContentActivity.class);
-                    intent.putExtra(EXTRA_CATEGORY_NAME, mTextCategoryName.getText().toString());
+                    intent.putExtra(EXTRA_CATEGORY_NAME, textCategoryName.getText().toString());
                     context.startActivity(intent);
                 }
             });
-            mImageMoreOptions.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    itemView.showContextMenu();
-                }
-            });
+        }
+
+        @OnClick(R.id.image_more_options)
+        public void onMoreOptionsClicked() {
+            itemView.showContextMenu();
         }
 
         public void setCategoryName(String name) {
-            mTextCategoryName.setText(name);
+            textCategoryName.setText(name);
         }
 
         public void setNumberOfWords(String number) {
-            mTextNumberOfWords.setText(number);
+            textNumberOfWords.setText(number);
         }
 
         public void setMoreOptionsVisibility(int visibility) {
-            mImageMoreOptions.setVisibility(visibility);
+            imageMoreOptions.setVisibility(visibility);
         }
     }
 }

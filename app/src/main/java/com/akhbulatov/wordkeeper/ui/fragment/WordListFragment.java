@@ -25,7 +25,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -72,6 +71,11 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+
 /**
  * Shows a list of words from the database.
  * Loader uses a custom class for working with the database,
@@ -93,10 +97,14 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     // Contains the ID of the current selected item (word)
     private long mSelectedItemId;
 
-    private RecyclerView mWordList;
-    private TextView mTextEmptyWordList;
-    private TextView mTextNoResultsWord;
+    @BindView(R.id.recycler_word_list)
+    RecyclerView wordList;
+    @BindView(R.id.text_empty_word_list)
+    TextView textEmptyWordList;
+    @BindView(R.id.text_no_results_word)
+    TextView textNoResultsWord;
 
+    private Unbinder mUnbinder;
     private WordAdapter mWordAdapter;
     private WordDatabaseAdapter mWordDbAdapter;
 
@@ -140,27 +148,15 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mWordList = (RecyclerView) view.findViewById(R.id.recycler_word_list);
-        mWordList.setHasFixedSize(true);
-        mWordList.addItemDecoration(new DividerItemDecoration(getActivity(),
+        mUnbinder = ButterKnife.bind(this, view);
+
+        wordList.setHasFixedSize(true);
+        wordList.addItemDecoration(new DividerItemDecoration(getActivity(),
                 DividerItemDecoration.VERTICAL_LIST));
-        mWordList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        wordList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mTextEmptyWordList = (TextView) view.findViewById(R.id.text_empty_word_list);
-        mTextEmptyWordList.setVisibility(View.GONE);
-
-        mTextNoResultsWord = (TextView) view.findViewById(R.id.text_no_results_word);
-        mTextNoResultsWord.setVisibility(View.GONE);
-
-        FloatingActionButton fabAddWord = (FloatingActionButton) view.findViewById(R.id.fab_add_word);
-        fabAddWord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onFabAddWordClick(R.string.title_new_word,
-                        R.string.word_editor_action_add,
-                        R.string.dialog_action_cancel);
-            }
-        });
+        textEmptyWordList.setVisibility(View.GONE);
+        textNoResultsWord.setVisibility(View.GONE);
     }
 
     @Override
@@ -179,6 +175,12 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
     @Override
@@ -218,24 +220,24 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
                 if (newText.length() > 0) {
                     mWordAdapter.swapCursor(new FilterCursorWrapper(cursor, newText, column));
 
-                    mTextEmptyWordList.setVisibility(View.GONE);
+                    textEmptyWordList.setVisibility(View.GONE);
                     if (mWordAdapter.getItemCount() == 0) {
                         String escapedNewText = TextUtils.htmlEncode(newText);
                         String formattedNoResults = String.format(
                                 getString(R.string.no_results_word), escapedNewText);
                         CharSequence styledNoResults = Html.fromHtml(formattedNoResults);
 
-                        mTextNoResultsWord.setText(styledNoResults);
-                        mTextNoResultsWord.setVisibility(View.VISIBLE);
+                        textNoResultsWord.setText(styledNoResults);
+                        textNoResultsWord.setVisibility(View.VISIBLE);
                     } else {
-                        mTextNoResultsWord.setVisibility(View.GONE);
+                        textNoResultsWord.setVisibility(View.GONE);
                     }
                 } else {
                     mWordAdapter.swapCursor(cursor);
 
-                    mTextNoResultsWord.setVisibility(View.GONE);
+                    textNoResultsWord.setVisibility(View.GONE);
                     if (mWordAdapter.getItemCount() == 0) {
-                        mTextEmptyWordList.setVisibility(View.VISIBLE);
+                        textEmptyWordList.setVisibility(View.VISIBLE);
                     }
                 }
                 return true;
@@ -267,15 +269,15 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
             // The adapter is created only the first time retrieving data from the database
             mWordAdapter = new WordAdapter(data, this);
             mWordAdapter.setHasStableIds(true);
-            mWordList.setAdapter(mWordAdapter);
+            wordList.setAdapter(mWordAdapter);
         } else {
             mWordAdapter.swapCursor(data);
         }
 
         if (mWordAdapter.getItemCount() == 0) {
-            mTextEmptyWordList.setVisibility(View.VISIBLE);
+            textEmptyWordList.setVisibility(View.VISIBLE);
         } else {
-            mTextEmptyWordList.setVisibility(View.GONE);
+            textEmptyWordList.setVisibility(View.GONE);
         }
     }
 
@@ -301,6 +303,13 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         }
         toggleSelection(position);
         return true;
+    }
+
+    @OnClick(R.id.fab_add_word)
+    public void onAddWordClicked() {
+        mListener.onFabAddWordClick(R.string.title_new_word,
+                R.string.word_editor_action_add,
+                android.R.string.cancel);
     }
 
     // Updates the word list with the new sort mode
@@ -358,8 +367,8 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         } else {
             mWordDbAdapter.insert(new Word(name, translation, category));
             // Checked for null in case this method is called from the screen "Categories"
-            if (mWordList != null) {
-                mWordList.scrollToPosition(0);
+            if (wordList != null) {
+                wordList.scrollToPosition(0);
             }
             getLoaderManager().restartLoader(LOADER_ID, null, this);
         }
@@ -509,7 +518,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
 
                     mListener.onFabAddWordClick(R.string.title_edit_word,
                             R.string.word_editor_action_edit,
-                            R.string.dialog_action_cancel);
+                            android.R.string.cancel);
                     mode.finish();
                     return true;
                 case R.id.menu_delete_word:

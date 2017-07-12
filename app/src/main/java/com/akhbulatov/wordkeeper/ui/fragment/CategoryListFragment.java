@@ -24,7 +24,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -63,11 +62,15 @@ import com.akhbulatov.wordkeeper.ui.dialog.CategoryDeleteDialog;
 import com.akhbulatov.wordkeeper.ui.dialog.CategoryEditorDialog;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView;
-import com.akhbulatov.wordkeeper.ui.widget.DividerItemDecoration;
 import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Shows a list of categories from the database.
@@ -87,9 +90,12 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     // Contains the ID of the current selected item (category)
     private long mSelectedItemId;
 
-    private ContextMenuRecyclerView mCategoryList;
-    private TextView mTextNoResultsCategory;
+    @BindView(R.id.recycler_category_list)
+    ContextMenuRecyclerView categoryList;
+    @BindView(R.id.text_no_results_category)
+    TextView textNoResultsCategory;
 
+    private Unbinder mUnbinder;
     private CategoryAdapter mCategoryAdapter;
     private CategoryDatabaseAdapter mCategoryDbAdapter;
     private WordDatabaseAdapter mWordDbAdapter;
@@ -129,26 +135,13 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mCategoryList = (ContextMenuRecyclerView)
-                view.findViewById(R.id.recycler_category_list);
-        mCategoryList.setHasFixedSize(true);
-        mCategoryList.addItemDecoration(new DividerItemDecoration(getActivity(),
-                DividerItemDecoration.VERTICAL_LIST));
-        mCategoryList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        registerForContextMenu(mCategoryList);
+        mUnbinder = ButterKnife.bind(this, view);
 
-        mTextNoResultsCategory = (TextView) view.findViewById(R.id.text_no_results_category);
-        mTextNoResultsCategory.setVisibility(View.GONE);
+        categoryList.setHasFixedSize(true);
+        categoryList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        registerForContextMenu(categoryList);
 
-        FloatingActionButton fabAddWord = (FloatingActionButton) view.findViewById(R.id.fab_add_word);
-        fabAddWord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onFabAddWordClick(R.string.title_new_word,
-                        R.string.word_editor_action_add,
-                        R.string.dialog_action_cancel);
-            }
-        });
+        textNoResultsCategory.setVisibility(View.GONE);
     }
 
     @Override
@@ -167,6 +160,12 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
     }
 
     @Override
@@ -208,14 +207,14 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
                                 getString(R.string.no_results_category), escapedNewText);
                         CharSequence styledNoResults = Html.fromHtml(formattedNoResults);
 
-                        mTextNoResultsCategory.setText(styledNoResults);
-                        mTextNoResultsCategory.setVisibility(View.VISIBLE);
+                        textNoResultsCategory.setText(styledNoResults);
+                        textNoResultsCategory.setVisibility(View.VISIBLE);
                     } else {
-                        mTextNoResultsCategory.setVisibility(View.GONE);
+                        textNoResultsCategory.setVisibility(View.GONE);
                     }
                 } else {
                     mCategoryAdapter.swapCursor(cursor);
-                    mTextNoResultsCategory.setVisibility(View.GONE);
+                    textNoResultsCategory.setVisibility(View.GONE);
                 }
                 return true;
             }
@@ -233,7 +232,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
             case R.id.menu_add_category:
                 showCategoryEditorDialog(R.string.title_new_category,
                         R.string.category_editor_action_add,
-                        R.string.dialog_action_cancel);
+                        android.R.string.cancel);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -255,7 +254,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
                 mSelectedItemId = info.id;
                 showCategoryEditorDialog(R.string.title_rename_category,
                         R.string.category_editor_action_rename,
-                        R.string.dialog_action_cancel);
+                        android.R.string.cancel);
                 return true;
             case R.id.menu_delete_category:
                 mSelectedItemId = info.id;
@@ -279,7 +278,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
             // The adapter is created only the first time retrieving data from the database
             mCategoryAdapter = new CategoryAdapter(data, mWordDbAdapter);
             mCategoryAdapter.setHasStableIds(true);
-            mCategoryList.setAdapter(mCategoryAdapter);
+            categoryList.setAdapter(mCategoryAdapter);
         } else {
             mCategoryAdapter.swapCursor(data);
         }
@@ -290,6 +289,13 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
         if (mCategoryAdapter != null) {
             mCategoryAdapter.swapCursor(null);
         }
+    }
+
+    @OnClick(R.id.fab_add_word)
+    public void onAddWordClicked() {
+        mListener.onFabAddWordClick(R.string.title_new_word,
+                R.string.word_editor_action_add,
+                android.R.string.cancel);
     }
 
     @Subscribe
@@ -333,7 +339,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
                     .show();
         } else {
             mCategoryDbAdapter.insert(new Category(name));
-            mCategoryList.scrollToPosition(0);
+            categoryList.scrollToPosition(0);
             getLoaderManager().restartLoader(LOADER_ID, null, this);
         }
     }
