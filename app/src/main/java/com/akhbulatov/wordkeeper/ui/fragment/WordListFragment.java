@@ -21,7 +21,6 @@ import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -65,6 +64,7 @@ import com.akhbulatov.wordkeeper.ui.dialog.CategoryListDialog;
 import com.akhbulatov.wordkeeper.ui.dialog.WordSortDialog;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
+import com.akhbulatov.wordkeeper.util.SharedPreferencesManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -133,8 +133,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         mWordDbAdapter = new WordDatabaseAdapter(getActivity());
         mWordDbAdapter.open();
 
-        SharedPreferences mPrefs = getActivity().getSharedPreferences(WordSortDialog.PREF_NAME, Context.MODE_PRIVATE);
-        sSortMode = mPrefs.getInt(WordSortDialog.PREF_SORT_MODE, WordSortDialog.DEFAULT_SORT_MODE);
+        sSortMode = SharedPreferencesManager.getSortMode(getActivity());
 
         mActionModeCallback = new ActionModeCallback();
     }

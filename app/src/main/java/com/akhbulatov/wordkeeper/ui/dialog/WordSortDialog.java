@@ -17,9 +17,7 @@
 package com.akhbulatov.wordkeeper.ui.dialog;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -27,6 +25,7 @@ import android.support.v7.app.AlertDialog;
 
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.event.SortEvent;
+import com.akhbulatov.wordkeeper.util.SharedPreferencesManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -39,34 +38,19 @@ import org.greenrobot.eventbus.EventBus;
  * Shows a dialog to select the mode of sorting the words in the list of words
  */
 public class WordSortDialog extends DialogFragment {
-
-    public static final String PREF_NAME = "wordkeeper.prefs";
-    public static final String PREF_SORT_MODE = "PREF_SORT_MODE";
-    public static final int DEFAULT_SORT_MODE = 1;
-
-    private int mSortMode;
-
-    private SharedPreferences mPrefs;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mPrefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        mSortMode = mPrefs.getInt(PREF_SORT_MODE, DEFAULT_SORT_MODE);
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        int sortMode = SharedPreferencesManager.getSortMode(getActivity());
 
         return builder.setTitle(R.string.action_sort_word)
-                .setSingleChoiceItems(R.array.sort_words, mSortMode,
+                .setSingleChoiceItems(R.array.sort_words, sortMode,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mSortMode = which;
-                                EventBus.getDefault().post(new SortEvent(mSortMode));
+                                EventBus.getDefault().post(new SortEvent(which));
+                                SharedPreferencesManager.setSortMode(getActivity(), which);
                                 dialog.dismiss();
                             }
                         })
@@ -78,14 +62,5 @@ public class WordSortDialog extends DialogFragment {
                             }
                         })
                 .create();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mPrefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = mPrefs.edit();
-        editor.putInt(PREF_SORT_MODE, mSortMode);
-        editor.apply();
     }
 }
