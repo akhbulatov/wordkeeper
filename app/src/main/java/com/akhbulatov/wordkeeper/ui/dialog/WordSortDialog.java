@@ -23,6 +23,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
+import com.akhbulatov.wordkeeper.App;
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.event.SortEvent;
 import com.akhbulatov.wordkeeper.util.SharedPreferencesManager;
@@ -62,5 +63,11 @@ public class WordSortDialog extends DialogFragment {
                             }
                         })
                 .create();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        App.getRefWatcher(getActivity()).watch(this);
     }
 }

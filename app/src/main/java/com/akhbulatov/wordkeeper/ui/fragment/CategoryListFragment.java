@@ -47,6 +47,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.akhbulatov.wordkeeper.App;
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.adapter.CategoryAdapter;
 import com.akhbulatov.wordkeeper.adapter.WordAdapter;
@@ -175,6 +176,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
         super.onDestroy();
         mCategoryDbAdapter.close();
         mWordDbAdapter.close();
+        App.getRefWatcher(getActivity()).watch(this);
     }
 
     @Override

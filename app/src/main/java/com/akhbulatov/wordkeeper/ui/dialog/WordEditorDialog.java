@@ -26,6 +26,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
 
+import com.akhbulatov.wordkeeper.App;
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.event.WordEditEvent;
 
@@ -94,5 +95,11 @@ public class WordEditorDialog extends DialogFragment {
         // Shows the soft keyboard automatically
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return dialog;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        App.getRefWatcher(getActivity()).watch(this);
     }
 }
