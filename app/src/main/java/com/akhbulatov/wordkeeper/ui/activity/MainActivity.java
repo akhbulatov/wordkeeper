@@ -195,10 +195,9 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
         } else {  // edit the word
             Dialog dialogView = event.getDialog().getDialog();
 
-            EditText editName = (EditText) dialogView.findViewById(R.id.edit_word_name);
-            EditText editTranslation =
-                    (EditText) dialogView.findViewById(R.id.edit_word_translation);
-            Spinner spinnerCategories = (Spinner) dialogView.findViewById(R.id.spinner_categories);
+            EditText editName = dialogView.findViewById(R.id.edit_word_name);
+            EditText editTranslation = dialogView.findViewById(R.id.edit_word_translation);
+            Spinner spinnerCategories = dialogView.findViewById(R.id.spinner_categories);
 
             String name = editName.getText().toString();
             String translation = editTranslation.getText().toString();
@@ -267,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
         getSupportFragmentManager().executePendingTransactions();
 
         Dialog dialogView = dialog.getDialog();
-        Spinner spinnerCategories = (Spinner) dialogView.findViewById(R.id.spinner_categories);
+        Spinner spinnerCategories = dialogView.findViewById(R.id.spinner_categories);
 
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this,
                 android.R.layout.simple_spinner_item, mWordListFragment.getCategories());
@@ -277,9 +276,8 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
         // Receives and shows data of the selected word to edit in the dialog
         // Data is the name, translation and category
         if (positiveTextId == R.string.word_editor_action_edit) {
-            EditText editName = (EditText) dialogView.findViewById(R.id.edit_word_name);
-            EditText editTranslation =
-                    (EditText) dialogView.findViewById(R.id.edit_word_translation);
+            EditText editName = dialogView.findViewById(R.id.edit_word_name);
+            EditText editTranslation = dialogView.findViewById(R.id.edit_word_translation);
 
             editName.setText(mWordListFragment.getName());
             editTranslation.setText(mWordListFragment.getTranslation());

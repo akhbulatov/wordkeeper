@@ -348,9 +348,9 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     public void addWord(DialogFragment dialog) {
         Dialog dialogView = dialog.getDialog();
 
-        EditText editName = (EditText) dialogView.findViewById(R.id.edit_word_name);
-        EditText editTranslation = (EditText) dialogView.findViewById(R.id.edit_word_translation);
-        Spinner spinnerCategory = (Spinner) dialogView.findViewById(R.id.spinner_categories);
+        EditText editName = dialogView.findViewById(R.id.edit_word_name);
+        EditText editTranslation = dialogView.findViewById(R.id.edit_word_translation);
+        Spinner spinnerCategory = dialogView.findViewById(R.id.spinner_categories);
 
         String name = editName.getText().toString();
         String translation = editTranslation.getText().toString();

@@ -58,8 +58,7 @@ public class WordAdapter extends CursorRecyclerViewAdapter<WordAdapter.WordViewH
 
     @Override
     public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_word, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_word, parent, false);
         return new WordViewHolder(itemView, mListener);
     }
 
