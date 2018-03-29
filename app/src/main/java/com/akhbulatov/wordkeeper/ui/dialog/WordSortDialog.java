@@ -17,7 +17,6 @@
 package com.akhbulatov.wordkeeper.ui.dialog;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -47,21 +46,13 @@ public class WordSortDialog extends DialogFragment {
 
         return builder.setTitle(R.string.action_sort_word)
                 .setSingleChoiceItems(R.array.sort_words, sortMode,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                EventBus.getDefault().post(new SortEvent(which));
-                                SharedPreferencesManager.setSortMode(getActivity(), which);
-                                dialog.dismiss();
-                            }
+                        (dialog, which) -> {
+                            EventBus.getDefault().post(new SortEvent(which));
+                            SharedPreferencesManager.setSortMode(getActivity(), which);
+                            dialog.dismiss();
                         })
                 .setNegativeButton(android.R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
+                        (dialog, which) -> dialog.dismiss())
                 .create();
     }
 

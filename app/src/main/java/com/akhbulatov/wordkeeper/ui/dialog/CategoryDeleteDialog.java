@@ -17,7 +17,6 @@
 package com.akhbulatov.wordkeeper.ui.dialog;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -46,19 +45,9 @@ public class CategoryDeleteDialog extends DialogFragment {
         return builder.setTitle(R.string.category_delete_title)
                 .setMessage(R.string.category_delete_message)
                 .setPositiveButton(R.string.category_action_delete,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                EventBus.getDefault().post(new CategoryEvent(null));
-                            }
-                        })
+                        (dialog, which) -> EventBus.getDefault().post(new CategoryEvent(null)))
                 .setNegativeButton(android.R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
+                        (dialog, which) -> dialog.dismiss())
                 .create();
     }
 

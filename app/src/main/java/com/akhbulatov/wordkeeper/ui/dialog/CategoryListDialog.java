@@ -17,7 +17,6 @@
 package com.akhbulatov.wordkeeper.ui.dialog;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -67,20 +66,11 @@ public class CategoryListDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         return builder.setTitle(R.string.category_list_title)
-                .setItems(mCategories, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        EventBus.getDefault().post(new CategoryEvent(mCategories[which]));
-                        dialog.dismiss();
-                    }
+                .setItems(mCategories, (dialog, which) -> {
+                    EventBus.getDefault().post(new CategoryEvent(mCategories[which]));
+                    dialog.dismiss();
                 })
-                .setNegativeButton(android.R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
+                .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .create();
     }
 

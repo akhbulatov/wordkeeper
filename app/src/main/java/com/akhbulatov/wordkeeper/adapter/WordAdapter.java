@@ -18,6 +18,7 @@ package com.akhbulatov.wordkeeper.adapter;
 
 import android.database.Cursor;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
@@ -56,8 +57,9 @@ public class WordAdapter extends CursorRecyclerViewAdapter<WordAdapter.WordViewH
         mListener = listener;
     }
 
+    @NonNull
     @Override
-    public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public WordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_word, parent, false);
         return new WordViewHolder(itemView, mListener);
     }
@@ -115,26 +117,19 @@ public class WordAdapter extends CursorRecyclerViewAdapter<WordAdapter.WordViewH
 
         private WordAdapterListener mListener;
 
-        public WordViewHolder(View itemView, WordAdapterListener listener) {
+        WordViewHolder(View itemView, WordAdapterListener listener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
             mListener = listener;
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mListener != null) {
-                        mListener.onWordItemClick(getAdapterPosition());
-                    }
+            itemView.setOnClickListener(v -> {
+                if (mListener != null) {
+                    mListener.onWordItemClick(getAdapterPosition());
                 }
             });
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    return mListener != null && mListener.onWordItemLongClick(getAdapterPosition());
-                }
-            });
+            itemView.setOnLongClickListener(v ->
+                    mListener != null && mListener.onWordItemLongClick(getAdapterPosition()));
         }
 
         public void setWordName(String name) {

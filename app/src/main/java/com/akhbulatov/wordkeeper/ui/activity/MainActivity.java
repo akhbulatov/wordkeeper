@@ -96,14 +96,10 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
         // for opening and closing the drawer
         drawerLayout.addDrawerListener(mDrawerToggle);
 
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem item) {
-                        selectDrawerItem(item);
-                        return true;
-                    }
-                });
+        navigationView.setNavigationItemSelectedListener(item -> {
+            selectDrawerItem(item);
+            return true;
+        });
 
         if (savedInstanceState != null) {
             mWordListFragment = (WordListFragment)

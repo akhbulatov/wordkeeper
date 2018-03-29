@@ -18,7 +18,6 @@ package com.akhbulatov.wordkeeper.ui.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -78,18 +77,9 @@ public class WordEditorDialog extends DialogFragment {
 
         builder.setView(inflater.inflate(R.layout.dialog_word_editor, null))
                 .setTitle(mTitleId)
-                .setPositiveButton(mPositiveTextId, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        EventBus.getDefault().post(new WordEditEvent(WordEditorDialog.this, mPositiveTextId));
-                    }
-                })
-                .setNegativeButton(mNegativeTextId, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                .setPositiveButton(mPositiveTextId, (dialog, which) ->
+                        EventBus.getDefault().post(new WordEditEvent(WordEditorDialog.this, mPositiveTextId)))
+                .setNegativeButton(mNegativeTextId, (dialog, which) -> dialog.dismiss());
 
         Dialog dialog = builder.create();
         // Shows the soft keyboard automatically

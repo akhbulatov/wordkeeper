@@ -17,7 +17,6 @@
 package com.akhbulatov.wordkeeper.ui.dialog;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -52,14 +51,13 @@ public class CategoryEditorDialog extends DialogFragment {
     public static CategoryEditorDialog newInstance(int titleId,
                                                    int positiveTextId,
                                                    int negativeTextId) {
-        CategoryEditorDialog dialog = new CategoryEditorDialog();
-
         Bundle args = new Bundle();
         args.putInt(ARGUMENT_TITLE_ID, titleId);
         args.putInt(ARGUMENT_POSITIVE_TEXT_ID, positiveTextId);
         args.putInt(ARGUMENT_NEGATIVE_TEXT_ID, negativeTextId);
-        dialog.setArguments(args);
 
+        CategoryEditorDialog dialog = new CategoryEditorDialog();
+        dialog.setArguments(args);
         return dialog;
     }
 
@@ -82,19 +80,10 @@ public class CategoryEditorDialog extends DialogFragment {
 
         builder.setView(inflater.inflate(R.layout.dialog_category_editor, null))
                 .setTitle(mTitleId)
-                .setPositiveButton(mPositiveTextId, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setPositiveButton(mPositiveTextId, (dialog, which) ->
                         EventBus.getDefault().post(new CategoryEditEvent(CategoryEditorDialog.this,
-                                mPositiveTextId));
-                    }
-                })
-                .setNegativeButton(mNegativeTextId, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                        mPositiveTextId)))
+                .setNegativeButton(mNegativeTextId, (dialog, which) -> dialog.dismiss());
 
         Dialog dialog = builder.create();
         // Shows the soft keyboard automatically

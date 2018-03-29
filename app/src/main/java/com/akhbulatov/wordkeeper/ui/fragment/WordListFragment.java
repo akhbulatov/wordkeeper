@@ -23,13 +23,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DividerItemDecoration;
@@ -200,7 +200,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         inflater.inflate(R.menu.fragment_word, menu);
 
         MenuItem searchItem = menu.findItem(R.id.menu_search_word);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        SearchView searchView = (SearchView) searchItem.getActionView();
 
         SearchManager searchManager = (SearchManager)
                 getActivity().getSystemService(Context.SEARCH_SERVICE);
@@ -256,6 +256,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         }
     }
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // Returns the cursor with all records from the database.
@@ -264,7 +265,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         if (mWordAdapter == null) {
             // The adapter is created only the first time retrieving data from the database
             mWordAdapter = new WordAdapter(data, this);
@@ -282,7 +283,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         if (mWordAdapter != null) {
             mWordAdapter.swapCursor(null);
         }

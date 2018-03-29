@@ -23,6 +23,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -129,13 +130,13 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_category_list, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mUnbinder = ButterKnife.bind(this, view);
 
@@ -269,6 +270,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
         }
     }
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // Returns the cursor with all records from the database.
@@ -277,7 +279,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         if (mCategoryAdapter == null) {
             // The adapter is created only the first time retrieving data from the database
             mCategoryAdapter = new CategoryAdapter(data, mWordDbAdapter);
@@ -289,7 +291,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         if (mCategoryAdapter != null) {
             mCategoryAdapter.swapCursor(null);
         }
@@ -333,7 +335,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     private void addCategory(DialogFragment dialog) {
         Dialog dialogView = dialog.getDialog();
 
-        EditText editName = (EditText) dialogView.findViewById(R.id.edit_category_name);
+        EditText editName = dialogView.findViewById(R.id.edit_category_name);
         String name = editName.getText().toString();
 
         if (TextUtils.isEmpty(name)) {
@@ -404,7 +406,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
             getActivity().getSupportFragmentManager().executePendingTransactions();
 
             Dialog dialogView = dialog.getDialog();
-            EditText editName = (EditText) dialogView.findViewById(R.id.edit_category_name);
+            EditText editName = dialogView.findViewById(R.id.edit_category_name);
             editName.setText(getName());
         }
     }
@@ -422,9 +424,9 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
 
         private CategoryDatabaseAdapter mCategoryDbAdapter;
 
-        public SimpleCursorLoader(Context context, CategoryDatabaseAdapter сategoryDbAdapter) {
+        SimpleCursorLoader(Context context, CategoryDatabaseAdapter categoryDbAdapter) {
             super(context);
-            mCategoryDbAdapter = сategoryDbAdapter;
+            mCategoryDbAdapter = categoryDbAdapter;
         }
 
         @Override
