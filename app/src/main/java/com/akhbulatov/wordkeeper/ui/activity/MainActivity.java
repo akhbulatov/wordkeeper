@@ -21,9 +21,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -34,11 +34,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.event.WordEditEvent;
@@ -46,6 +44,7 @@ import com.akhbulatov.wordkeeper.ui.dialog.WordEditorDialog;
 import com.akhbulatov.wordkeeper.ui.fragment.CategoryListFragment;
 import com.akhbulatov.wordkeeper.ui.fragment.WordListFragment;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
+import com.akhbulatov.wordkeeper.util.CommonUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -62,8 +61,6 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
 
     private static final String WORD_LIST_FRAGMENT_TAG = WordListFragment.class.getName();
     private static final String CATEGORY_LIST_FRAGMENT_TAG = CategoryListFragment.class.getName();
-
-    private static final String WORD_EDITOR_DIALOG_ID = WordEditorDialog.class.getName();
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
@@ -82,11 +79,6 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
 
         Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }
 
         // Also sets Toolbar's navigation click listener to toggle the drawer when it is clicked
         mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
@@ -229,9 +221,7 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
         if (fragmentClass != null) {
             try {
                 fragment = (Fragment) fragmentClass.newInstance();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+            } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
 
@@ -255,17 +245,20 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
         drawerLayout.closeDrawers();
     }
 
-    private void showWordEditorDialog(int titleId, int positiveTextId, int negativeTextId) {
+    private void showWordEditorDialog(@StringRes int titleId,
+                                      @StringRes int positiveTextId,
+                                      @StringRes int negativeTextId) {
         DialogFragment dialog = WordEditorDialog.newInstance(titleId, positiveTextId, negativeTextId);
-        dialog.show(getSupportFragmentManager(), WORD_EDITOR_DIALOG_ID);
+        dialog.show(getSupportFragmentManager(), null);
         // NOTE! If the method is not called, the app crashes
         getSupportFragmentManager().executePendingTransactions();
 
         Dialog dialogView = dialog.getDialog();
         Spinner spinnerCategories = dialogView.findViewById(R.id.spinner_categories);
 
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this,
-                android.R.layout.simple_spinner_item, mWordListFragment.getCategories());
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item,
+                mWordListFragment.getCategories());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategories.setAdapter(adapter);
 
@@ -286,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
         try {
             startActivity(new Intent(Intent.ACTION_VIEW, uri));
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, R.string.error_rate_app, Toast.LENGTH_SHORT).show();
+            CommonUtils.showToast(this, R.string.error_rate_app);
         }
     }
 

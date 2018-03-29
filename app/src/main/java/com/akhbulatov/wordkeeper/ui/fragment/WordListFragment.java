@@ -26,7 +26,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -48,9 +47,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.akhbulatov.wordkeeper.App;
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.adapter.WordAdapter;
 import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
@@ -64,6 +61,7 @@ import com.akhbulatov.wordkeeper.ui.activity.MainActivity;
 import com.akhbulatov.wordkeeper.ui.dialog.CategoryListDialog;
 import com.akhbulatov.wordkeeper.ui.dialog.WordSortDialog;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
+import com.akhbulatov.wordkeeper.util.CommonUtils;
 import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
 import com.akhbulatov.wordkeeper.util.SharedPreferencesManager;
 
@@ -82,16 +80,13 @@ import butterknife.Unbinder;
  * Loader uses a custom class for working with the database,
  * NOT the ContentProvider (temporary solution)
  */
-public class WordListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+public class WordListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,
         WordAdapter.WordViewHolder.WordAdapterListener {
 
     private static final int LOADER_ID = 1;
 
     private static final int WORD_SORT_DIALOG_REQUEST = 1;
     private static final int CATEGORY_LIST_DIALOG_REQUEST = 2;
-
-    private static final String WORD_SORT_DIALOG_ID = WordSortDialog.class.getName();
-    private static final String CATEGORY_LIST_DIALOG_ID = CategoryListDialog.class.getName();
 
     private static int sSortMode;
 
@@ -140,13 +135,13 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_word_list, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mUnbinder = ButterKnife.bind(this, view);
 
@@ -186,7 +181,6 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     public void onDestroy() {
         super.onDestroy();
         mWordDbAdapter.close();
-        App.getRefWatcher(getActivity()).watch(this);
     }
 
     @Override
@@ -337,9 +331,9 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
         mActionMode.finish();
 
         if (word != null) {
-            Toast.makeText(getActivity(), R.string.success_move_word, Toast.LENGTH_SHORT).show();
+            CommonUtils.showToast(getActivity(), R.string.success_move_word);
         } else {
-            Toast.makeText(getActivity(), R.string.error_move_word, Toast.LENGTH_SHORT).show();
+            CommonUtils.showToast(getActivity(), R.string.error_move_word);
         }
     }
 
@@ -361,10 +355,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
 
         if ((TextUtils.isEmpty(name) & TextUtils.isEmpty(translation))
                 | (TextUtils.isEmpty(name) | TextUtils.isEmpty(translation))) {
-            Toast.makeText(getActivity(),
-                    R.string.error_word_editor_empty_fields,
-                    Toast.LENGTH_SHORT)
-                    .show();
+            CommonUtils.showToast(getActivity(), R.string.error_word_editor_empty_fields);
         } else {
             mWordDbAdapter.insert(new Word(name, translation, category));
             // Checked for null in case this method is called from the screen "Categories"
@@ -378,10 +369,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     public void editWord(String name, String translation, String category) {
         if ((TextUtils.isEmpty(name) & TextUtils.isEmpty(translation))
                 | (TextUtils.isEmpty(name) | TextUtils.isEmpty(translation))) {
-            Toast.makeText(getActivity(),
-                    R.string.error_word_editor_empty_fields,
-                    Toast.LENGTH_SHORT)
-                    .show();
+            CommonUtils.showToast(getActivity(), R.string.error_word_editor_empty_fields);
         } else {
             mWordDbAdapter.update(new Word(mSelectedItemId, name, translation, category));
             getLoaderManager().restartLoader(LOADER_ID, null, this);
@@ -453,13 +441,13 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
     private void showWordSortDialog() {
         DialogFragment dialog = new WordSortDialog();
         dialog.setTargetFragment(WordListFragment.this, WORD_SORT_DIALOG_REQUEST);
-        dialog.show(getActivity().getSupportFragmentManager(), WORD_SORT_DIALOG_ID);
+        dialog.show(getActivity().getSupportFragmentManager(), null);
     }
 
     private void showCategoryListDialog() {
         DialogFragment dialog = new CategoryListDialog();
         dialog.setTargetFragment(WordListFragment.this, CATEGORY_LIST_DIALOG_REQUEST);
-        dialog.show(getActivity().getSupportFragmentManager(), CATEGORY_LIST_DIALOG_ID);
+        dialog.show(getActivity().getSupportFragmentManager(), null);
     }
 
     /**
@@ -469,7 +457,7 @@ public class WordListFragment extends Fragment implements LoaderManager.LoaderCa
 
         private WordDatabaseAdapter mWordDbAdapter;
 
-        public SimpleCursorLoader(Context context, WordDatabaseAdapter wordDbAdapter) {
+        SimpleCursorLoader(Context context, WordDatabaseAdapter wordDbAdapter) {
             super(context);
             mWordDbAdapter = wordDbAdapter;
         }

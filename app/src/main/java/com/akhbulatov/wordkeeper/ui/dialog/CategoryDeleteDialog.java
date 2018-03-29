@@ -19,10 +19,8 @@ package com.akhbulatov.wordkeeper.ui.dialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
-import com.akhbulatov.wordkeeper.App;
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.event.CategoryEvent;
 
@@ -36,7 +34,7 @@ import org.greenrobot.eventbus.EventBus;
 /**
  * Shows a dialog to confirm deletion of category
  */
-public class CategoryDeleteDialog extends DialogFragment {
+public class CategoryDeleteDialog extends BaseDialogFragment {
 
     @NonNull
     @Override
@@ -49,11 +47,5 @@ public class CategoryDeleteDialog extends DialogFragment {
                 .setNegativeButton(android.R.string.cancel,
                         (dialog, which) -> dialog.dismiss())
                 .create();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        App.getRefWatcher(getActivity()).watch(this);
     }
 }

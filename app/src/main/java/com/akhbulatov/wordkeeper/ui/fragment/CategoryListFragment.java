@@ -26,11 +26,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
@@ -46,9 +44,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.akhbulatov.wordkeeper.App;
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.adapter.CategoryAdapter;
 import com.akhbulatov.wordkeeper.adapter.WordAdapter;
@@ -65,6 +61,7 @@ import com.akhbulatov.wordkeeper.ui.dialog.CategoryDeleteDialog;
 import com.akhbulatov.wordkeeper.ui.dialog.CategoryEditorDialog;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView;
+import com.akhbulatov.wordkeeper.util.CommonUtils;
 import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
 
 import org.greenrobot.eventbus.EventBus;
@@ -80,15 +77,12 @@ import butterknife.Unbinder;
  * Loader uses a custom class for working with the database,
  * NOT the ContentProvider (temporary solution)
  */
-public class CategoryListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class CategoryListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int LOADER_ID = 1;
 
     private static final int CATEGORY_EDITOR_DIALOG_REQUEST = 1;
     private static final int CATEGORY_DELETE_DIALOG_REQUEST = 2;
-
-    private static final String CATEGORY_EDITOR_DIALOG_ID = CategoryEditorDialog.class.getName();
-    private static final String CATEGORY_DELETE_DIALOG_ID = CategoryDeleteDialog.class.getName();
 
     // Contains the ID of the current selected item (category)
     private long mSelectedItemId;
@@ -177,7 +171,6 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
         super.onDestroy();
         mCategoryDbAdapter.close();
         mWordDbAdapter.close();
-        App.getRefWatcher(getActivity()).watch(this);
     }
 
     @Override
@@ -191,7 +184,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
         inflater.inflate(R.menu.fragment_category, menu);
 
         MenuItem searchItem = menu.findItem(R.id.menu_search_category);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        SearchView searchView = (SearchView) searchItem.getActionView();
 
         SearchManager searchManager = (SearchManager)
                 getActivity().getSystemService(Context.SEARCH_SERVICE);
@@ -339,10 +332,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
         String name = editName.getText().toString();
 
         if (TextUtils.isEmpty(name)) {
-            Toast.makeText(getActivity(),
-                    R.string.error_category_editor_empty_field,
-                    Toast.LENGTH_SHORT)
-                    .show();
+            CommonUtils.showToast(getActivity(), R.string.error_category_editor_empty_field);
         } else {
             mCategoryDbAdapter.insert(new Category(name));
             categoryList.scrollToPosition(0);
@@ -352,10 +342,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
 
     private void renameCategory(String name) {
         if (TextUtils.isEmpty(name)) {
-            Toast.makeText(getActivity(),
-                    R.string.error_category_editor_empty_field,
-                    Toast.LENGTH_SHORT)
-                    .show();
+            CommonUtils.showToast(getActivity(), R.string.error_category_editor_empty_field);
         } else {
             // First updates all words from the category with the new category name
             Cursor cursor = mWordDbAdapter.getRecordsByCategory(getName());
@@ -397,7 +384,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     private void showCategoryEditorDialog(int titleId, int positiveTextId, int negativeTextId) {
         DialogFragment dialog = CategoryEditorDialog.newInstance(titleId, positiveTextId, negativeTextId);
         dialog.setTargetFragment(CategoryListFragment.this, CATEGORY_EDITOR_DIALOG_REQUEST);
-        dialog.show(getActivity().getSupportFragmentManager(), CATEGORY_EDITOR_DIALOG_ID);
+        dialog.show(getActivity().getSupportFragmentManager(), null);
 
         // Receives and shows data of the selected category to edit in the dialog
         // Data is the name of the category
@@ -414,7 +401,7 @@ public class CategoryListFragment extends Fragment implements LoaderManager.Load
     private void showCategoryDeleteDialog() {
         DialogFragment dialog = new CategoryDeleteDialog();
         dialog.setTargetFragment(CategoryListFragment.this, CATEGORY_DELETE_DIALOG_REQUEST);
-        dialog.show(getActivity().getSupportFragmentManager(), CATEGORY_DELETE_DIALOG_ID);
+        dialog.show(getActivity().getSupportFragmentManager(), null);
     }
 
     /**

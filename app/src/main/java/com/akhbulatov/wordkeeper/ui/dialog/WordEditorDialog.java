@@ -20,12 +20,11 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
 
-import com.akhbulatov.wordkeeper.App;
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.event.WordEditEvent;
 
@@ -34,7 +33,7 @@ import org.greenrobot.eventbus.EventBus;
 /**
  * Shows an editor dialog to add and edit words
  */
-public class WordEditorDialog extends DialogFragment {
+public class WordEditorDialog extends BaseDialogFragment {
 
     private static final String ARGUMENT_TITLE_ID = "ARGUMENT_TITLE_ID";
     private static final String ARGUMENT_POSITIVE_TEXT_ID = "ARGUMENT_POSITIVE_TEXT_ID";
@@ -44,9 +43,9 @@ public class WordEditorDialog extends DialogFragment {
     private int mPositiveTextId;
     private int mNegativeTextId;
 
-    public static WordEditorDialog newInstance(int titleId,
-                                               int positiveTextId,
-                                               int negativeTextId) {
+    public static WordEditorDialog newInstance(@StringRes int titleId,
+                                               @StringRes int positiveTextId,
+                                               @StringRes int negativeTextId) {
         Bundle args = new Bundle();
         args.putInt(ARGUMENT_TITLE_ID, titleId);
         args.putInt(ARGUMENT_POSITIVE_TEXT_ID, positiveTextId);
@@ -85,11 +84,5 @@ public class WordEditorDialog extends DialogFragment {
         // Shows the soft keyboard automatically
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return dialog;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        App.getRefWatcher(getActivity()).watch(this);
     }
 }

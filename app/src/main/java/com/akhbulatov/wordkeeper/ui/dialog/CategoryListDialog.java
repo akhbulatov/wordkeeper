@@ -21,10 +21,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
-import com.akhbulatov.wordkeeper.App;
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
 import com.akhbulatov.wordkeeper.event.CategoryEvent;
@@ -38,7 +36,7 @@ import java.util.List;
  * @author Alidibir Akhbulatov
  * @since 04.11.2016
  */
-public class CategoryListDialog extends DialogFragment {
+public class CategoryListDialog extends BaseDialogFragment {
 
     private String[] mCategories;
 
@@ -72,11 +70,5 @@ public class CategoryListDialog extends DialogFragment {
                 })
                 .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .create();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        App.getRefWatcher(getActivity()).watch(this);
     }
 }

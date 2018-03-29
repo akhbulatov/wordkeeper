@@ -14,23 +14,18 @@
  * limitations under the License.
  */
 
-package com.akhbulatov.wordkeeper.ui.listener;
+package com.akhbulatov.wordkeeper.util;
 
+import android.content.Context;
 import android.support.annotation.StringRes;
+import android.widget.Toast;
 
-/**
- * @author Alidibir Akhbulatov
- * @since 04.10.2016
- */
-public interface FabAddWordListener {
-    /**
-     * Called when clicks on FAB to add a word
-     *
-     * @param titleId        The ID of the title of the dialog
-     * @param positiveTextId The ID of the text on the positive button of the dialog
-     * @param negativeTextId The ID of the text on the negative button of the dialog
-     */
-    void onFabAddWordClick(@StringRes int titleId,
-                           @StringRes int positiveTextId,
-                           @StringRes int negativeTextId);
+public class CommonUtils {
+
+    private CommonUtils() {
+    }
+
+    public static void showToast(Context context, @StringRes int resId) {
+        Toast.makeText(context, resId, Toast.LENGTH_SHORT).show();
+    }
 }

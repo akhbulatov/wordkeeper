@@ -19,10 +19,8 @@ package com.akhbulatov.wordkeeper.ui.dialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
-import com.akhbulatov.wordkeeper.App;
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.event.SortEvent;
 import com.akhbulatov.wordkeeper.util.SharedPreferencesManager;
@@ -37,7 +35,7 @@ import org.greenrobot.eventbus.EventBus;
 /**
  * Shows a dialog to select the mode of sorting the words in the list of words
  */
-public class WordSortDialog extends DialogFragment {
+public class WordSortDialog extends BaseDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -54,11 +52,5 @@ public class WordSortDialog extends DialogFragment {
                 .setNegativeButton(android.R.string.cancel,
                         (dialog, which) -> dialog.dismiss())
                 .create();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        App.getRefWatcher(getActivity()).watch(this);
     }
 }

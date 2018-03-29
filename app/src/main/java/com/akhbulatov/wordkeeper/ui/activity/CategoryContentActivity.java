@@ -42,14 +42,14 @@ public class CategoryContentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_content);
 
-        Toolbar toolbar = ButterKnife.findById(this, R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         String categoryName = getIntent().getStringExtra(CategoryAdapter.EXTRA_CATEGORY_NAME);
         setTitle(categoryName);
 
-        RecyclerView wordList = ButterKnife.findById(this, R.id.recycler_word_list);
+        RecyclerView wordList = findViewById(R.id.recycler_word_list);
         wordList.setHasFixedSize(true);
         wordList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         wordList.setLayoutManager(new LinearLayoutManager(this));
