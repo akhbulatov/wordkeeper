@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">WordKeeper</string>
 
-    <!-- The navigation drawer -->
+    <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
-    <!-- Main activity -->
+    <!-- Main -->
     <string name="search_hint">Search</string>
 
-    <!-- The screen "All words" -->
+    <!-- All Words -->
     <string name="title_all_words">All words</string>
     <string name="action_search_word">Search</string>
     <string name="action_sort_word">Sort by</string>
@@ -22,7 +22,7 @@
     <string name="success_move_word">Move successfully completed</string>
     <string name="error_move_word">Move failed</string>
 
-    <!-- The screen "Categories" -->
+    <!-- Categories -->
     <string name="title_categories">Categories</string>
     <string name="default_category">Main</string>
     <string name="action_search_category">Search</string>
@@ -36,16 +36,16 @@
         <item quantity="other">%d words</item>
     </plurals>
 
-    <!-- The screen "Category content" -->
+    <!-- Category Content -->
     <string name="empty_category_content">No words in this category</string>
 
-    <!-- The screen "About -->
+    <!-- About -->
     <string name="title_about">About</string>
     <string name="app_icon_description">App icon</string>
     <string name="app_version">Version %1$s (build %2$d)</string>
     <string name="app_author">Alidibir Akhbulatov</string>
 
-    <!-- The dialog "Word editor" -->
+    <!-- Word Editor -->
     <string name="title_new_word">New word</string>
     <string name="title_edit_word">Edit word</string>
     <string name="word_editor_name_hint">Name</string>
@@ -55,16 +55,16 @@
     <string name="word_editor_action_edit">Edit</string>
     <string name="error_word_editor_empty_fields">The fields are not filled</string>
 
-    <!-- The dialog "Word sort" -->
+    <!-- Word Sort -->
     <string-array name="sort_words">
         <item>Name</item>
         <item>Last modified</item>
     </string-array>
 
-    <!-- The dialog "Category list" -->
+    <!-- Category List -->
     <string name="category_list_title">Move to category</string>
 
-    <!-- The dialog "Category editor" -->
+    <!-- Category Editor -->
     <string name="title_new_category">New category</string>
     <string name="title_rename_category">Rename category</string>
     <string name="category_editor_name_hint">Name</string>
@@ -72,14 +72,14 @@
     <string name="category_editor_action_rename">Rename</string>
     <string name="error_category_editor_empty_field">The field is not filled</string>
 
-    <!-- The dialog "Delete category" -->
+    <!-- Delete Category -->
     <string name="category_delete_title">Delete category?</string>
     <string name="category_delete_message">Also removed all words
         that are in this category.
     </string>
     <string name="category_action_delete">Delete</string>
 
-    <!-- Rate app -->
+    <!-- Rate App -->
     <string name="title_rate_app">Rate app</string>
     <string name="error_rate_app">Sorry, could not find the app</string>
 </resources>
