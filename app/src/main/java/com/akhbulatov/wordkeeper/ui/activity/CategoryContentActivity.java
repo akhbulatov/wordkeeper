@@ -30,8 +30,6 @@ import com.akhbulatov.wordkeeper.adapter.CategoryAdapter;
 import com.akhbulatov.wordkeeper.adapter.WordAdapter;
 import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
 
-import butterknife.ButterKnife;
-
 /**
  * Shows all the words from a certain category
  */
@@ -61,12 +59,12 @@ public class CategoryContentActivity extends AppCompatActivity {
         wordAdapter.setHasStableIds(true);
         wordList.setAdapter(wordAdapter);
 
-        TextView textEmptyCategoryContent = ButterKnife.findById(this, R.id.text_empty_category_content);
+        TextView textEmptyCategoryContent = findViewById(R.id.text_empty_category_content);
 
         if (wordAdapter.getItemCount() == 0) {
             textEmptyCategoryContent.setVisibility(View.VISIBLE);
         } else {
-            textEmptyCategoryContent.setVisibility(View.INVISIBLE);
+            textEmptyCategoryContent.setVisibility(View.GONE);
         }
 
         // Closes the database already here, as it is no longer needed
