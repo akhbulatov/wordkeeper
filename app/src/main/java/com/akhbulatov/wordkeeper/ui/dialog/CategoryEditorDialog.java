@@ -18,8 +18,8 @@ package com.akhbulatov.wordkeeper.ui.dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
@@ -47,9 +47,9 @@ public class CategoryEditorDialog extends BaseDialogFragment {
     private int mPositiveTextId;
     private int mNegativeTextId;
 
-    public static CategoryEditorDialog newInstance(@IntegerRes int titleId,
-                                                   @IntegerRes int positiveTextId,
-                                                   @IntegerRes int negativeTextId) {
+    public static CategoryEditorDialog newInstance(@StringRes int titleId,
+                                                   @StringRes int positiveTextId,
+                                                   @StringRes int negativeTextId) {
         Bundle args = new Bundle();
         args.putInt(ARGUMENT_TITLE_ID, titleId);
         args.putInt(ARGUMENT_POSITIVE_TEXT_ID, positiveTextId);
