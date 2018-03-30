@@ -22,6 +22,7 @@ android {
         versionCode 9
         versionName "1.4.4"
         resConfigs "en", "ru"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
