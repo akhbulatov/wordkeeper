@@ -19,8 +19,12 @@ package com.akhbulatov.wordkeeper;
 import android.app.Application;
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by alidi on 09.09.2017.
@@ -42,5 +46,12 @@ public class App extends Application {
             return;
         }
         mRefWatcher = LeakCanary.install(this);
+
+        Crashlytics crashlyticsKit = new Crashlytics.Builder()
+                .core(new CrashlyticsCore.Builder()
+                        .disabled(BuildConfig.DEBUG)
+                        .build())
+                .build();
+        Fabric.with(this, crashlyticsKit);
     }
 }

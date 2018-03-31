@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.akhbulatov.wordkeeper">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -31,6 +33,10 @@
         <activity
             android:name=".ui.activity.CategoryContentActivity"
             android:parentActivityName=".ui.activity.MainActivity" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="999c7221c0f2ad6ce13abf191bfd1f9a46a1e53f" />
     </application>
 
 </manifest>
