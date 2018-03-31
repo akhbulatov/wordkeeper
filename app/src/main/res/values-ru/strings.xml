@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">WordKeeper</string>
-
     <string name="drawer_open">Открыть панель навигации</string>
     <string name="drawer_close">Закрыть панель навигации</string>
 
