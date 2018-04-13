@@ -25,6 +25,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -62,11 +63,6 @@ import com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView;
 import com.akhbulatov.wordkeeper.util.CommonUtils;
 import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-
 /**
  * Shows a list of categories from the database.
  * Loader uses a custom class for working with the database,
@@ -84,12 +80,9 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
     // Contains the ID of the current selected item (category)
     private long mSelectedItemId;
 
-    @BindView(R.id.recycler_category_list)
-    ContextMenuRecyclerView categoryList;
-    @BindView(R.id.text_no_results_category)
-    TextView textNoResultsCategory;
+    private ContextMenuRecyclerView mCategoryList;
+    private TextView mTextNoResultsCategory;
 
-    private Unbinder mUnbinder;
     private CategoryAdapter mCategoryAdapter;
     private CategoryDatabaseAdapter mCategoryDbAdapter;
     private WordDatabaseAdapter mWordDbAdapter;
@@ -129,26 +122,26 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mUnbinder = ButterKnife.bind(this, view);
+        mCategoryList = view.findViewById(R.id.recycler_category_list);
+        mCategoryList.setHasFixedSize(true);
+        mCategoryList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        mCategoryList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        registerForContextMenu(mCategoryList);
 
-        categoryList.setHasFixedSize(true);
-        categoryList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        categoryList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        registerForContextMenu(categoryList);
+        mTextNoResultsCategory = view.findViewById(R.id.text_no_results_category);
+        mTextNoResultsCategory.setVisibility(View.GONE);
 
-        textNoResultsCategory.setVisibility(View.GONE);
+        FloatingActionButton fabAddWord = view.findViewById(R.id.fab_add_word);
+        fabAddWord.setOnClickListener(view1 ->
+                mListener.onFabAddWordClick(R.string.title_new_word,
+                        R.string.word_editor_action_add,
+                        android.R.string.cancel));
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(LOADER_ID, null, this);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mUnbinder.unbind();
     }
 
     @Override
@@ -190,14 +183,14 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
                                 getString(R.string.no_results_category), escapedNewText);
                         CharSequence styledNoResults = Html.fromHtml(formattedNoResults);
 
-                        textNoResultsCategory.setText(styledNoResults);
-                        textNoResultsCategory.setVisibility(View.VISIBLE);
+                        mTextNoResultsCategory.setText(styledNoResults);
+                        mTextNoResultsCategory.setVisibility(View.VISIBLE);
                     } else {
-                        textNoResultsCategory.setVisibility(View.GONE);
+                        mTextNoResultsCategory.setVisibility(View.GONE);
                     }
                 } else {
                     mCategoryAdapter.swapCursor(cursor);
-                    textNoResultsCategory.setVisibility(View.GONE);
+                    mTextNoResultsCategory.setVisibility(View.GONE);
                 }
                 return true;
             }
@@ -262,7 +255,7 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
             // The adapter is created only the first time retrieving data from the database
             mCategoryAdapter = new CategoryAdapter(data, mWordDbAdapter);
             mCategoryAdapter.setHasStableIds(true);
-            categoryList.setAdapter(mCategoryAdapter);
+            mCategoryList.setAdapter(mCategoryAdapter);
         } else {
             mCategoryAdapter.swapCursor(data);
         }
@@ -273,13 +266,6 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         if (mCategoryAdapter != null) {
             mCategoryAdapter.swapCursor(null);
         }
-    }
-
-    @OnClick(R.id.fab_add_word)
-    public void onAddWordClicked() {
-        mListener.onFabAddWordClick(R.string.title_new_word,
-                R.string.word_editor_action_add,
-                android.R.string.cancel);
     }
 
     // Passes the ID of the text on the positive button
@@ -320,7 +306,7 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
             CommonUtils.showToast(getActivity(), R.string.error_category_editor_empty_field);
         } else {
             mCategoryDbAdapter.insert(new Category(name));
-            categoryList.scrollToPosition(0);
+            mCategoryList.scrollToPosition(0);
             getLoaderManager().restartLoader(LOADER_ID, null, this);
         }
     }

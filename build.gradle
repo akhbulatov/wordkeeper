@@ -27,7 +27,6 @@ ext {
 
     supportLibVersion = "27.1.1"
 
-    butterKnifeVersion = "8.8.1"
     leakCanaryVersion = "1.5.4"
     crashlyticsVersion = "2.9.1"
 }
