@@ -20,14 +20,12 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
 
 import com.akhbulatov.wordkeeper.R;
-import com.akhbulatov.wordkeeper.event.CategoryEditEvent;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * @author Alidibir Akhbulatov
@@ -47,6 +45,8 @@ public class CategoryEditorDialog extends BaseDialogFragment {
     private int mPositiveTextId;
     private int mNegativeTextId;
 
+    private CategoryEditorDialogListener mListener;
+
     public static CategoryEditorDialog newInstance(@StringRes int titleId,
                                                    @StringRes int positiveTextId,
                                                    @StringRes int negativeTextId) {
@@ -63,6 +63,13 @@ public class CategoryEditorDialog extends BaseDialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            mListener = (CategoryEditorDialogListener) getTargetFragment();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getTargetFragment().toString() + " must implement "
+                    + CategoryEditorDialogListener.class.getName());
+        }
+
         Bundle args = getArguments();
         if (args != null) {
             mTitleId = args.getInt(ARGUMENT_TITLE_ID);
@@ -80,13 +87,22 @@ public class CategoryEditorDialog extends BaseDialogFragment {
         builder.setView(inflater.inflate(R.layout.dialog_category_editor, null))
                 .setTitle(mTitleId)
                 .setPositiveButton(mPositiveTextId, (dialog, which) ->
-                        EventBus.getDefault().post(new CategoryEditEvent(CategoryEditorDialog.this,
-                        mPositiveTextId)))
+                        mListener.onFinishCategoryEditorDialog(CategoryEditorDialog.this, mPositiveTextId))
                 .setNegativeButton(mNegativeTextId, (dialog, which) -> dialog.dismiss());
 
         Dialog dialog = builder.create();
         // Shows the soft keyboard automatically
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return dialog;
+    }
+
+    public interface CategoryEditorDialogListener {
+        /**
+         * Applies the changes to the edited category in the dialog
+         *
+         * @param dialog         The current open dialog
+         * @param positiveTextId The ID of the text on the positive button
+         */
+        void onFinishCategoryEditorDialog(DialogFragment dialog, int positiveTextId);
     }
 }

@@ -25,10 +25,7 @@ import android.support.v7.app.AlertDialog;
 
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
-import com.akhbulatov.wordkeeper.event.CategoryEvent;
 import com.akhbulatov.wordkeeper.model.Category;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -39,10 +36,18 @@ import java.util.List;
 public class CategoryListDialog extends BaseDialogFragment {
 
     private String[] mCategories;
+    private CategoryListDialogListener mListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            mListener = (CategoryListDialogListener) getTargetFragment();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getTargetFragment().toString() + " must implement "
+                    + CategoryListDialogListener.class.getName());
+        }
+
         // Gets category list from the database
         CategoryDatabaseAdapter categoryDbAdapter = new CategoryDatabaseAdapter(getActivity());
         categoryDbAdapter.open();
@@ -65,10 +70,14 @@ public class CategoryListDialog extends BaseDialogFragment {
 
         return builder.setTitle(R.string.category_list_title)
                 .setItems(mCategories, (dialog, which) -> {
-                    EventBus.getDefault().post(new CategoryEvent(mCategories[which]));
+                    mListener.onFinishCategoryListDialog(mCategories[which]);
                     dialog.dismiss();
                 })
                 .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .create();
+    }
+
+    public interface CategoryListDialogListener {
+        void onFinishCategoryListDialog(String category);
     }
 }

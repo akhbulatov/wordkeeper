@@ -39,15 +39,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.akhbulatov.wordkeeper.R;
-import com.akhbulatov.wordkeeper.event.WordEditEvent;
 import com.akhbulatov.wordkeeper.ui.dialog.WordEditorDialog;
 import com.akhbulatov.wordkeeper.ui.fragment.CategoryListFragment;
 import com.akhbulatov.wordkeeper.ui.fragment.WordListFragment;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.util.CommonUtils;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,7 +51,8 @@ import butterknife.ButterKnife;
 /**
  * Provides navigation drawer to switch between screens
  */
-public class MainActivity extends AppCompatActivity implements FabAddWordListener {
+public class MainActivity extends AppCompatActivity implements FabAddWordListener,
+        WordEditorDialog.WordEditorDialogListener {
 
     private static final String BUNDLE_SCREEN_TITLE = "BUNDLE_SCREEN_TITLE";
 
@@ -119,16 +116,16 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         // Passes any configuration change to the drawer toggles
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(BUNDLE_SCREEN_TITLE, getTitle().toString());
     }
 
     @Override
@@ -151,47 +148,35 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(BUNDLE_SCREEN_TITLE, getTitle().toString());
-    }
-
-    @Override
-    protected void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
-
-    @Override
     public void onFabAddWordClick(int titleId, int positiveTextId, int negativeTextId) {
         showWordEditorDialog(titleId, positiveTextId, negativeTextId);
     }
 
-    @Subscribe
-    public void onWordEditSelected(WordEditEvent event) {
-        /*
-        uses the ID of the text on the positive button
-        to determine which the dialog (word) button was pressed: add or edit
-        */
-        if (event.getPositiveTextId() == R.string.word_editor_action_add) {  // add the word
-            mWordListFragment.addWord(event.getDialog());
+    // Passes the ID of the text on the positive button
+    // to determine which the dialog (word) button was pressed: add or edit
+    @Override
+    public void onFinishWordEditorDialog(DialogFragment dialog, int positiveTextId) {
+        // Add the word
+        if (positiveTextId == R.string.word_editor_action_add) {
+            mWordListFragment.addWord(dialog);
 
             // Updates the category list only from the screen "Categories"
             if (mCategoryListFragment != null && mCategoryListFragment.isVisible()) {
                 mCategoryListFragment.updateCategoryList();
+            } else {
+                // Edit the word
+                Dialog dialogView = dialog.getDialog();
+
+                EditText editName = dialogView.findViewById(R.id.edit_word_name);
+                EditText editTranslation = dialogView.findViewById(R.id.edit_word_translation);
+                Spinner spinnerCategories = dialogView.findViewById(R.id.spinner_categories);
+
+                String name = editName.getText().toString();
+                String translation = editTranslation.getText().toString();
+                String category = spinnerCategories.getSelectedItem().toString();
+
+                mWordListFragment.editWord(name, translation, category);
             }
-        } else {  // edit the word
-            Dialog dialogView = event.getDialog().getDialog();
-
-            EditText editName = dialogView.findViewById(R.id.edit_word_name);
-            EditText editTranslation = dialogView.findViewById(R.id.edit_word_translation);
-            Spinner spinnerCategories = dialogView.findViewById(R.id.spinner_categories);
-
-            String name = editName.getText().toString();
-            String translation = editTranslation.getText().toString();
-            String category = spinnerCategories.getSelectedItem().toString();
-
-            mWordListFragment.editWord(name, translation, category);
         }
     }
 

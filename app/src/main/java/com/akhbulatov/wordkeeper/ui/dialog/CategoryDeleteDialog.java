@@ -19,12 +19,11 @@ package com.akhbulatov.wordkeeper.ui.dialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import com.akhbulatov.wordkeeper.R;
-import com.akhbulatov.wordkeeper.event.CategoryEvent;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * @author Alidibir Akhbulatov
@@ -36,6 +35,19 @@ import org.greenrobot.eventbus.EventBus;
  */
 public class CategoryDeleteDialog extends BaseDialogFragment {
 
+    private CategoryDeleteListener mListener;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try {
+            mListener = (CategoryDeleteListener) getTargetFragment();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getTargetFragment().toString() + " must implement "
+                    + CategoryDeleteListener.class.getName());
+        }
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -43,9 +55,18 @@ public class CategoryDeleteDialog extends BaseDialogFragment {
         return builder.setTitle(R.string.category_delete_title)
                 .setMessage(R.string.category_delete_message)
                 .setPositiveButton(R.string.category_action_delete,
-                        (dialog, which) -> EventBus.getDefault().post(new CategoryEvent(null)))
+                        (dialog, which) -> mListener.onFinishCategoryDeleteDialog(CategoryDeleteDialog.this))
                 .setNegativeButton(android.R.string.cancel,
                         (dialog, which) -> dialog.dismiss())
                 .create();
+    }
+
+    public interface CategoryDeleteListener {
+        /**
+         * Applies the changes when the category is deleted
+         *
+         * @param dialog The current open dialog
+         */
+        void onFinishCategoryDeleteDialog(DialogFragment dialog);
     }
 }

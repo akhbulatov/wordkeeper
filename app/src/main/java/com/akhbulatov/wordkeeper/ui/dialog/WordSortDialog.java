@@ -19,13 +19,11 @@ package com.akhbulatov.wordkeeper.ui.dialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 
 import com.akhbulatov.wordkeeper.R;
-import com.akhbulatov.wordkeeper.event.SortEvent;
 import com.akhbulatov.wordkeeper.util.SharedPreferencesManager;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * @author Alidibir Akhbulatov
@@ -36,6 +34,20 @@ import org.greenrobot.eventbus.EventBus;
  * Shows a dialog to select the mode of sorting the words in the list of words
  */
 public class WordSortDialog extends BaseDialogFragment {
+
+    private WordSortDialogListener mListener;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try {
+            mListener = (WordSortDialogListener) getTargetFragment();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getTargetFragment().toString() + " must implement "
+                    + WordSortDialogListener.class.getName());
+        }
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -45,12 +57,21 @@ public class WordSortDialog extends BaseDialogFragment {
         return builder.setTitle(R.string.action_sort_word)
                 .setSingleChoiceItems(R.array.sort_words, sortMode,
                         (dialog, which) -> {
-                            EventBus.getDefault().post(new SortEvent(which));
+                            mListener.onFinishWordSortDialog(which);
                             SharedPreferencesManager.setSortMode(getActivity(), which);
                             dialog.dismiss();
                         })
                 .setNegativeButton(android.R.string.cancel,
                         (dialog, which) -> dialog.dismiss())
                 .create();
+    }
+
+    public interface WordSortDialogListener {
+        /**
+         * Uses to update the list of words when selecting the sort mode
+         *
+         * @param sortMode The sort mode for the list of words
+         */
+        void onFinishWordSortDialog(int sortMode);
     }
 }
