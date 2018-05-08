@@ -16,6 +16,8 @@
 
 package com.akhbulatov.wordkeeper.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -26,7 +28,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.akhbulatov.wordkeeper.R;
-import com.akhbulatov.wordkeeper.adapter.CategoryAdapter;
 import com.akhbulatov.wordkeeper.adapter.WordAdapter;
 import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
 
@@ -34,6 +35,14 @@ import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
  * Shows all the words from a certain category
  */
 public class CategoryContentActivity extends AppCompatActivity {
+
+    private static final String EXTRA_CATEGORY_NAME = "EXTRA_CATEGORY_NAME";
+
+    public static Intent newIntent(Context context, String categoryName) {
+        Intent intent = new Intent(context, CategoryContentActivity.class);
+        intent.putExtra(EXTRA_CATEGORY_NAME, categoryName);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +53,7 @@ public class CategoryContentActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        String categoryName = getIntent().getStringExtra(CategoryAdapter.EXTRA_CATEGORY_NAME);
+        String categoryName = getIntent().getStringExtra(EXTRA_CATEGORY_NAME);
         setTitle(categoryName);
 
         RecyclerView wordList = findViewById(R.id.recycler_word_list);

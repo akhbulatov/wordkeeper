@@ -55,6 +55,7 @@ import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
 import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
 import com.akhbulatov.wordkeeper.model.Category;
 import com.akhbulatov.wordkeeper.model.Word;
+import com.akhbulatov.wordkeeper.ui.activity.CategoryContentActivity;
 import com.akhbulatov.wordkeeper.ui.activity.MainActivity;
 import com.akhbulatov.wordkeeper.ui.dialog.CategoryDeleteDialog;
 import com.akhbulatov.wordkeeper.ui.dialog.CategoryEditorDialog;
@@ -69,6 +70,7 @@ import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
  * NOT the ContentProvider (temporary solution)
  */
 public class CategoryListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,
+        CategoryAdapter.CategoryItemClickListener,
         CategoryEditorDialog.CategoryEditorDialogListener,
         CategoryDeleteDialog.CategoryDeleteListener {
 
@@ -255,6 +257,7 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
             // The adapter is created only the first time retrieving data from the database
             mCategoryAdapter = new CategoryAdapter(data, mWordDbAdapter);
             mCategoryAdapter.setHasStableIds(true);
+            mCategoryAdapter.setOnItemClickListener(this);
             mCategoryList.setAdapter(mCategoryAdapter);
         } else {
             mCategoryAdapter.swapCursor(data);
@@ -266,6 +269,11 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         if (mCategoryAdapter != null) {
             mCategoryAdapter.swapCursor(null);
         }
+    }
+
+    @Override
+    public void onCategoryItemClick(String categoryName) {
+        startActivity(CategoryContentActivity.newIntent(getActivity(), categoryName));
     }
 
     // Passes the ID of the text on the positive button

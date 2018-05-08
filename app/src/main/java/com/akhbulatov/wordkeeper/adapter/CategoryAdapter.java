@@ -17,7 +17,6 @@
 package com.akhbulatov.wordkeeper.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -30,7 +29,6 @@ import android.widget.TextView;
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.CategoryEntry;
 import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
-import com.akhbulatov.wordkeeper.ui.activity.CategoryContentActivity;
 
 /**
  * @author Alidibir Akhbulatov
@@ -42,9 +40,8 @@ import com.akhbulatov.wordkeeper.ui.activity.CategoryContentActivity;
  */
 public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.CategoryViewHolder> {
 
-    public static final String EXTRA_CATEGORY_NAME = "com.akhbulatov.wordkeeper.EXTRA_CATEGORY_NAME";
-
     private WordDatabaseAdapter mWordDbAdapter;
+    private CategoryItemClickListener mListener;
 
     public CategoryAdapter(Cursor cursor, WordDatabaseAdapter wordDbAdapter) {
         super(cursor);
@@ -60,21 +57,12 @@ public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.C
 
     @Override
     public void onBindViewHolder(CategoryViewHolder viewHolder, Cursor cursor) {
-        Context context = viewHolder.itemView.getContext();
+        String numberOfWords = getNumberOfWords(viewHolder.itemView.getContext(), cursor);
+        viewHolder.bind(cursor, numberOfWords, mListener);
+    }
 
-        String categoryName = cursor.getString(cursor.getColumnIndex(CategoryEntry.COLUMN_NAME));
-        viewHolder.setCategoryName(categoryName);
-        viewHolder.setNumberOfWords(getNumberOfWords(context, cursor));
-
-        // Makes the default category of non-editable
-        String defaultCategory = context.getResources().getString(R.string.default_category);
-        if (defaultCategory.equals(categoryName)) {
-            viewHolder.setMoreOptionsVisibility(View.GONE);
-            viewHolder.itemView.setLongClickable(false);
-        } else {
-            viewHolder.setMoreOptionsVisibility(View.VISIBLE);
-            viewHolder.itemView.setLongClickable(true);
-        }
+    public void setOnItemClickListener(CategoryItemClickListener listener) {
+        mListener = listener;
     }
 
     private String getNumberOfWords(Context context, Cursor cursor) {
@@ -96,27 +84,34 @@ public class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryAdapter.C
             mTextCategoryName = itemView.findViewById(R.id.text_category_name);
             mTextNumberOfWords = itemView.findViewById(R.id.text_number_of_words);
             mImageMoreOptions = itemView.findViewById(R.id.image_more_options);
+        }
 
-            itemView.setLongClickable(true);
+        void bind(Cursor cursor, String numberOfWords, CategoryItemClickListener listener) {
+            Context context = itemView.getContext();
+
+            String categoryName = cursor.getString(cursor.getColumnIndex(CategoryEntry.COLUMN_NAME));
+            mTextCategoryName.setText(categoryName);
+            mTextNumberOfWords.setText(numberOfWords);
+
+            // Makes the default category of non-editable
+            String defaultCategory = context.getResources().getString(R.string.default_category);
+            if (defaultCategory.equals(categoryName)) {
+                mImageMoreOptions.setVisibility(View.GONE);
+                mImageMoreOptions.setOnClickListener(null);
+                itemView.setLongClickable(false);
+            } else {
+                mImageMoreOptions.setVisibility(View.VISIBLE);
+                mImageMoreOptions.setOnClickListener(v -> itemView.showContextMenu());
+                itemView.setLongClickable(true);
+            }
             itemView.setOnClickListener(v -> {
-                Context context = itemView.getContext();
-                Intent intent = new Intent(context, CategoryContentActivity.class);
-                intent.putExtra(EXTRA_CATEGORY_NAME, mTextCategoryName.getText().toString());
-                context.startActivity(intent);
+                if (listener != null)
+                    listener.onCategoryItemClick(mTextCategoryName.getText().toString());
             });
-            mImageMoreOptions.setOnClickListener(v -> itemView.showContextMenu());
         }
+    }
 
-        void setCategoryName(String name) {
-            mTextCategoryName.setText(name);
-        }
-
-        void setNumberOfWords(String number) {
-            mTextNumberOfWords.setText(number);
-        }
-
-        void setMoreOptionsVisibility(int visibility) {
-            mImageMoreOptions.setVisibility(visibility);
-        }
+    public interface CategoryItemClickListener {
+        void onCategoryItemClick(String categoryName);
     }
 }
