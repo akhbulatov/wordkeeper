@@ -40,36 +40,23 @@ import java.util.List;
 public class WordAdapter extends CursorRecyclerViewAdapter<WordAdapter.WordViewHolder> {
 
     private SparseBooleanArray mSelectedWords;
-    private WordViewHolder.WordAdapterListener mListener;
+    private WordItemClickListener mListener;
 
     public WordAdapter(Cursor cursor) {
         super(cursor);
         mSelectedWords = new SparseBooleanArray();
-        mListener = null;
-    }
-
-    public WordAdapter(Cursor cursor, WordViewHolder.WordAdapterListener listener) {
-        super(cursor);
-        mSelectedWords = new SparseBooleanArray();
-        mListener = listener;
     }
 
     @NonNull
     @Override
     public WordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_word, parent, false);
-        return new WordViewHolder(itemView, mListener);
+        return new WordViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(WordViewHolder viewHolder, Cursor cursor) {
-        viewHolder.setWordName(cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME)));
-        viewHolder.setWordTranslation(cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION)));
-
-        int selectedItemColor =
-                ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.selected_list_item);
-        viewHolder.itemView.setBackgroundColor(isSelected(cursor.getPosition()) ?
-                selectedItemColor : Color.TRANSPARENT);
+        viewHolder.bind(cursor, isSelected(cursor.getPosition()), mListener);
     }
 
     public List<Integer> getSelectedWords() {
@@ -80,12 +67,12 @@ public class WordAdapter extends CursorRecyclerViewAdapter<WordAdapter.WordViewH
         return words;
     }
 
-    public int getSelectedWordCount() {
-        return mSelectedWords.size();
+    public void setOnItemClickListener(WordItemClickListener listener) {
+        mListener = listener;
     }
 
-    public boolean isSelected(int position) {
-        return getSelectedWords().contains(position);
+    public int getSelectedWordCount() {
+        return mSelectedWords.size();
     }
 
     public void toggleSelection(int position) {
@@ -105,41 +92,39 @@ public class WordAdapter extends CursorRecyclerViewAdapter<WordAdapter.WordViewH
         }
     }
 
-    public static class WordViewHolder extends RecyclerView.ViewHolder {
+    private boolean isSelected(int position) {
+        return getSelectedWords().contains(position);
+    }
+
+    static class WordViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mTextWordName;
         private TextView mTextWordTranslation;
 
-        private WordAdapterListener mListener;
-
-        WordViewHolder(View itemView, WordAdapterListener listener) {
+        WordViewHolder(View itemView) {
             super(itemView);
             mTextWordName = itemView.findViewById(R.id.text_word_name);
             mTextWordTranslation = itemView.findViewById(R.id.text_word_translation);
+        }
 
-            mListener = listener;
+        void bind(Cursor cursor, boolean selected, WordItemClickListener listener) {
+            mTextWordName.setText((cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME))));
+            mTextWordTranslation.setText((cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION))));
+
+            int selectedItemColor = ContextCompat.getColor(itemView.getContext(), R.color.selected_list_item);
+            itemView.setBackgroundColor(selected ? selectedItemColor : Color.TRANSPARENT);
 
             itemView.setOnClickListener(v -> {
-                if (mListener != null) {
-                    mListener.onWordItemClick(getAdapterPosition());
-                }
+                if (listener != null) listener.onWordItemClick(getAdapterPosition());
             });
             itemView.setOnLongClickListener(v ->
-                    mListener != null && mListener.onWordItemLongClick(getAdapterPosition()));
+                    listener != null && listener.onWordItemLongClick(getAdapterPosition()));
         }
+    }
 
-        void setWordName(String name) {
-            mTextWordName.setText(name);
-        }
+    public interface WordItemClickListener {
+        void onWordItemClick(int position);
 
-        void setWordTranslation(String translation) {
-            mTextWordTranslation.setText(translation);
-        }
-
-        public interface WordAdapterListener {
-            void onWordItemClick(int position);
-
-            boolean onWordItemLongClick(int position);
-        }
+        boolean onWordItemLongClick(int position);
     }
 }

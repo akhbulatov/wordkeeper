@@ -72,7 +72,7 @@ import java.util.List;
  * NOT the ContentProvider (temporary solution)
  */
 public class WordListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,
-        WordAdapter.WordViewHolder.WordAdapterListener,
+        WordAdapter.WordItemClickListener,
         WordSortDialog.WordSortDialogListener,
         CategoryListDialog.CategoryListDialogListener {
 
@@ -242,8 +242,9 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         if (mWordAdapter == null) {
             // The adapter is created only the first time retrieving data from the database
-            mWordAdapter = new WordAdapter(data, this);
+            mWordAdapter = new WordAdapter(data);
             mWordAdapter.setHasStableIds(true);
+            mWordAdapter.setOnItemClickListener(this);
             mWordList.setAdapter(mWordAdapter);
         } else {
             mWordAdapter.swapCursor(data);
