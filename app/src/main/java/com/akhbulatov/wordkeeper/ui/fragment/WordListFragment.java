@@ -33,7 +33,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.Html;
@@ -135,7 +134,6 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
         mWordList = view.findViewById(R.id.recycler_word_list);
         mWordList.setHasFixedSize(true);
         mWordList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        mWordList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mTextEmptyWordList = view.findViewById(R.id.text_empty_word_list);
         mTextEmptyWordList.setVisibility(View.GONE);
