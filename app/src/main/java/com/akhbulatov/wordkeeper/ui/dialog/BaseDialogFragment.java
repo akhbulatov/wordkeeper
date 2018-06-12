@@ -25,6 +25,6 @@ public abstract class BaseDialogFragment extends DialogFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        App.getRefWatcher(getActivity()).watch(this);
+        App.getRefWatcher().watch(this);
     }
 }

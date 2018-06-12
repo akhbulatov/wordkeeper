@@ -17,7 +17,6 @@
 package com.akhbulatov.wordkeeper;
 
 import android.app.Application;
-import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
@@ -31,22 +30,32 @@ import io.fabric.sdk.android.Fabric;
  */
 
 public class App extends Application {
+
+    private static App instance;
     private RefWatcher mRefWatcher;
 
-    public static RefWatcher getRefWatcher(Context context) {
-        return ((App) context.getApplicationContext()).mRefWatcher;
+    public static RefWatcher getRefWatcher() {
+        return instance.mRefWatcher;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
+        initLeakCanary();
+        initCrashlytics();
+    }
+
+    private void initLeakCanary() {
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
             // You should not init your app in this process.
             return;
         }
         mRefWatcher = LeakCanary.install(this);
+    }
 
+    private void initCrashlytics() {
         Crashlytics crashlyticsKit = new Crashlytics.Builder()
                 .core(new CrashlyticsCore.Builder()
                         .disabled(BuildConfig.DEBUG)
