@@ -84,6 +84,8 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
     private ContextMenuRecyclerView mCategoryList;
     private TextView mTextNoResultsCategory;
 
+    private LoaderManager loaderManager;
+
     private CategoryAdapter mCategoryAdapter;
     private CategoryDatabaseAdapter mCategoryDbAdapter;
     private WordDatabaseAdapter mWordDbAdapter;
@@ -101,10 +103,13 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        loaderManager = getLoaderManager();
 
         mCategoryDbAdapter = new CategoryDatabaseAdapter(getActivity());
         mCategoryDbAdapter.open();
@@ -138,11 +143,10 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
                         android.R.string.cancel));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(LOADER_ID, null, this);
+        loaderManager.initLoader(LOADER_ID, null, this);
     }
 
     @Override
@@ -296,12 +300,10 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         deleteCategory();
     }
 
-    @SuppressWarnings("deprecation")
     public void updateCategoryList() {
-        getLoaderManager().restartLoader(LOADER_ID, null, this);
+        loaderManager.restartLoader(LOADER_ID, null, this);
     }
 
-    @SuppressWarnings("deprecation")
     private void addCategory(DialogFragment dialog) {
         Dialog dialogView = dialog.getDialog();
 
@@ -313,11 +315,10 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         } else {
             mCategoryDbAdapter.insert(new Category(name));
             mCategoryList.scrollToPosition(0);
-            getLoaderManager().restartLoader(LOADER_ID, null, this);
+            loaderManager.restartLoader(LOADER_ID, null, this);
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void renameCategory(String name) {
         if (TextUtils.isEmpty(name)) {
             CommonUtils.showToast(getActivity(), R.string.error_category_editor_empty_field);
@@ -336,11 +337,10 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
             }
 
             mCategoryDbAdapter.update(new Category(mSelectedItemId, name));
-            getLoaderManager().restartLoader(LOADER_ID, null, this);
+            loaderManager.restartLoader(LOADER_ID, null, this);
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void deleteCategory() {
         // First, deletes all words that are in the deleted category
         Cursor cursor = mWordDbAdapter.getRecordsByCategory(getName());
@@ -352,7 +352,7 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         }
 
         mCategoryDbAdapter.delete(new Category(mSelectedItemId));
-        getLoaderManager().restartLoader(LOADER_ID, null, this);
+        loaderManager.restartLoader(LOADER_ID, null, this);
     }
 
     @Nullable

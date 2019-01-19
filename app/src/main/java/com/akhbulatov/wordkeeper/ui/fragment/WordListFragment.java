@@ -88,6 +88,8 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
     private TextView mTextEmptyWordList;
     private TextView mTextNoResultsWord;
 
+    private LoaderManager loaderManager;
+
     private WordAdapter mWordAdapter;
     private WordDatabaseAdapter mWordDbAdapter;
 
@@ -107,10 +109,13 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        loaderManager = getLoaderManager();
 
         mWordDbAdapter = new WordDatabaseAdapter(getActivity());
         mWordDbAdapter.open();
@@ -147,11 +152,10 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
 
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(LOADER_ID, null, this);
+        loaderManager.initLoader(LOADER_ID, null, this);
     }
 
     @Override
@@ -278,12 +282,11 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
         return true;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onFinishWordSortDialog(int sortMode) {
         // Saves to pass to the inner class SimpleCursorLoader
         sSortMode = sortMode;
-        getLoaderManager().restartLoader(LOADER_ID, null, this);
+        loaderManager.restartLoader(LOADER_ID, null, this);
     }
 
     // Updates the word list with the new sort mode
@@ -313,7 +316,6 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
      *
      * @param dialog The dialog from where take the data (word) to save
      */
-    @SuppressWarnings("deprecation")
     public void addWord(DialogFragment dialog) {
         Dialog dialogView = dialog.getDialog();
 
@@ -334,18 +336,17 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
             if (mWordList != null) {
                 mWordList.scrollToPosition(0);
             }
-            getLoaderManager().restartLoader(LOADER_ID, null, this);
+            loaderManager.restartLoader(LOADER_ID, null, this);
         }
     }
 
-    @SuppressWarnings("deprecation")
     public void editWord(String name, String translation, String category) {
         if ((TextUtils.isEmpty(name) & TextUtils.isEmpty(translation))
                 | (TextUtils.isEmpty(name) | TextUtils.isEmpty(translation))) {
             CommonUtils.showToast(getActivity(), R.string.error_word_editor_empty_fields);
         } else {
             mWordDbAdapter.update(new Word(mSelectedItemId, name, translation, category));
-            getLoaderManager().restartLoader(LOADER_ID, null, this);
+            loaderManager.restartLoader(LOADER_ID, null, this);
         }
     }
 
@@ -389,12 +390,11 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void deleteWords(List<Integer> words) {
         for (Integer i : words) {
             mWordDbAdapter.delete(new Word(mWordAdapter.getItemId(i)));
         }
-        getLoaderManager().restartLoader(LOADER_ID, null, this);
+        loaderManager.restartLoader(LOADER_ID, null, this);
     }
 
     /**
