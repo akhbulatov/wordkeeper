@@ -16,7 +16,7 @@
 
 package com.akhbulatov.wordkeeper.ui.listener;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 /**
  * @author Alidibir Akhbulatov

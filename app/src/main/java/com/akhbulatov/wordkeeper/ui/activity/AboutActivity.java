@@ -17,12 +17,13 @@
 package com.akhbulatov.wordkeeper.ui.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.akhbulatov.wordkeeper.BuildConfig;
 import com.akhbulatov.wordkeeper.R;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 /**
  * Shows a screen with information about the app

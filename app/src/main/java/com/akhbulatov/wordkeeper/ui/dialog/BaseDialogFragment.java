@@ -16,9 +16,9 @@
 
 package com.akhbulatov.wordkeeper.ui.dialog;
 
-import android.support.v4.app.DialogFragment;
-
 import com.akhbulatov.wordkeeper.App;
+
+import androidx.fragment.app.DialogFragment;
 
 public abstract class BaseDialogFragment extends DialogFragment {
 

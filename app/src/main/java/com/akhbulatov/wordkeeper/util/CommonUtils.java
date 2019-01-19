@@ -17,8 +17,9 @@
 package com.akhbulatov.wordkeeper.util;
 
 import android.content.Context;
-import android.support.annotation.StringRes;
 import android.widget.Toast;
+
+import androidx.annotation.StringRes;
 
 public class CommonUtils {
 

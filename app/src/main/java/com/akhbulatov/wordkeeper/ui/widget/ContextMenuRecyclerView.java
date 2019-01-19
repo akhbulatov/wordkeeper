@@ -17,10 +17,11 @@
 package com.akhbulatov.wordkeeper.ui.widget;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.ContextMenu;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Provides support to the context menu for RecyclerView

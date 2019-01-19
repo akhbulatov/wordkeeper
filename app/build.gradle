@@ -50,11 +50,11 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    // Support Libs
-    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
-    implementation "com.android.support:design:${rootProject.ext.supportLibVersion}"
-    implementation "com.android.support:recyclerview-v7:${rootProject.ext.supportLibVersion}"
-    implementation "com.android.support:support-v4:${rootProject.ext.supportLibVersion}"
+    // AndroidX
+    implementation "com.google.android.material:material:${rootProject.ext.androidXVersion}"
+    implementation "androidx.appcompat:appcompat:${rootProject.ext.appCompatVersion}"
+    implementation "androidx.recyclerview:recyclerview:${rootProject.ext.androidXVersion}"
+    implementation "androidx.legacy:legacy-support-v4:${rootProject.ext.androidXVersion}"
 
     // Leak Canary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${rootProject.ext.leakCanaryVersion}"

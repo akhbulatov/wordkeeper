@@ -16,9 +16,9 @@
 
 package com.akhbulatov.wordkeeper.ui.fragment;
 
-import android.support.v4.app.Fragment;
-
 import com.akhbulatov.wordkeeper.App;
+
+import androidx.fragment.app.Fragment;
 
 public abstract class BaseFragment extends Fragment {
 

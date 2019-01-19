@@ -19,15 +19,16 @@ package com.akhbulatov.wordkeeper.ui.dialog;
 import android.app.Dialog;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
 import com.akhbulatov.wordkeeper.model.Category;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 /**
  * @author Alidibir Akhbulatov
