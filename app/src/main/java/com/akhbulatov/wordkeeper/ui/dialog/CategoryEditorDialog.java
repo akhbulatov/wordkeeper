@@ -23,6 +23,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.Window;
 import android.view.WindowManager;
 
 import com.akhbulatov.wordkeeper.R;
@@ -81,8 +82,8 @@ public class CategoryEditorDialog extends BaseDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
 
         builder.setView(inflater.inflate(R.layout.dialog_category_editor, null))
                 .setTitle(mTitleId)
@@ -92,7 +93,10 @@ public class CategoryEditorDialog extends BaseDialogFragment {
 
         Dialog dialog = builder.create();
         // Shows the soft keyboard automatically
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        }
         return dialog;
     }
 

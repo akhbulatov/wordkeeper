@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Word Keeper</string>
+    <string name="app_name" translatable="false">Word Keeper</string>
 
     <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>

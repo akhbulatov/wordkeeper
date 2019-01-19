@@ -51,7 +51,7 @@ public class CategoryDeleteDialog extends BaseDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         return builder.setTitle(R.string.category_delete_title)
                 .setMessage(R.string.category_delete_message)
                 .setPositiveButton(R.string.category_action_delete,

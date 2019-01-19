@@ -16,7 +16,6 @@
 
 package com.akhbulatov.wordkeeper.ui.fragment;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.ComponentName;
@@ -91,14 +90,13 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
 
     private FabAddWordListener mListener;
 
-    @SuppressWarnings("deprecation")
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (FabAddWordListener) activity;
+            mListener = (FabAddWordListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement "
+            throw new ClassCastException(context.toString() + " must implement "
                     + FabAddWordListener.class.getName());
         }
     }
@@ -126,8 +124,8 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         super.onViewCreated(view, savedInstanceState);
         mCategoryList = view.findViewById(R.id.recycler_category_list);
         mCategoryList.setHasFixedSize(true);
-        mCategoryList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        mCategoryList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mCategoryList.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+        mCategoryList.setLayoutManager(new LinearLayoutManager(requireContext()));
         registerForContextMenu(mCategoryList);
 
         mTextNoResultsCategory = view.findViewById(R.id.text_no_results_category);
@@ -140,6 +138,7 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
                         android.R.string.cancel));
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -166,10 +165,11 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         MenuItem searchItem = menu.findItem(R.id.menu_search_category);
         SearchView searchView = (SearchView) searchItem.getActionView();
 
-        SearchManager searchManager = (SearchManager)
-                getActivity().getSystemService(Context.SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager
-                .getSearchableInfo(new ComponentName(getActivity(), MainActivity.class)));
+        SearchManager searchManager = (SearchManager) requireContext().getSystemService(Context.SEARCH_SERVICE);
+        if (searchManager != null) {
+            searchView.setSearchableInfo(
+                    searchManager.getSearchableInfo(new ComponentName(requireContext(), MainActivity.class)));
+        }
         searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -208,9 +208,7 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add_category:
-                showCategoryEditorDialog(R.string.title_new_category,
-                        R.string.category_editor_action_add,
-                        android.R.string.cancel);
+                showCategoryEditorDialog(R.string.title_new_category, R.string.category_editor_action_add);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -220,7 +218,7 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        getActivity().getMenuInflater().inflate(R.menu.selected_category, menu);
+        requireActivity().getMenuInflater().inflate(R.menu.selected_category, menu);
     }
 
     @Override
@@ -230,9 +228,7 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         switch (item.getItemId()) {
             case R.id.menu_rename_category:
                 mSelectedItemId = info.id;
-                showCategoryEditorDialog(R.string.title_rename_category,
-                        R.string.category_editor_action_rename,
-                        android.R.string.cancel);
+                showCategoryEditorDialog(R.string.title_rename_category, R.string.category_editor_action_rename);
                 return true;
             case R.id.menu_delete_category:
                 mSelectedItemId = info.id;
@@ -300,10 +296,12 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         deleteCategory();
     }
 
+    @SuppressWarnings("deprecation")
     public void updateCategoryList() {
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
+    @SuppressWarnings("deprecation")
     private void addCategory(DialogFragment dialog) {
         Dialog dialogView = dialog.getDialog();
 
@@ -319,6 +317,7 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void renameCategory(String name) {
         if (TextUtils.isEmpty(name)) {
             CommonUtils.showToast(getActivity(), R.string.error_category_editor_empty_field);
@@ -341,6 +340,7 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void deleteCategory() {
         // First, deletes all words that are in the deleted category
         Cursor cursor = mWordDbAdapter.getRecordsByCategory(getName());
@@ -360,16 +360,16 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         return mCategoryDbAdapter.get(mSelectedItemId).getName();
     }
 
-    private void showCategoryEditorDialog(int titleId, int positiveTextId, int negativeTextId) {
-        DialogFragment dialog = CategoryEditorDialog.newInstance(titleId, positiveTextId, negativeTextId);
+    private void showCategoryEditorDialog(int titleId, int positiveTextId) {
+        DialogFragment dialog = CategoryEditorDialog.newInstance(titleId, positiveTextId, android.R.string.cancel);
         dialog.setTargetFragment(CategoryListFragment.this, CATEGORY_EDITOR_DIALOG_REQUEST);
-        dialog.show(getActivity().getSupportFragmentManager(), null);
+        dialog.show(requireActivity().getSupportFragmentManager(), null);
 
         // Receives and shows data of the selected category to edit in the dialog
         // Data is the name of the category
         if (positiveTextId == R.string.category_editor_action_rename) {
             // NOTE! If the method is not called, the app crashes
-            getActivity().getSupportFragmentManager().executePendingTransactions();
+            requireActivity().getSupportFragmentManager().executePendingTransactions();
 
             Dialog dialogView = dialog.getDialog();
             EditText editName = dialogView.findViewById(R.id.edit_category_name);
@@ -380,7 +380,7 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
     private void showCategoryDeleteDialog() {
         DialogFragment dialog = new CategoryDeleteDialog();
         dialog.setTargetFragment(CategoryListFragment.this, CATEGORY_DELETE_DIALOG_REQUEST);
-        dialog.show(getActivity().getSupportFragmentManager(), null);
+        dialog.show(requireActivity().getSupportFragmentManager(), null);
     }
 
     /**

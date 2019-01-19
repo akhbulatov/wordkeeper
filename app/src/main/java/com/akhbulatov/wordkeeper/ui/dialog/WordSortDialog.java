@@ -51,7 +51,7 @@ public class WordSortDialog extends BaseDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         int sortMode = SharedPreferencesManager.getSortMode(getActivity());
 
         return builder.setTitle(R.string.action_sort_word)

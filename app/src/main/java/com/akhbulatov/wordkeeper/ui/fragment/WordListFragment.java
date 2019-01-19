@@ -16,7 +16,6 @@
 
 package com.akhbulatov.wordkeeper.ui.fragment;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.ComponentName;
@@ -97,14 +96,13 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
 
     private FabAddWordListener mListener;
 
-    @SuppressWarnings("deprecation")
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (FabAddWordListener) activity;
+            mListener = (FabAddWordListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement "
+            throw new ClassCastException(context.toString() + " must implement "
                     + FabAddWordListener.class.getName());
         }
     }
@@ -133,7 +131,7 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
         super.onViewCreated(view, savedInstanceState);
         mWordList = view.findViewById(R.id.recycler_word_list);
         mWordList.setHasFixedSize(true);
-        mWordList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        mWordList.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
 
         mTextEmptyWordList = view.findViewById(R.id.text_empty_word_list);
         mTextEmptyWordList.setVisibility(View.GONE);
@@ -142,13 +140,14 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
         mTextNoResultsWord.setVisibility(View.GONE);
 
         FloatingActionButton fabAddWord = view.findViewById(R.id.fab_add_word);
-        fabAddWord.setOnClickListener(view1 ->
+        fabAddWord.setOnClickListener(v ->
                 mListener.onFabAddWordClick(R.string.title_new_word,
                         R.string.word_editor_action_add,
                         android.R.string.cancel));
 
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -174,10 +173,11 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
         MenuItem searchItem = menu.findItem(R.id.menu_search_word);
         SearchView searchView = (SearchView) searchItem.getActionView();
 
-        SearchManager searchManager = (SearchManager)
-                getActivity().getSystemService(Context.SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager
-                .getSearchableInfo(new ComponentName(getActivity(), MainActivity.class)));
+        SearchManager searchManager = (SearchManager) requireActivity().getSystemService(Context.SEARCH_SERVICE);
+        if (searchManager != null) {
+            searchView.setSearchableInfo(searchManager
+                    .getSearchableInfo(new ComponentName(requireActivity(), MainActivity.class)));
+        }
         searchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -272,13 +272,13 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
     @Override
     public boolean onWordItemLongClick(int position) {
         if (mActionMode == null) {
-            mActionMode = ((AppCompatActivity)
-                    getActivity()).startSupportActionMode(mActionModeCallback);
+            mActionMode = ((AppCompatActivity) requireActivity()).startSupportActionMode(mActionModeCallback);
         }
         toggleSelection(position);
         return true;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onFinishWordSortDialog(int sortMode) {
         // Saves to pass to the inner class SimpleCursorLoader
@@ -313,6 +313,7 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
      *
      * @param dialog The dialog from where take the data (word) to save
      */
+    @SuppressWarnings("deprecation")
     public void addWord(DialogFragment dialog) {
         Dialog dialogView = dialog.getDialog();
 
@@ -337,6 +338,7 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
         }
     }
 
+    @SuppressWarnings("deprecation")
     public void editWord(String name, String translation, String category) {
         if ((TextUtils.isEmpty(name) & TextUtils.isEmpty(translation))
                 | (TextUtils.isEmpty(name) | TextUtils.isEmpty(translation))) {
@@ -387,6 +389,7 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void deleteWords(List<Integer> words) {
         for (Integer i : words) {
             mWordDbAdapter.delete(new Word(mWordAdapter.getItemId(i)));
@@ -412,13 +415,13 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
     private void showWordSortDialog() {
         DialogFragment dialog = new WordSortDialog();
         dialog.setTargetFragment(WordListFragment.this, WORD_SORT_DIALOG_REQUEST);
-        dialog.show(getActivity().getSupportFragmentManager(), null);
+        dialog.show(requireActivity().getSupportFragmentManager(), null);
     }
 
     private void showCategoryListDialog() {
         DialogFragment dialog = new CategoryListDialog();
         dialog.setTargetFragment(WordListFragment.this, CATEGORY_LIST_DIALOG_REQUEST);
-        dialog.show(getActivity().getSupportFragmentManager(), null);
+        dialog.show(requireActivity().getSupportFragmentManager(), null);
     }
 
     /**
