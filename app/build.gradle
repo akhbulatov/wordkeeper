@@ -11,7 +11,7 @@ keyStoreProperties.load(new FileInputStream(keyStorePropertiesFile))
 
 android {
     signingConfigs {
-        config {
+        release {
             keyAlias keyStoreProperties['keyAlias']
             keyPassword keyStoreProperties['keyPassword']
             storeFile file(keyStoreProperties['storeFile'])
@@ -36,9 +36,8 @@ android {
         release {
             shrinkResources true
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
-                    'proguard-rules.pro'
-            signingConfig signingConfigs.config
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -50,17 +49,15 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    // AndroidX
-    implementation "com.google.android.material:material:${rootProject.ext.androidXVersion}"
-    implementation "androidx.appcompat:appcompat:${rootProject.ext.appCompatVersion}"
-    implementation "androidx.recyclerview:recyclerview:${rootProject.ext.androidXVersion}"
+    // UI
+    implementation "com.google.android.material:material:$androidXVersion"
+    implementation "androidx.appcompat:appcompat:$appCompatVersion"
+    implementation "androidx.recyclerview:recyclerview:$androidXVersion"
 
-    // Leak Canary
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:${rootProject.ext.leakCanaryVersion}"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${rootProject.ext.leakCanaryVersion}"
-
-    // Crashlytics
-    implementation("com.crashlytics.sdk.android:crashlytics:${rootProject.ext.crashlyticsVersion}@aar") {
+    // Dev Tools
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+    implementation("com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion@aar") {
         transitive = true
     }
 }
