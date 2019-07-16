@@ -16,15 +16,7 @@
 
 package com.akhbulatov.wordkeeper.ui.dialog;
 
-import com.akhbulatov.wordkeeper.App;
-
 import androidx.fragment.app.DialogFragment;
 
 public abstract class BaseDialogFragment extends DialogFragment {
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        App.getRefWatcher().watch(this);
-    }
 }

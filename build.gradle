@@ -10,16 +10,18 @@ buildscript {
         materialVersion = '1.1.0-alpha08'
         appCompatVersion = '1.1.0-rc01'
         recyclerViewVersion = '1.1.0-beta01'
-        leakCanaryVersion = "1.6.3"
+        leakCanaryVersion = "2.0-alpha-3"
         crashlyticsVersion = "2.9.9"
         androidGradleVersion = '3.4.2'
         fabricVersion = '1.29.0'
     }
+
     repositories {
         jcenter()
         google()
         maven { url 'https://maven.fabric.io/public' }
     }
+
     dependencies {
         classpath "com.android.tools.build:gradle:$androidGradleVersion"
         classpath "io.fabric.tools:gradle:$fabricVersion"

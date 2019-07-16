@@ -16,15 +16,7 @@
 
 package com.akhbulatov.wordkeeper.ui.fragment;
 
-import com.akhbulatov.wordkeeper.App;
-
 import androidx.fragment.app.Fragment;
 
 public abstract class BaseFragment extends Fragment {
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        App.getRefWatcher().watch(this);
-    }
 }

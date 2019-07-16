@@ -10,16 +10,9 @@ def keyStoreProperties = new Properties()
 keyStoreProperties.load(new FileInputStream(keyStorePropertiesFile))
 
 android {
-    signingConfigs {
-        release {
-            keyAlias keyStoreProperties['keyAlias']
-            keyPassword keyStoreProperties['keyPassword']
-            storeFile file(keyStoreProperties['storeFile'])
-            storePassword keyStoreProperties['storePassword']
-        }
-    }
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
+
     defaultConfig {
         applicationId "com.akhbulatov.wordkeeper"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -29,10 +22,24 @@ android {
         resConfigs "en", "ru"
         vectorDrawables.useSupportLibrary = true
     }
+
+    signingConfigs {
+        release {
+            keyAlias keyStoreProperties['keyAlias']
+            keyPassword keyStoreProperties['keyPassword']
+            storeFile file(keyStoreProperties['storeFile'])
+            storePassword keyStoreProperties['storePassword']
+        }
+    }
+
     buildTypes {
         debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+            debuggable true
             ext.enableCrashlytics = false
         }
+
         release {
             shrinkResources true
             minifyEnabled true
@@ -40,6 +47,7 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -56,7 +64,6 @@ dependencies {
 
     // Dev Tools
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
     implementation("com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion@aar") {
         transitive = true
     }
