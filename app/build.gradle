@@ -50,9 +50,9 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     // UI
-    implementation "com.google.android.material:material:$androidXVersion"
+    implementation "com.google.android.material:material:$materialVersion"
     implementation "androidx.appcompat:appcompat:$appCompatVersion"
-    implementation "androidx.recyclerview:recyclerview:$androidXVersion"
+    implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
 
     // Dev Tools
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
