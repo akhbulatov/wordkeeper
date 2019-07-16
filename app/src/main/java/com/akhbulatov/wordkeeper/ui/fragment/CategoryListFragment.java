@@ -94,7 +94,7 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
     private FabAddWordListener mListener;
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
             mListener = (FabAddWordListener) context;
@@ -164,7 +164,7 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.fragment_category, menu);
 
         MenuItem searchItem = menu.findItem(R.id.menu_search_category);
@@ -210,7 +210,7 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add_category:
                 showCategoryEditorDialog(R.string.title_new_category, R.string.category_editor_action_add);
@@ -221,13 +221,13 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         requireActivity().getMenuInflater().inflate(R.menu.selected_category, menu);
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
         ContextMenuRecyclerView.RecyclerContextMenuInfo info =
                 (ContextMenuRecyclerView.RecyclerContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {

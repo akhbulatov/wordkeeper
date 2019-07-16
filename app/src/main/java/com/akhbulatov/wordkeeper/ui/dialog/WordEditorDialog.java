@@ -60,7 +60,7 @@ public class WordEditorDialog extends BaseDialogFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@NonNull Activity activity) {
         super.onAttach(activity);
         try {
             mListener = (WordEditorDialogListener) activity;

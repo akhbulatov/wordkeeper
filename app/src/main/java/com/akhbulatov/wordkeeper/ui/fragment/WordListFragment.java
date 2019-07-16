@@ -100,7 +100,7 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
     private FabAddWordListener mListener;
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
             mListener = (FabAddWordListener) context;
@@ -172,7 +172,7 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.fragment_word, menu);
 
         MenuItem searchItem = menu.findItem(R.id.menu_search_word);
@@ -223,7 +223,7 @@ public class WordListFragment extends BaseFragment implements LoaderManager.Load
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_sort_word:
                 showWordSortDialog();

@@ -19,6 +19,7 @@ package com.akhbulatov.wordkeeper.adapter;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHolder> extends
@@ -61,7 +62,7 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(VH viewHolder, int position) {
+    public void onBindViewHolder(@NonNull VH viewHolder, int position) {
         if (!mDataValid) {
             throw new IllegalStateException("This should only be called when the cursor is valid");
         }
