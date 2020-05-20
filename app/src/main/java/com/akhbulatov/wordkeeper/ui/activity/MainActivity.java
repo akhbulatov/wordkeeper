@@ -1,19 +1,3 @@
-/*
- * Copyright 2019 Alidibir Akhbulatov
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.akhbulatov.wordkeeper.ui.activity;
 
 import android.app.Dialog;
@@ -27,13 +11,19 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.akhbulatov.wordkeeper.App;
 import com.akhbulatov.wordkeeper.R;
+import com.akhbulatov.wordkeeper.presentation.ui.about.AboutFragment;
+import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment;
+import com.akhbulatov.wordkeeper.presentation.ui.main.MainViewModel;
 import com.akhbulatov.wordkeeper.ui.dialog.WordEditorDialog;
 import com.akhbulatov.wordkeeper.ui.fragment.CategoryListFragment;
 import com.akhbulatov.wordkeeper.ui.fragment.WordListFragment;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.util.CommonUtils;
 import com.google.android.material.navigation.NavigationView;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,11 +35,13 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
+import ru.terrakok.cicerone.Navigator;
+import ru.terrakok.cicerone.NavigatorHolder;
+import ru.terrakok.cicerone.android.support.SupportAppNavigator;
 
-/**
- * Provides navigation drawer to switch between screens
- */
 public class MainActivity extends AppCompatActivity implements FabAddWordListener,
         WordEditorDialog.WordEditorDialogListener {
 
@@ -57,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
 
     private static final String WORD_LIST_FRAGMENT_TAG = WordListFragment.class.getName();
     private static final String CATEGORY_LIST_FRAGMENT_TAG = CategoryListFragment.class.getName();
+    private static final String ABOUT_FRAGMENT_TAG = AboutFragment.class.getName();
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
@@ -64,11 +57,30 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
 
     private WordListFragment mWordListFragment;
     private CategoryListFragment mCategoryListFragment;
+    private AboutFragment mAboutFragment;
+
+    @Inject
+    NavigatorHolder navigatorHolder;
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
+    Navigator navigator = new SupportAppNavigator(this, R.id.layout_root_container);
+    private MainViewModel viewModel;
+
+    private BaseFragment getCurrentFragment() {
+        return (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.layout_root_container);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        App.appComponent
+                .mainComponentFactory()
+                .create()
+                .inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        viewModel = new ViewModelProvider(this, viewModelFactory).get(MainViewModel.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -127,11 +139,23 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
     }
 
     @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        navigatorHolder.setNavigator(navigator);
+    }
+
+    @Override
+    protected void onPause() {
+        navigatorHolder.removeNavigator();
+        super.onPause();
+    }
+
+    @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
-            getSupportFragmentManager().popBackStack();
+            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             // Returns to the main fragment and shows it
             mWordListFragment = new WordListFragment();
             getSupportFragmentManager().beginTransaction()
@@ -193,7 +217,8 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
                 showRateApp();
                 break;
             case R.id.menu_drawer_about:
-                showAbout();
+                fragmentClass = AboutFragment.class;
+//                viewModel.onAboutClicked();
                 break;
             default:
                 fragmentClass = WordListFragment.class;
@@ -213,10 +238,14 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
                 getSupportFragmentManager().popBackStack();
                 transaction.replace(R.id.layout_root_container, fragment, WORD_LIST_FRAGMENT_TAG);
                 mWordListFragment = (WordListFragment) fragment;
-            } else {
+            } else if (fragmentClass == CategoryListFragment.class) {
                 transaction.replace(R.id.layout_root_container, fragment, CATEGORY_LIST_FRAGMENT_TAG);
                 transaction.addToBackStack(null);
                 mCategoryListFragment = (CategoryListFragment) fragment;
+            } else {
+                transaction.replace(R.id.layout_root_container, fragment, ABOUT_FRAGMENT_TAG);
+                transaction.addToBackStack(null);
+                mAboutFragment = (AboutFragment) fragment;
             }
             transaction.commit();
 
@@ -264,9 +293,5 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
         } catch (ActivityNotFoundException e) {
             CommonUtils.showToast(this, R.string.error_rate_app);
         }
-    }
-
-    private void showAbout() {
-        startActivity(new Intent(this, AboutActivity.class));
     }
 }

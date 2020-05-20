@@ -34,10 +34,9 @@
 
     <string name="empty_category_content">Нет слов в данной категории</string>
 
-    <string name="title_about">О приложении</string>
-    <string name="app_icon_description">Иконка приложения</string>
-    <string name="app_version">Версия %1$s (сборка %2$d)</string>
-    <string name="app_author">Alidibir Akhbulatov</string>
+    <string name="about_title">О приложении</string>
+    <string name="about_app_version">Версия %1$s (сборка %2$d)</string>
+    <string name="about_app_author">Alidibir Akhbulatov</string>
 
     <string name="title_new_word">Новое слово</string>
     <string name="title_edit_word">Редактирование слова</string>
