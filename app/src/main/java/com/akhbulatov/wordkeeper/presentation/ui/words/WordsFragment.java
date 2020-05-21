@@ -51,9 +51,6 @@ public class WordsFragment extends BaseFragment implements
 
     private static int sSortMode;
 
-    // Contains the ID of the current selected item (word)
-    private long mSelectedItemId;
-
     private WordAdapter mWordAdapter;
 
     private ActionModeCallback mActionModeCallback;
@@ -245,31 +242,6 @@ public class WordsFragment extends BaseFragment implements
         }
     }
 
-//    public void editWord(String name, String translation, String category) {
-//        if ((TextUtils.isEmpty(name) & TextUtils.isEmpty(translation))
-//                | (TextUtils.isEmpty(name) | TextUtils.isEmpty(translation))) {
-//            CommonUtils.showToast(getActivity(), R.string.add_edit_word_empty_fields);
-//        } else {
-////            mWordDbAdapter.update(new Word(mSelectedItemId, name, translation, category));
-////            loaderManager.restartLoader(LOADER_ID, null, this);
-//        }
-//    }
-
-//    public String getName() {
-////        return mWordDbAdapter.get(mSelectedItemId).getName();
-//        return "";
-//    }
-//
-//    public String getTranslation() {
-////        return mWordDbAdapter.get(mSelectedItemId).getTranslation();
-//        return "";
-//    }
-//
-//    public String getCategory() {
-////        return mWordDbAdapter.get(mSelectedItemId).getCategory();
-//        return "";
-//    }
-
 //    public String[] getCategories() {
 //        CategoryDatabaseAdapter categoryDbAdapter = new CategoryDatabaseAdapter(getActivity());
 //        categoryDbAdapter.open();
@@ -303,21 +275,6 @@ public class WordsFragment extends BaseFragment implements
 //            mWordDbAdapter.delete(new Word(mWordAdapter.getItemId(i)));
         }
 //        loaderManager.restartLoader(LOADER_ID, null, this);
-    }
-
-    /**
-     * Gets the single item (word) ID from the list of words,
-     * despite the collection that is passed in the parameter
-     *
-     * @param words The list of selected words
-     * @return Returns the item (word) ID
-     */
-    private long getWordItemId(List<Integer> words) {
-        long id = 0;
-        for (Integer i : words) {
-            id = mWordAdapter.getItemId(i);
-        }
-        return id;
     }
 
     private void showWordSortDialog() {
@@ -361,15 +318,9 @@ public class WordsFragment extends BaseFragment implements
                     showCategoryListDialog();
                     return true;
                 case R.id.menu_edit_word:
-                    // Saves the id to use to retrieve the selected row
-                    // and paste the edited string into the database.
-                    // Called for only one selected word
-                    mSelectedItemId = getWordItemId(mWordAdapter.getSelectedWords());
-
-//                    mListener.onFabAddWordClick(R.string.add_edit_word_edit_title,
-//                            R.string.add_edit_word_action_edit,
-//                            android.R.string.cancel);
-                    showAddEditWordDialog(mWordAdapter.getCurrentList().get((int) mSelectedItemId)); // todo
+                    int position = mWordAdapter.getSelectedWords().get(0);
+                    com.akhbulatov.wordkeeper.domain.global.models.Word word = mWordAdapter.getCurrentList().get(position);
+                    showAddEditWordDialog(word);
                     mode.finish();
                     return true;
                 case R.id.menu_delete_word:

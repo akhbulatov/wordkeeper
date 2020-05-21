@@ -12,14 +12,25 @@ class AddEditWordViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     fun onAddWordClicked(name: String, translation: String, category: String) {
-        val word = Word(name, translation, System.currentTimeMillis(), category)
+        val word = Word(
+            name = name,
+            translation = translation,
+            datetime = System.currentTimeMillis(),
+            category = category
+        )
         viewModelScope.launch {
             wordInteractor.addWord(word)
         }
     }
 
-    fun onEditWordClicked(name: String, translation: String, category: String) {
-        val word = Word(name, translation, System.currentTimeMillis(), category)
+    fun onEditWordClicked(id: Long, name: String, translation: String, category: String) {
+        val word = Word(
+            id = id,
+            name = name,
+            translation = translation,
+            datetime = System.currentTimeMillis(),
+            category = category
+        )
         viewModelScope.launch {
             wordInteractor.editWord(word)
         }

@@ -13,12 +13,15 @@ class WordDatabaseMapper @Inject constructor() {
                 translation = it.translation,
                 datetime = it.datetime,
                 category = it.category
-            )
+            ).also { db ->
+                db.id = it.id
+            }
         }
 
     fun mapFrom(model: WordDbModel): Word =
         model.let {
             Word(
+                id = it.id,
                 name = it.name,
                 translation = it.translation,
                 datetime = it.datetime,

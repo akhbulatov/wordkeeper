@@ -1,7 +1,6 @@
 package com.akhbulatov.wordkeeper.presentation.ui.addeditword
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.ArrayAdapter
@@ -48,7 +47,7 @@ class AddEditWordDialog : BaseDialogFragment() {
         val binding = DialogAddEditWordBinding.inflate(inflater, null, false)
         builder.setView(binding.root)
             .setTitle(titleId)
-            .setPositiveButton(positiveTextId) { _: DialogInterface?, _: Int ->
+            .setPositiveButton(positiveTextId) { _, _ ->
                 val name = binding.nameEditText.text.toString()
                 val translation = binding.translationEditText.text.toString()
 //                val category = binding.categoriesSpinner.selectedItem.toString()
@@ -57,10 +56,10 @@ class AddEditWordDialog : BaseDialogFragment() {
                 if (word == null) {
                     viewModel.onAddWordClicked(name, translation, category)
                 } else {
-                    viewModel.onEditWordClicked(name, translation, category)
+                    viewModel.onEditWordClicked(word!!.id, name, translation, category)
                 }
             }
-            .setNegativeButton(android.R.string.cancel) { _: DialogInterface, _: Int -> dismiss() }
+            .setNegativeButton(android.R.string.cancel) { _, _ -> dismiss() }
 
         val adapter = ArrayAdapter<CharSequence>(
             requireActivity(),
@@ -69,6 +68,11 @@ class AddEditWordDialog : BaseDialogFragment() {
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.categoriesSpinner.adapter = adapter
+
+        word?.let {
+            binding.nameEditText.setText(it.name)
+            binding.translationEditText.setText(it.translation)
+        }
 
         val dialog = builder.create()
         // Shows the soft keyboard automatically

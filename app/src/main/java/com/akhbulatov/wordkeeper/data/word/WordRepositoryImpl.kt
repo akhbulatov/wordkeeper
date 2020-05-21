@@ -25,5 +25,7 @@ class WordRepositoryImpl @Inject constructor(
     }
 
     override suspend fun editWord(word: Word) {
+        val dbModel = wordDatabaseMapper.mapTo(word)
+        wordDao.edit(dbModel)
     }
 }
