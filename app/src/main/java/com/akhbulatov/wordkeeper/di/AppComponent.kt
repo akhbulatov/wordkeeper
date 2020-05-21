@@ -6,6 +6,7 @@ import com.akhbulatov.wordkeeper.di.modules.DataModule
 import com.akhbulatov.wordkeeper.di.modules.DatabaseModule
 import com.akhbulatov.wordkeeper.di.modules.NavigationModule
 import com.akhbulatov.wordkeeper.di.modules.ViewModelModule
+import com.akhbulatov.wordkeeper.presentation.ui.addeditword.AddEditWordComponent
 import com.akhbulatov.wordkeeper.presentation.ui.main.MainComponent
 import com.akhbulatov.wordkeeper.presentation.ui.words.WordsComponent
 import dagger.BindsInstance
@@ -25,6 +26,7 @@ import javax.inject.Singleton
 interface AppComponent {
     fun mainComponentFactory(): MainComponent.Factory
     fun wordsComponentFactory(): WordsComponent.Factory
+    fun addEditWordComponentFactory(): AddEditWordComponent.Factory
 
     @Component.Factory
     interface Factory {

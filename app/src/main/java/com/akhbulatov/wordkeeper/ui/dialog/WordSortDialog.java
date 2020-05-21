@@ -20,6 +20,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 
 import com.akhbulatov.wordkeeper.R;
+import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseDialogFragment;
 import com.akhbulatov.wordkeeper.util.SharedPreferencesManager;
 
 import androidx.annotation.NonNull;

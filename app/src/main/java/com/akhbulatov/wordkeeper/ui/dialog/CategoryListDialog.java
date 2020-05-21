@@ -23,6 +23,7 @@ import android.os.Bundle;
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
 import com.akhbulatov.wordkeeper.model.Category;
+import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseDialogFragment;
 
 import java.util.List;
 

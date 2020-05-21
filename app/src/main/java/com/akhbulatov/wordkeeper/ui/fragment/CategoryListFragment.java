@@ -138,8 +138,8 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
 
         FloatingActionButton fabAddWord = view.findViewById(R.id.fab_add_word);
         fabAddWord.setOnClickListener(view1 ->
-                mListener.onFabAddWordClick(R.string.title_new_word,
-                        R.string.word_editor_action_add,
+                mListener.onFabAddWordClick(R.string.add_edit_word_add_title,
+                        R.string.add_edit_word_action_add,
                         android.R.string.cancel));
     }
 

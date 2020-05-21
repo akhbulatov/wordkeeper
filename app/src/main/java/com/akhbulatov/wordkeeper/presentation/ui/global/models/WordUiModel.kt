@@ -1,0 +1,18 @@
+package com.akhbulatov.wordkeeper.presentation.ui.global.models
+
+import android.os.Parcelable
+import com.akhbulatov.wordkeeper.domain.global.models.Word
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class WordUiModel(
+    val name: String,
+    val translation: String,
+    val category: String
+) : Parcelable
+
+fun Word.toUiModel() = WordUiModel(
+    name = name,
+    translation = translation,
+    category = category
+)

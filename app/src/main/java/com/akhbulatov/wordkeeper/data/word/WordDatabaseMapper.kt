@@ -11,7 +11,7 @@ class WordDatabaseMapper @Inject constructor() {
             WordDbModel(
                 name = it.name,
                 translation = it.translation,
-                datetime = System.currentTimeMillis(),
+                datetime = it.datetime,
                 category = it.category
             )
         }
@@ -21,6 +21,7 @@ class WordDatabaseMapper @Inject constructor() {
             Word(
                 name = it.name,
                 translation = it.translation,
+                datetime = it.datetime,
                 category = it.category
             )
         }

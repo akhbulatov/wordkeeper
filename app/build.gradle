@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 
@@ -62,6 +63,10 @@ android {
     viewBinding {
         enabled = true
     }
+
+    androidExtensions {
+        experimental = true
+    }
 }
 
 dependencies {
@@ -76,6 +81,8 @@ dependencies {
     implementation "androidx.core:core-ktx:$coreVersion"
     implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
     implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+
+    implementation "io.github.reactivecircus.flowbinding:flowbinding-android:$flowBindingVersion"
 
     // DI
     implementation "com.google.dagger:dagger:$daggerVersion"

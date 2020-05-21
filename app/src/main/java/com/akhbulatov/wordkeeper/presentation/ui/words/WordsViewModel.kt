@@ -36,7 +36,7 @@ class WordsViewModel @Inject constructor(
                 .catch { _viewState.value = currentViewState.copy(emptyError = Pair(true, it.message)) }
                 .collect {
                     if (it.isNotEmpty()) {
-                        _viewState.value = currentViewState.copy(words = Pair(false, it))
+                        _viewState.value = currentViewState.copy(words = Pair(true, it))
                     } else {
                         _viewState.value = currentViewState.copy(emptyData = true)
                     }

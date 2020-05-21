@@ -1,24 +1,19 @@
 package com.akhbulatov.wordkeeper.ui.activity;
 
-import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
 
 import com.akhbulatov.wordkeeper.App;
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.presentation.ui.about.AboutFragment;
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment;
 import com.akhbulatov.wordkeeper.presentation.ui.main.MainViewModel;
-import com.akhbulatov.wordkeeper.ui.dialog.WordEditorDialog;
-import com.akhbulatov.wordkeeper.ui.fragment.CategoryListFragment;
 import com.akhbulatov.wordkeeper.presentation.ui.words.WordsFragment;
+import com.akhbulatov.wordkeeper.ui.fragment.CategoryListFragment;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.util.CommonUtils;
 import com.google.android.material.navigation.NavigationView;
@@ -27,13 +22,11 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -42,8 +35,7 @@ import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.android.support.SupportAppNavigator;
 
-public class MainActivity extends AppCompatActivity implements FabAddWordListener,
-        WordEditorDialog.WordEditorDialogListener {
+public class MainActivity extends AppCompatActivity implements FabAddWordListener {
 
     private static final String BUNDLE_SCREEN_TITLE = "BUNDLE_SCREEN_TITLE";
 
@@ -56,8 +48,8 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
     private ActionBarDrawerToggle mDrawerToggle;
 
     private WordsFragment mWordsFragment;
-    private CategoryListFragment mCategoryListFragment;
-    private AboutFragment mAboutFragment;
+//    private CategoryListFragment mCategoryListFragment;
+//    private AboutFragment mAboutFragment;
 
     @Inject
     NavigatorHolder navigatorHolder;
@@ -103,10 +95,10 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
         if (savedInstanceState != null) {
             mWordsFragment = (WordsFragment)
                     getSupportFragmentManager().findFragmentByTag(WORDS_FRAGMENT_TAG);
-            mCategoryListFragment = (CategoryListFragment)
-                    getSupportFragmentManager().findFragmentByTag(CATEGORY_LIST_FRAGMENT_TAG);
-            mAboutFragment = (AboutFragment)
-                    getSupportFragmentManager().findFragmentByTag(ABOUT_FRAGMENT_TAG);
+//            mCategoryListFragment = (CategoryListFragment)
+//                    getSupportFragmentManager().findFragmentByTag(CATEGORY_LIST_FRAGMENT_TAG);
+//            mAboutFragment = (AboutFragment)
+//                    getSupportFragmentManager().findFragmentByTag(ABOUT_FRAGMENT_TAG);
 
             setTitle(savedInstanceState.getString(BUNDLE_SCREEN_TITLE));
         } else {
@@ -173,45 +165,42 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
 
     @Override
     public void onFabAddWordClick(int titleId, int positiveTextId, int negativeTextId) {
-        showWordEditorDialog(titleId, positiveTextId, negativeTextId);
+//        showWordEditorDialog(titleId, positiveTextId, negativeTextId);
     }
 
     // Passes the ID of the text on the positive button
     // to determine which the dialog (word) button was pressed: add or edit
-    @Override
-    public void onFinishWordEditorDialog(DialogFragment dialog, int positiveTextId) {
-        // Add the word
-        if (positiveTextId == R.string.word_editor_action_add) {
-            mWordsFragment.addWord(dialog);
-
-            // Updates the category list only from the screen "Categories"
-            if (mCategoryListFragment != null && mCategoryListFragment.isVisible()) {
-                mCategoryListFragment.updateCategoryList();
-            } else {
-                // Edit the word
-                Dialog dialogView = dialog.getDialog();
-
-                EditText editName = dialogView.findViewById(R.id.edit_word_name);
-                EditText editTranslation = dialogView.findViewById(R.id.edit_word_translation);
-                Spinner spinnerCategories = dialogView.findViewById(R.id.spinner_categories);
-
-                String name = editName.getText().toString();
-                String translation = editTranslation.getText().toString();
-                String category = spinnerCategories.getSelectedItem().toString();
-
-                mWordsFragment.editWord(name, translation, category);
-            }
-        }
-    }
+//    @Override
+//    public void onFinishWordEditorDialog(DialogFragment dialog, int positiveTextId) {
+//        // Add the word
+//        if (positiveTextId == R.string.add_edit_word_action_add) {
+//            mWordsFragment.addWord(dialog);
+//
+//            // Updates the category list only from the screen "Categories"
+//            if (mCategoryListFragment != null && mCategoryListFragment.isVisible()) {
+//                mCategoryListFragment.updateCategoryList();
+//            } else {
+//                // Edit the word
+//                Dialog dialogView = dialog.getDialog();
+//
+//                EditText editName = dialogView.findViewById(R.id.nameEditText);
+//                EditText editTranslation = dialogView.findViewById(R.id.translationEditText);
+//                Spinner spinnerCategories = dialogView.findViewById(R.id.categoriesSpinner);
+//
+//                String name = editName.getText().toString();
+//                String translation = editTranslation.getText().toString();
+//                String category = spinnerCategories.getSelectedItem().toString();
+//
+//                mWordsFragment.editWord(name, translation, category);
+//            }
+//        }
+//    }
 
     private void selectDrawerItem(MenuItem item) {
         Class fragmentClass = null;
         Fragment fragment = null;
 
         switch (item.getItemId()) {
-            case R.id.menu_drawer_all_words:
-                fragmentClass = WordsFragment.class;
-                break;
             case R.id.menu_drawer_categories:
                 fragmentClass = CategoryListFragment.class;
                 break;
@@ -243,11 +232,11 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
             } else if (fragmentClass == CategoryListFragment.class) {
                 transaction.replace(R.id.layout_root_container, fragment, CATEGORY_LIST_FRAGMENT_TAG);
                 transaction.addToBackStack(null);
-                mCategoryListFragment = (CategoryListFragment) fragment;
+//                mCategoryListFragment = (CategoryListFragment) fragment;
             } else {
                 transaction.replace(R.id.layout_root_container, fragment, ABOUT_FRAGMENT_TAG);
                 transaction.addToBackStack(null);
-                mAboutFragment = (AboutFragment) fragment;
+//                mAboutFragment = (AboutFragment) fragment;
             }
             transaction.commit();
 
@@ -259,34 +248,34 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
         mDrawerLayout.closeDrawers();
     }
 
-    private void showWordEditorDialog(@StringRes int titleId,
-                                      @StringRes int positiveTextId,
-                                      @StringRes int negativeTextId) {
-        DialogFragment dialog = WordEditorDialog.newInstance(titleId, positiveTextId, negativeTextId);
-        dialog.show(getSupportFragmentManager(), null);
-        // NOTE! If the method is not called, the app crashes
-        getSupportFragmentManager().executePendingTransactions();
-
-        Dialog dialogView = dialog.getDialog();
-        Spinner spinnerCategories = dialogView.findViewById(R.id.spinner_categories);
-
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item,
-                mWordsFragment.getCategories());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCategories.setAdapter(adapter);
-
-        // Receives and shows data of the selected word to edit in the dialog
-        // Data is the name, translation and category
-        if (positiveTextId == R.string.word_editor_action_edit) {
-            EditText editName = dialogView.findViewById(R.id.edit_word_name);
-            EditText editTranslation = dialogView.findViewById(R.id.edit_word_translation);
-
-            editName.setText(mWordsFragment.getName());
-            editTranslation.setText(mWordsFragment.getTranslation());
-            spinnerCategories.setSelection(adapter.getPosition(mWordsFragment.getCategory()));
-        }
-    }
+//    private void showWordEditorDialog(@StringRes int titleId,
+//                                      @StringRes int positiveTextId,
+//                                      @StringRes int negativeTextId) {
+//        DialogFragment dialog = AddEditWordDialog.newInstance(titleId, positiveTextId, negativeTextId);
+//        dialog.show(getSupportFragmentManager(), null);
+//        // NOTE! If the method is not called, the app crashes
+//        getSupportFragmentManager().executePendingTransactions();
+//
+//        Dialog dialogView = dialog.getDialog();
+//        Spinner spinnerCategories = dialogView.findViewById(R.id.categoriesSpinner);
+//
+//        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this,
+//                android.R.layout.simple_spinner_item,
+//                mWordsFragment.getCategories());
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinnerCategories.setAdapter(adapter);
+//
+//        // Receives and shows data of the selected word to edit in the dialog
+//        // Data is the name, translation and category
+//        if (positiveTextId == R.string.add_edit_word_action_edit) {
+//            EditText editName = dialogView.findViewById(R.id.nameEditText);
+//            EditText editTranslation = dialogView.findViewById(R.id.translationEditText);
+//
+//            editName.setText(mWordsFragment.getName());
+//            editTranslation.setText(mWordsFragment.getTranslation());
+//            spinnerCategories.setSelection(adapter.getPosition(mWordsFragment.getCategory()));
+//        }
+//    }
 
     private void showRateApp() {
         Uri uri = Uri.parse("market://details?id=" + getPackageName());

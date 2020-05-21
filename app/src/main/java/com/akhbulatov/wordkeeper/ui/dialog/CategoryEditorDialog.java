@@ -23,6 +23,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.akhbulatov.wordkeeper.R;
+import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseDialogFragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;

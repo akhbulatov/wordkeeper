@@ -38,14 +38,14 @@
     <string name="about_app_version">Версия %1$s (сборка %2$d)</string>
     <string name="about_app_author">Alidibir Akhbulatov</string>
 
-    <string name="title_new_word">Новое слово</string>
-    <string name="title_edit_word">Редактирование слова</string>
-    <string name="word_editor_name_hint">Название</string>
-    <string name="word_editor_translation_hint">Перевод</string>
-    <string name="word_editor_category">Категория</string>
-    <string name="word_editor_action_add">Добавить</string>
-    <string name="word_editor_action_edit">Редактировать</string>
-    <string name="error_word_editor_empty_fields">Поля не заполнены</string>
+    <string name="add_edit_word_add_title">Новое слово</string>
+    <string name="add_edit_word_edit_title">Редактирование слова</string>
+    <string name="add_edit_word_name_hint">Название</string>
+    <string name="add_edit_word_translation_hint">Перевод</string>
+    <string name="add_edit_word_category">Категория</string>
+    <string name="add_edit_word_action_add">Добавить</string>
+    <string name="add_edit_word_action_edit">Редактировать</string>
+    <string name="add_edit_word_empty_fields">Поля не заполнены</string>
 
     <string-array name="sort_words">
         <item>По названию</item>

@@ -1,10 +1,8 @@
 package com.akhbulatov.wordkeeper.presentation.ui.words;
 
-import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -13,21 +11,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.Spinner;
 
 import com.akhbulatov.wordkeeper.App;
 import com.akhbulatov.wordkeeper.R;
-import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
 import com.akhbulatov.wordkeeper.databinding.FragmentWordsBinding;
-import com.akhbulatov.wordkeeper.model.Category;
 import com.akhbulatov.wordkeeper.model.Word;
+import com.akhbulatov.wordkeeper.presentation.ui.addeditword.AddEditWordDialog;
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment;
 import com.akhbulatov.wordkeeper.presentation.ui.global.list.adapters.WordAdapter;
+import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordUiModel;
+import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordUiModelKt;
 import com.akhbulatov.wordkeeper.ui.activity.MainActivity;
 import com.akhbulatov.wordkeeper.ui.dialog.CategoryListDialog;
 import com.akhbulatov.wordkeeper.ui.dialog.WordSortDialog;
-import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.util.CommonUtils;
 import com.akhbulatov.wordkeeper.util.SharedPreferencesManager;
 
@@ -47,11 +43,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
 public class WordsFragment extends BaseFragment implements
-//        LoaderManager.LoaderCallbacks<Cursor>,
         WordSortDialog.WordSortDialogListener,
         CategoryListDialog.CategoryListDialogListener {
-
-//    private static final int LOADER_ID = 1;
 
     private static final int WORD_SORT_DIALOG_REQUEST = 1;
     private static final int CATEGORY_LIST_DIALOG_REQUEST = 2;
@@ -61,15 +54,10 @@ public class WordsFragment extends BaseFragment implements
     // Contains the ID of the current selected item (word)
     private long mSelectedItemId;
 
-//    private LoaderManager loaderManager;
-
     private WordAdapter mWordAdapter;
-//    private WordDatabaseAdapter mWordDbAdapter;
 
     private ActionModeCallback mActionModeCallback;
     private ActionMode mActionMode;
-
-    private FabAddWordListener mListener;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -83,17 +71,6 @@ public class WordsFragment extends BaseFragment implements
     }
 
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try {
-            mListener = (FabAddWordListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement "
-                    + FabAddWordListener.class.getName());
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         App.appComponent
                 .wordsComponentFactory()
@@ -104,8 +81,6 @@ public class WordsFragment extends BaseFragment implements
 
         viewModel = new ViewModelProvider(this, viewModelFactory).get(WordsViewModel.class);
         viewModel.loadWords();
-
-//        loaderManager = getLoaderManager();
 
         mWordAdapter = new WordAdapter(new WordAdapter.OnItemClickListener() {
             @Override
@@ -124,11 +99,8 @@ public class WordsFragment extends BaseFragment implements
                 return true;
             }
         });
-//        mWordDbAdapter = new WordDatabaseAdapter(getActivity());
-//        mWordDbAdapter.open();
 
         sSortMode = SharedPreferencesManager.getSortMode(getActivity());
-
         mActionModeCallback = new ActionModeCallback();
     }
 
@@ -136,68 +108,19 @@ public class WordsFragment extends BaseFragment implements
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = FragmentWordsBinding.bind(view);
-
         binding.wordsRecyclerView.setHasFixedSize(true);
         binding.wordsRecyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
         binding.wordsRecyclerView.setAdapter(mWordAdapter);
-
-        binding.addWordFab.setOnClickListener(v ->
-                mListener.onFabAddWordClick(R.string.title_new_word,
-                        R.string.word_editor_action_add,
-                        android.R.string.cancel));
+        binding.addWordFab.setOnClickListener(v -> showAddEditWordDialog(null));
 
         viewModel.getViewState().observe(getViewLifecycleOwner(), this::renderViewState);
     }
-
-//    @Override
-//    public void onActivityCreated(Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//        loaderManager.initLoader(LOADER_ID, null, this);
-//    }
-
 
     @Override
     public void onDestroyView() {
         binding.wordsRecyclerView.setAdapter(null);
         binding = null;
         super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-//        mWordDbAdapter.close();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    private void renderViewState(WordsViewModel.ViewState viewState) {
-        showEmptyProgress(viewState.getEmptyProgress());
-        showEmptyData(viewState.getEmptyData());
-        showEmptyError(viewState.getEmptyError().getFirst(), viewState.getEmptyError().getSecond());
-        showWords(viewState.getWords().getFirst(), viewState.getWords().getSecond());
-    }
-
-    private void showEmptyProgress(boolean show) {
-        binding.emptyProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
-    private void showEmptyData(boolean show) {
-        binding.emptyDataTextView.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
-    private void showEmptyError(boolean show, String message) {
-        binding.errorTextView.setText(message);
-        binding.errorTextView.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
-    private void showWords(boolean show, List<com.akhbulatov.wordkeeper.domain.global.models.Word> words) {
-        mWordAdapter.submitList(words);
-        binding.wordsRecyclerView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -260,39 +183,38 @@ public class WordsFragment extends BaseFragment implements
         return super.onOptionsItemSelected(item);
     }
 
-//    @NonNull
-//    @Override
-//    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        // Returns the cursor with all records from the database.
-//        // Uses own class instead of a ContentProvider
-//        return new SimpleCursorLoader(getActivity(), mWordDbAdapter);
-//    }
+    private void renderViewState(WordsViewModel.ViewState viewState) {
+        showEmptyProgress(viewState.getEmptyProgress());
+        showEmptyData(viewState.getEmptyData());
+        showEmptyError(viewState.getEmptyError().getFirst(), viewState.getEmptyError().getSecond());
+        showWords(viewState.getWords().getFirst(), viewState.getWords().getSecond());
+    }
 
-//    @Override
-//    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-//        if (mWordAdapter == null) {
-//            // The adapter is created only the first time retrieving data from the database
-//            mWordAdapter = new WordAdapter(data);
-//            mWordAdapter.setHasStableIds(true);
-//            mWordAdapter.setOnItemClickListener(this);
-//            mWordList.setAdapter(mWordAdapter);
-//        } else {
-//            mWordAdapter.swapCursor(data);
-//        }
-//
-//        if (mWordAdapter.getItemCount() == 0) {
-//            mTextEmptyWordList.setVisibility(View.VISIBLE);
-//        } else {
-//            mTextEmptyWordList.setVisibility(View.GONE);
-//        }
-//    }
+    private void showEmptyProgress(boolean show) {
+        binding.emptyProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
 
-//    @Override
-//    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-//        if (mWordAdapter != null) {
-//            mWordAdapter.swapCursor(null);
-//        }
-//    }
+    private void showEmptyData(boolean show) {
+        binding.emptyDataTextView.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    private void showEmptyError(boolean show, String message) {
+        binding.errorTextView.setText(message);
+        binding.errorTextView.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    private void showWords(boolean show, List<com.akhbulatov.wordkeeper.domain.global.models.Word> words) {
+        mWordAdapter.submitList(words);
+        binding.wordsRecyclerView.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    private void showAddEditWordDialog(com.akhbulatov.wordkeeper.domain.global.models.Word word) {
+        WordUiModel uiModel = null;
+        if (word != null) {
+            uiModel = WordUiModelKt.toUiModel(word);
+        }
+        AddEditWordDialog.newInstance(uiModel).show(getParentFragmentManager(), null);
+    }
 
     @Override
     public void onFinishWordSortDialog(int sortMode) {
@@ -323,75 +245,46 @@ public class WordsFragment extends BaseFragment implements
         }
     }
 
-    /**
-     * Receives the entered data (word) and saves in the database
-     *
-     * @param dialog The dialog from where take the data (word) to save
-     */
-    public void addWord(DialogFragment dialog) {
-        Dialog dialogView = dialog.getDialog();
+//    public void editWord(String name, String translation, String category) {
+//        if ((TextUtils.isEmpty(name) & TextUtils.isEmpty(translation))
+//                | (TextUtils.isEmpty(name) | TextUtils.isEmpty(translation))) {
+//            CommonUtils.showToast(getActivity(), R.string.add_edit_word_empty_fields);
+//        } else {
+////            mWordDbAdapter.update(new Word(mSelectedItemId, name, translation, category));
+////            loaderManager.restartLoader(LOADER_ID, null, this);
+//        }
+//    }
 
-        EditText editName = dialogView.findViewById(R.id.edit_word_name);
-        EditText editTranslation = dialogView.findViewById(R.id.edit_word_translation);
-        Spinner spinnerCategory = dialogView.findViewById(R.id.spinner_categories);
+//    public String getName() {
+////        return mWordDbAdapter.get(mSelectedItemId).getName();
+//        return "";
+//    }
+//
+//    public String getTranslation() {
+////        return mWordDbAdapter.get(mSelectedItemId).getTranslation();
+//        return "";
+//    }
+//
+//    public String getCategory() {
+////        return mWordDbAdapter.get(mSelectedItemId).getCategory();
+//        return "";
+//    }
 
-        String name = editName.getText().toString();
-        String translation = editTranslation.getText().toString();
-        String category = spinnerCategory.getSelectedItem().toString();
-
-        if ((TextUtils.isEmpty(name) & TextUtils.isEmpty(translation))
-                | (TextUtils.isEmpty(name) | TextUtils.isEmpty(translation))) {
-            CommonUtils.showToast(getActivity(), R.string.error_word_editor_empty_fields);
-        } else {
-//            mWordDbAdapter.insert(new Word(name, translation, category));
-            // Checked for null in case this method is called from the screen "Categories"
-            if (binding.wordsRecyclerView != null) {
-                binding.wordsRecyclerView.scrollToPosition(0);
-            }
-//            loaderManager.restartLoader(LOADER_ID, null, this);
-        }
-    }
-
-    public void editWord(String name, String translation, String category) {
-        if ((TextUtils.isEmpty(name) & TextUtils.isEmpty(translation))
-                | (TextUtils.isEmpty(name) | TextUtils.isEmpty(translation))) {
-            CommonUtils.showToast(getActivity(), R.string.error_word_editor_empty_fields);
-        } else {
-//            mWordDbAdapter.update(new Word(mSelectedItemId, name, translation, category));
-//            loaderManager.restartLoader(LOADER_ID, null, this);
-        }
-    }
-
-    public String getName() {
-//        return mWordDbAdapter.get(mSelectedItemId).getName();
-        return "";
-    }
-
-    public String getTranslation() {
-//        return mWordDbAdapter.get(mSelectedItemId).getTranslation();
-        return "";
-    }
-
-    public String getCategory() {
-//        return mWordDbAdapter.get(mSelectedItemId).getCategory();
-        return "";
-    }
-
-    public String[] getCategories() {
-        CategoryDatabaseAdapter categoryDbAdapter = new CategoryDatabaseAdapter(getActivity());
-        categoryDbAdapter.open();
-
-        Cursor cursor = categoryDbAdapter.getAll();
-        List<Category> categoryList = Category.getCategories(cursor);
-        String[] categories = new String[categoryList.size()];
-        for (int i = 0; i < categoryList.size(); i++) {
-            categories[i] = categoryList.get(i).getName();
-        }
-
-        cursor.close();
-        categoryDbAdapter.close();
-        return categories;
-    }
+//    public String[] getCategories() {
+//        CategoryDatabaseAdapter categoryDbAdapter = new CategoryDatabaseAdapter(getActivity());
+//        categoryDbAdapter.open();
+//
+//        Cursor cursor = categoryDbAdapter.getAll();
+//        List<Category> categoryList = Category.getCategories(cursor);
+//        String[] categories = new String[categoryList.size()];
+//        for (int i = 0; i < categoryList.size(); i++) {
+//            categories[i] = categoryList.get(i).getName();
+//        }
+//
+//        cursor.close();
+//        categoryDbAdapter.close();
+//        return categories;
+//    }
 
     private void toggleSelection(int position) {
         mWordAdapter.toggleSelection(position);
@@ -439,24 +332,6 @@ public class WordsFragment extends BaseFragment implements
         dialog.show(requireActivity().getSupportFragmentManager(), null);
     }
 
-//    /**
-//     * Used to work with a Loader instead of a ContentProvider
-//     */
-//    private static class SimpleCursorLoader extends CursorLoader {
-//
-//        private WordDatabaseAdapter mWordDbAdapter;
-//
-//        SimpleCursorLoader(Context context, WordDatabaseAdapter wordDbAdapter) {
-//            super(context);
-//            mWordDbAdapter = wordDbAdapter;
-//        }
-//
-//        @Override
-//        public Cursor loadInBackground() {
-//            return mWordDbAdapter.getAll(sSortMode);
-//        }
-//    }
-
     private class ActionModeCallback implements ActionMode.Callback {
 
         private MenuItem mItemEditWord;
@@ -491,9 +366,10 @@ public class WordsFragment extends BaseFragment implements
                     // Called for only one selected word
                     mSelectedItemId = getWordItemId(mWordAdapter.getSelectedWords());
 
-                    mListener.onFabAddWordClick(R.string.title_edit_word,
-                            R.string.word_editor_action_edit,
-                            android.R.string.cancel);
+//                    mListener.onFabAddWordClick(R.string.add_edit_word_edit_title,
+//                            R.string.add_edit_word_action_edit,
+//                            android.R.string.cancel);
+                    showAddEditWordDialog(mWordAdapter.getCurrentList().get((int) mSelectedItemId)); // todo
                     mode.finish();
                     return true;
                 case R.id.menu_delete_word:

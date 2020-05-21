@@ -18,4 +18,12 @@ class WordRepositoryImpl @Inject constructor(
             Word.SortMode.DATETIME -> wordDao.getAllSortByDescDatetime()
         }
             .map { it.map { word -> wordDatabaseMapper.mapFrom(word) } }
+
+    override suspend fun addWord(word: Word) {
+        val dbModel = wordDatabaseMapper.mapTo(word)
+        wordDao.add(dbModel)
+    }
+
+    override suspend fun editWord(word: Word) {
+    }
 }

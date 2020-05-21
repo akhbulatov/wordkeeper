@@ -11,4 +11,10 @@ class WordInteractor @Inject constructor(
 
     fun getWords(sortMode: Word.SortMode): Flow<List<Word>> =
         wordRepository.getWords(sortMode)
+
+    suspend fun addWord(word: Word) =
+        wordRepository.addWord(word)
+
+    suspend fun editWord(word: Word) =
+        wordRepository.editWord(word)
 }
