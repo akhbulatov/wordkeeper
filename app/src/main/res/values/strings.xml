@@ -8,19 +8,19 @@
     <!-- Main -->
     <string name="search_hint">Search</string>
 
-    <!-- All Words -->
-    <string name="title_all_words">All words</string>
-    <string name="action_search_word">Search</string>
-    <string name="action_sort_word">Sort by</string>
-    <string name="action_move_word">Move to</string>
-    <string name="action_edit_word">Edit</string>
-    <string name="action_delete_word">Delete</string>
-    <string name="empty_word_list">You have not added words with translations.
+    <!-- Words -->
+    <string name="words_title">All words</string>
+    <string name="words_action_search">Search</string>
+    <string name="words_action_sort">Sort by</string>
+    <string name="words_action_move">Move to</string>
+    <string name="words_action_edit">Edit</string>
+    <string name="words_action_delete">Delete</string>
+    <string name="words_empty_list">You have not added words with translations.
         To add a new word, press the \"+\".
     </string>
-    <string name="no_results_word">No results found for \"&lt;b>%1$s&lt;/b>\"</string>
-    <string name="success_move_word">Move successfully completed</string>
-    <string name="error_move_word">Move failed</string>
+    <string name="words_no_results">No results found for \"&lt;b>%1$s&lt;/b>\"</string>
+    <string name="words_success_move">Move successfully completed</string>
+    <string name="words_error_move">Move failed</string>
 
     <!-- Categories -->
     <string name="title_categories">Categories</string>

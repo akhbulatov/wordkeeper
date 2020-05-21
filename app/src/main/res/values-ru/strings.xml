@@ -4,18 +4,18 @@
 
     <string name="search_hint">Поиск</string>
 
-    <string name="title_all_words">Все слова</string>
-    <string name="action_search_word">Поиск</string>
-    <string name="action_sort_word">Сортировать</string>
-    <string name="action_move_word">Переместить</string>
-    <string name="action_edit_word">Редактировать</string>
-    <string name="action_delete_word">Удалить</string>
-    <string name="empty_word_list">У вас нет добавленных слов с переводами.
+    <string name="words_title">Все слова</string>
+    <string name="words_action_search">Поиск</string>
+    <string name="words_action_sort">Сортировать</string>
+    <string name="words_action_move">Переместить</string>
+    <string name="words_action_edit">Редактировать</string>
+    <string name="words_action_delete">Удалить</string>
+    <string name="words_empty_list">У вас нет добавленных слов с переводами.
         Чтобы добавить новое слово, нажмите \"+\".
     </string>
-    <string name="no_results_word">По запросу \"&lt;b>%1$s&lt;/b>\" ничего не найдено</string>
-    <string name="success_move_word">Перемещение успешно завершено</string>
-    <string name="error_move_word">Перемещение не удалось выполнить</string>
+    <string name="words_no_results">По запросу \"&lt;b>%1$s&lt;/b>\" ничего не найдено</string>
+    <string name="words_success_move">Перемещение успешно завершено</string>
+    <string name="words_error_move">Перемещение не удалось выполнить</string>
 
     <string name="title_categories">Категории</string>
     <string name="default_category">Главная</string>

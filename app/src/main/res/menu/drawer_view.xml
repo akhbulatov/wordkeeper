@@ -8,7 +8,7 @@
             android:id="@+id/menu_drawer_all_words"
             android:checked="true"
             android:icon="@drawable/ic_all_words"
-            android:title="@string/title_all_words" />
+            android:title="@string/words_title" />
 
         <item
             android:id="@+id/menu_drawer_categories"

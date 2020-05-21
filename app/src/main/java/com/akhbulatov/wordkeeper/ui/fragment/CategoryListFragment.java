@@ -37,7 +37,6 @@ import android.widget.TextView;
 
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.adapter.CategoryAdapter;
-import com.akhbulatov.wordkeeper.adapter.WordAdapter;
 import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.CategoryEntry;
 import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
@@ -345,12 +344,12 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
     private void deleteCategory() {
         // First, deletes all words that are in the deleted category
         Cursor cursor = mWordDbAdapter.getRecordsByCategory(getName());
-        WordAdapter wordAdapter = new WordAdapter(cursor);
-        while (!cursor.isAfterLast()) {
-            long id = wordAdapter.getItemId(cursor.getPosition());
-            mWordDbAdapter.delete(new Word(id));
-            cursor.moveToNext();
-        }
+//        WordAdapter wordAdapter = new WordAdapter(cursor);
+//        while (!cursor.isAfterLast()) {
+//            long id = wordAdapter.getItemId(cursor.getPosition());
+//            mWordDbAdapter.delete(new Word(id));
+//            cursor.moveToNext();
+//        }
 
         mCategoryDbAdapter.delete(new Category(mSelectedItemId));
         loaderManager.restartLoader(LOADER_ID, null, this);

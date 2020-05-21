@@ -23,21 +23,21 @@ import android.provider.BaseColumns;
  */
 public final class DatabaseContract {
 
-    static final String SQL_CREATE_WORD_ENTRIES =
+    public static final String SQL_CREATE_WORD_ENTRIES =
             "CREATE TABLE " + WordEntry.TABLE_NAME + " ("
                     + WordEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + WordEntry.COLUMN_NAME + " TEXT, "
                     + WordEntry.COLUMN_TRANSLATION + " TEXT);";
 
-    static final String SQL_WORD_ADD_COLUMN_DATETIME = "ALTER TABLE " + WordEntry.TABLE_NAME
+    public static final String SQL_WORD_ADD_COLUMN_DATETIME = "ALTER TABLE " + WordEntry.TABLE_NAME
             + " ADD COLUMN " + WordEntry.COLUMN_DATETIME + " INTEGER;";
-    static final String SQL_WORD_ADD_COLUMN_CATEGORY = "ALTER TABLE " + WordEntry.TABLE_NAME
+    public static final String SQL_WORD_ADD_COLUMN_CATEGORY = "ALTER TABLE " + WordEntry.TABLE_NAME
             + " ADD COLUMN " + WordEntry.COLUMN_CATEGORY + " TEXT;";
 
     static final String SQL_WORD_ORDER_BY_NAME = WordEntry.COLUMN_NAME + " COLLATE NOCASE";
     static final String SQL_WORD_ORDER_BY_DATETIME = WordEntry.COLUMN_DATETIME + " DESC";
 
-    static final String SQL_CREATE_CATEGORY_ENTRIES =
+    public static final String SQL_CREATE_CATEGORY_ENTRIES =
             "CREATE TABLE " + CategoryEntry.TABLE_NAME + " ("
                     + CategoryEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + CategoryEntry.COLUMN_NAME + " TEXT);";

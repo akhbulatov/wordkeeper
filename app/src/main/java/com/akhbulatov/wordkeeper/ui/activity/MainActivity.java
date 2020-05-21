@@ -18,7 +18,7 @@ import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment;
 import com.akhbulatov.wordkeeper.presentation.ui.main.MainViewModel;
 import com.akhbulatov.wordkeeper.ui.dialog.WordEditorDialog;
 import com.akhbulatov.wordkeeper.ui.fragment.CategoryListFragment;
-import com.akhbulatov.wordkeeper.ui.fragment.WordListFragment;
+import com.akhbulatov.wordkeeper.presentation.ui.words.WordsFragment;
 import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.util.CommonUtils;
 import com.google.android.material.navigation.NavigationView;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
 
     private static final String BUNDLE_SCREEN_TITLE = "BUNDLE_SCREEN_TITLE";
 
-    private static final String WORD_LIST_FRAGMENT_TAG = WordListFragment.class.getName();
+    private static final String WORDS_FRAGMENT_TAG = WordsFragment.class.getName();
     private static final String CATEGORY_LIST_FRAGMENT_TAG = CategoryListFragment.class.getName();
     private static final String ABOUT_FRAGMENT_TAG = AboutFragment.class.getName();
 
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
     private NavigationView mNavigationView;
     private ActionBarDrawerToggle mDrawerToggle;
 
-    private WordListFragment mWordListFragment;
+    private WordsFragment mWordsFragment;
     private CategoryListFragment mCategoryListFragment;
     private AboutFragment mAboutFragment;
 
@@ -101,19 +101,21 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
         });
 
         if (savedInstanceState != null) {
-            mWordListFragment = (WordListFragment)
-                    getSupportFragmentManager().findFragmentByTag(WORD_LIST_FRAGMENT_TAG);
+            mWordsFragment = (WordsFragment)
+                    getSupportFragmentManager().findFragmentByTag(WORDS_FRAGMENT_TAG);
             mCategoryListFragment = (CategoryListFragment)
                     getSupportFragmentManager().findFragmentByTag(CATEGORY_LIST_FRAGMENT_TAG);
+            mAboutFragment = (AboutFragment)
+                    getSupportFragmentManager().findFragmentByTag(ABOUT_FRAGMENT_TAG);
 
             setTitle(savedInstanceState.getString(BUNDLE_SCREEN_TITLE));
         } else {
-            mWordListFragment = new WordListFragment();
+            mWordsFragment = new WordsFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.layout_root_container, mWordListFragment, WORD_LIST_FRAGMENT_TAG)
+                    .add(R.id.layout_root_container, mWordsFragment, WORDS_FRAGMENT_TAG)
                     .commit();
 
-            setTitle(R.string.title_all_words);
+            setTitle(R.string.words_title);
         }
     }
 
@@ -157,13 +159,13 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
         } else if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
             getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             // Returns to the main fragment and shows it
-            mWordListFragment = new WordListFragment();
+            mWordsFragment = new WordsFragment();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.layout_root_container, mWordListFragment, WORD_LIST_FRAGMENT_TAG)
+                    .replace(R.id.layout_root_container, mWordsFragment, WORDS_FRAGMENT_TAG)
                     .commit();
 
             mNavigationView.setCheckedItem(R.id.menu_drawer_all_words);
-            setTitle(R.string.title_all_words);
+            setTitle(R.string.words_title);
         } else {
             super.onBackPressed();
         }
@@ -180,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
     public void onFinishWordEditorDialog(DialogFragment dialog, int positiveTextId) {
         // Add the word
         if (positiveTextId == R.string.word_editor_action_add) {
-            mWordListFragment.addWord(dialog);
+            mWordsFragment.addWord(dialog);
 
             // Updates the category list only from the screen "Categories"
             if (mCategoryListFragment != null && mCategoryListFragment.isVisible()) {
@@ -197,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
                 String translation = editTranslation.getText().toString();
                 String category = spinnerCategories.getSelectedItem().toString();
 
-                mWordListFragment.editWord(name, translation, category);
+                mWordsFragment.editWord(name, translation, category);
             }
         }
     }
@@ -208,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
 
         switch (item.getItemId()) {
             case R.id.menu_drawer_all_words:
-                fragmentClass = WordListFragment.class;
+                fragmentClass = WordsFragment.class;
                 break;
             case R.id.menu_drawer_categories:
                 fragmentClass = CategoryListFragment.class;
@@ -221,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
 //                viewModel.onAboutClicked();
                 break;
             default:
-                fragmentClass = WordListFragment.class;
+                fragmentClass = WordsFragment.class;
         }
 
         // Block is executed only if the selected item is a fragment,
@@ -234,10 +236,10 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
             }
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            if (fragmentClass == WordListFragment.class) {
+            if (fragmentClass == WordsFragment.class) {
                 getSupportFragmentManager().popBackStack();
-                transaction.replace(R.id.layout_root_container, fragment, WORD_LIST_FRAGMENT_TAG);
-                mWordListFragment = (WordListFragment) fragment;
+                transaction.replace(R.id.layout_root_container, fragment, WORDS_FRAGMENT_TAG);
+                mWordsFragment = (WordsFragment) fragment;
             } else if (fragmentClass == CategoryListFragment.class) {
                 transaction.replace(R.id.layout_root_container, fragment, CATEGORY_LIST_FRAGMENT_TAG);
                 transaction.addToBackStack(null);
@@ -270,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
 
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item,
-                mWordListFragment.getCategories());
+                mWordsFragment.getCategories());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategories.setAdapter(adapter);
 
@@ -280,9 +282,9 @@ public class MainActivity extends AppCompatActivity implements FabAddWordListene
             EditText editName = dialogView.findViewById(R.id.edit_word_name);
             EditText editTranslation = dialogView.findViewById(R.id.edit_word_translation);
 
-            editName.setText(mWordListFragment.getName());
-            editTranslation.setText(mWordListFragment.getTranslation());
-            spinnerCategories.setSelection(adapter.getPosition(mWordListFragment.getCategory()));
+            editName.setText(mWordsFragment.getName());
+            editTranslation.setText(mWordsFragment.getTranslation());
+            spinnerCategories.setSelection(adapter.getPosition(mWordsFragment.getCategory()));
         }
     }
 

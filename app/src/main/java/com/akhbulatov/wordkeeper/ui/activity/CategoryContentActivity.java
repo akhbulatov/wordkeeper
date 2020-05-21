@@ -19,11 +19,9 @@ package com.akhbulatov.wordkeeper.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 import com.akhbulatov.wordkeeper.R;
-import com.akhbulatov.wordkeeper.adapter.WordAdapter;
 import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,17 +61,17 @@ public class CategoryContentActivity extends AppCompatActivity {
         WordDatabaseAdapter wordDbAdapter = new WordDatabaseAdapter(this);
         wordDbAdapter.open();
 
-        WordAdapter wordAdapter = new WordAdapter(wordDbAdapter.getRecordsByCategory(categoryName));
-        wordAdapter.setHasStableIds(true);
-        wordList.setAdapter(wordAdapter);
+//        WordAdapter wordAdapter = new WordAdapter(wordDbAdapter.getRecordsByCategory(categoryName));
+//        wordAdapter.setHasStableIds(true);
+//        wordList.setAdapter(wordAdapter);
 
         TextView textEmptyCategoryContent = findViewById(R.id.text_empty_category_content);
 
-        if (wordAdapter.getItemCount() == 0) {
-            textEmptyCategoryContent.setVisibility(View.VISIBLE);
-        } else {
-            textEmptyCategoryContent.setVisibility(View.GONE);
-        }
+//        if (wordAdapter.getItemCount() == 0) {
+//            textEmptyCategoryContent.setVisibility(View.VISIBLE);
+//        } else {
+//            textEmptyCategoryContent.setVisibility(View.GONE);
+//        }
 
         // Closes the database already here, as it is no longer needed
         wordDbAdapter.close();

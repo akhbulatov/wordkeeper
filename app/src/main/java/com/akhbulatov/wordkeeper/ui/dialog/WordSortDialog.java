@@ -55,7 +55,7 @@ public class WordSortDialog extends BaseDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         int sortMode = SharedPreferencesManager.getSortMode(getActivity());
 
-        return builder.setTitle(R.string.action_sort_word)
+        return builder.setTitle(R.string.words_action_sort)
                 .setSingleChoiceItems(R.array.sort_words, sortMode,
                         (dialog, which) -> {
                             mListener.onFinishWordSortDialog(which);
