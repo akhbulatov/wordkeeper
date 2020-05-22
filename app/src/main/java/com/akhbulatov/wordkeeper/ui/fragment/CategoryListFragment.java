@@ -47,7 +47,6 @@ import com.akhbulatov.wordkeeper.ui.activity.CategoryContentActivity;
 import com.akhbulatov.wordkeeper.ui.activity.MainActivity;
 import com.akhbulatov.wordkeeper.ui.dialog.CategoryDeleteDialog;
 import com.akhbulatov.wordkeeper.ui.dialog.CategoryEditorDialog;
-import com.akhbulatov.wordkeeper.ui.listener.FabAddWordListener;
 import com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView;
 import com.akhbulatov.wordkeeper.util.CommonUtils;
 import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
@@ -90,18 +89,18 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
     private CategoryDatabaseAdapter mCategoryDbAdapter;
     private WordDatabaseAdapter mWordDbAdapter;
 
-    private FabAddWordListener mListener;
+//    private FabAddWordListener mListener;
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try {
-            mListener = (FabAddWordListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement "
-                    + FabAddWordListener.class.getName());
-        }
-    }
+//    @Override
+//    public void onAttach(@NonNull Context context) {
+//        super.onAttach(context);
+//        try {
+//            mListener = (FabAddWordListener) context;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(context.toString() + " must implement "
+//                    + FabAddWordListener.class.getName());
+//        }
+//    }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -137,10 +136,11 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         mTextNoResultsCategory.setVisibility(View.GONE);
 
         FloatingActionButton fabAddWord = view.findViewById(R.id.fab_add_word);
-        fabAddWord.setOnClickListener(view1 ->
-                mListener.onFabAddWordClick(R.string.add_edit_word_add_title,
-                        R.string.add_edit_word_action_add,
-                        android.R.string.cancel));
+//        fabAddWord.setOnClickListener(view1 ->
+//                mListener.onFabAddWordClick(R.string.add_edit_word_add_title,
+//                        R.string.add_edit_word_action_add,
+//                        android.R.string.cancel)
+//        );
     }
 
     @Override
@@ -156,11 +156,11 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         mWordDbAdapter.close();
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//        mListener = null;
+//    }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
