@@ -29,6 +29,7 @@ import com.akhbulatov.wordkeeper.util.SharedPreferencesManager;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -270,13 +271,6 @@ public class WordsFragment extends BaseFragment implements
         }
     }
 
-    private void deleteWords(List<Integer> words) {
-        for (Integer i : words) {
-//            mWordDbAdapter.delete(new Word(mWordAdapter.getItemId(i)));
-        }
-//        loaderManager.restartLoader(LOADER_ID, null, this);
-    }
-
     private void showWordSortDialog() {
         DialogFragment dialog = new WordSortDialog();
         dialog.setTargetFragment(WordsFragment.this, WORD_SORT_DIALOG_REQUEST);
@@ -324,7 +318,11 @@ public class WordsFragment extends BaseFragment implements
                     mode.finish();
                     return true;
                 case R.id.menu_delete_word:
-                    deleteWords(mWordAdapter.getSelectedWords());
+                    List<com.akhbulatov.wordkeeper.domain.global.models.Word> words = new ArrayList<>();
+                    for (int pos: mWordAdapter.getSelectedWords()) {
+                        words.add(mWordAdapter.getCurrentList().get(pos));
+                    }
+                    viewModel.onDeleteWordsClicked(words);
                     mode.finish();
                     return true;
                 default:

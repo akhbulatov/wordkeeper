@@ -1,6 +1,7 @@
 package com.akhbulatov.wordkeeper.data.global.local.database.word
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -19,4 +20,7 @@ interface WordDao {
 
     @Update
     suspend fun edit(word: WordDbModel)
+
+    @Delete
+    suspend fun delete(words: List<WordDbModel>)
 }

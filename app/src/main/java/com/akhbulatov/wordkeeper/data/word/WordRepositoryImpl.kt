@@ -28,4 +28,9 @@ class WordRepositoryImpl @Inject constructor(
         val dbModel = wordDatabaseMapper.mapTo(word)
         wordDao.edit(dbModel)
     }
+
+    override suspend fun deleteWords(words: List<Word>) {
+        val dbModels = words.map { wordDatabaseMapper.mapTo(it) }
+        wordDao.delete(dbModels)
+    }
 }

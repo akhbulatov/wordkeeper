@@ -17,4 +17,7 @@ class WordInteractor @Inject constructor(
 
     suspend fun editWord(word: Word) =
         wordRepository.editWord(word)
+
+    suspend fun deleteWords(words: List<Word>) =
+        wordRepository.deleteWords(words)
 }

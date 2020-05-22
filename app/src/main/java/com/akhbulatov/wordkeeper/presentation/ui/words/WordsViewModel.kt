@@ -36,11 +36,25 @@ class WordsViewModel @Inject constructor(
                 .catch { _viewState.value = currentViewState.copy(emptyError = Pair(true, it.message)) }
                 .collect {
                     if (it.isNotEmpty()) {
-                        _viewState.value = currentViewState.copy(words = Pair(true, it))
+                        _viewState.value = currentViewState.copy(
+                            emptyData = false,
+                            emptyError = Pair(false, null),
+                            words = Pair(true, it)
+                        )
                     } else {
-                        _viewState.value = currentViewState.copy(emptyData = true)
+                        _viewState.value = currentViewState.copy(
+                            emptyData = true,
+                            emptyError = Pair(false, null),
+                            words = Pair(false, it)
+                        )
                     }
                 }
+        }
+    }
+
+    fun onDeleteWordsClicked(words: List<Word>) {
+        viewModelScope.launch {
+            wordInteractor.deleteWords(words)
         }
     }
 

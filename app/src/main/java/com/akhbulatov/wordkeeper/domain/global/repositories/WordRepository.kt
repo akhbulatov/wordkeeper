@@ -8,4 +8,5 @@ interface WordRepository {
 
     suspend fun addWord(word: Word)
     suspend fun editWord(word: Word)
+    suspend fun deleteWords(words: List<Word>)
 }
