@@ -16,8 +16,6 @@
 
 package com.akhbulatov.wordkeeper.database.dao;
 
-import android.database.Cursor;
-
 import com.akhbulatov.wordkeeper.model.Word;
 
 /**
@@ -25,13 +23,5 @@ import com.akhbulatov.wordkeeper.model.Word;
  * @since 26.11.2016
  */
 public interface WordDao {
-    long insert(Word word);
-
     int update(Word word);
-
-    int delete(Word word);
-
-    Cursor getAll(int sortMode);
-
-    Word get(long id);
 }
