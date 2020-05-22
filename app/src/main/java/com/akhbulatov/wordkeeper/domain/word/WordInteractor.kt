@@ -9,8 +9,8 @@ class WordInteractor @Inject constructor(
     private val wordRepository: WordRepository
 ) {
 
-    fun getWords(sortMode: Word.SortMode): Flow<List<Word>> =
-        wordRepository.getWords(sortMode)
+    fun getWords(): Flow<List<Word>> =
+        wordRepository.getWords()
 
     suspend fun addWord(word: Word) =
         wordRepository.addWord(word)
@@ -20,4 +20,10 @@ class WordInteractor @Inject constructor(
 
     suspend fun deleteWords(words: List<Word>) =
         wordRepository.deleteWords(words)
+
+    var wordSortMode: Word.SortMode
+        get() = wordRepository.wordSortMode
+        set(value) {
+            wordRepository.wordSortMode = value
+        }
 }

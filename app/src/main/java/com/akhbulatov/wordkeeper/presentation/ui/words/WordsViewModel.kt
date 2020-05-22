@@ -30,7 +30,7 @@ class WordsViewModel @Inject constructor(
 
     fun loadWords() {
         viewModelScope.launch {
-            wordInteractor.getWords(Word.SortMode.NAME) // todo
+            wordInteractor.getWords()
                 .onStart { _viewState.value = currentViewState.copy(emptyProgress = true) }
                 .onEach { _viewState.value = currentViewState.copy(emptyProgress = false) }
                 .catch { _viewState.value = currentViewState.copy(emptyError = Pair(true, it.message)) }

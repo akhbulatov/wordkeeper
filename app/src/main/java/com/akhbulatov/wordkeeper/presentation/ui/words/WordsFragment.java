@@ -21,11 +21,10 @@ import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment;
 import com.akhbulatov.wordkeeper.presentation.ui.global.list.adapters.WordAdapter;
 import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordUiModel;
 import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordUiModelKt;
+import com.akhbulatov.wordkeeper.presentation.ui.sortword.SortWordDialog;
 import com.akhbulatov.wordkeeper.ui.activity.MainActivity;
 import com.akhbulatov.wordkeeper.ui.dialog.CategoryListDialog;
-import com.akhbulatov.wordkeeper.ui.dialog.WordSortDialog;
 import com.akhbulatov.wordkeeper.util.CommonUtils;
-import com.akhbulatov.wordkeeper.util.SharedPreferencesManager;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -43,14 +42,9 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
-public class WordsFragment extends BaseFragment implements
-        WordSortDialog.WordSortDialogListener,
-        CategoryListDialog.CategoryListDialogListener {
+public class WordsFragment extends BaseFragment implements CategoryListDialog.CategoryListDialogListener {
 
-    private static final int WORD_SORT_DIALOG_REQUEST = 1;
     private static final int CATEGORY_LIST_DIALOG_REQUEST = 2;
-
-    private static int sSortMode;
 
     private WordAdapter mWordAdapter;
 
@@ -59,7 +53,6 @@ public class WordsFragment extends BaseFragment implements
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
-
     private WordsViewModel viewModel;
 
     private FragmentWordsBinding binding;
@@ -98,7 +91,6 @@ public class WordsFragment extends BaseFragment implements
             }
         });
 
-        sSortMode = SharedPreferencesManager.getSortMode(getActivity());
         mActionModeCallback = new ActionModeCallback();
     }
 
@@ -214,13 +206,6 @@ public class WordsFragment extends BaseFragment implements
         AddEditWordDialog.newInstance(uiModel).show(getParentFragmentManager(), null);
     }
 
-    @Override
-    public void onFinishWordSortDialog(int sortMode) {
-        // Saves to pass to the inner class SimpleCursorLoader
-        sSortMode = sortMode;
-//        loaderManager.restartLoader(LOADER_ID, null, this);
-    }
-
     // Updates the word list with the new sort mode
     @Override
     public void onFinishCategoryListDialog(String category) {
@@ -272,8 +257,12 @@ public class WordsFragment extends BaseFragment implements
     }
 
     private void showWordSortDialog() {
-        DialogFragment dialog = new WordSortDialog();
-        dialog.setTargetFragment(WordsFragment.this, WORD_SORT_DIALOG_REQUEST);
+        getParentFragmentManager().setFragmentResultListener(
+                SortWordDialog.REQUEST_SORT_MODE,
+                getViewLifecycleOwner(),
+                (requestKey, result) -> viewModel.loadWords()
+        );
+        DialogFragment dialog = new SortWordDialog();
         dialog.show(requireActivity().getSupportFragmentManager(), null);
     }
 
@@ -319,7 +308,7 @@ public class WordsFragment extends BaseFragment implements
                     return true;
                 case R.id.menu_delete_word:
                     List<com.akhbulatov.wordkeeper.domain.global.models.Word> words = new ArrayList<>();
-                    for (int pos: mWordAdapter.getSelectedWords()) {
+                    for (int pos : mWordAdapter.getSelectedWords()) {
                         words.add(mWordAdapter.getCurrentList().get(pos));
                     }
                     viewModel.onDeleteWordsClicked(words);

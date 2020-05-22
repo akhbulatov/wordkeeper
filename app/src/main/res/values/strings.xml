@@ -54,7 +54,7 @@
     <string name="add_edit_word_action_edit">Edit</string>
     <string name="add_edit_word_empty_fields">The fields are not filled</string>
 
-    <!-- Word Sort -->
+    <!-- Sort Word -->
     <string-array name="sort_words">
         <item>Name</item>
         <item>Last modified</item>

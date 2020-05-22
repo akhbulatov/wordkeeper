@@ -10,6 +10,13 @@ data class Word(
 
     enum class SortMode {
         NAME,
-        DATETIME
+        LAST_MODIFIED;
+
+        companion object {
+            fun toEnumSortMode(sortMode: Int): SortMode = when (sortMode) {
+                0 -> NAME
+                else -> LAST_MODIFIED
+            }
+        }
     }
 }
