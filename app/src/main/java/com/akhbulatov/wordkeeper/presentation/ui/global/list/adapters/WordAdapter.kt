@@ -72,7 +72,7 @@ class WordAdapter(
 
         override fun bind(item: Word) {
             word = item
-            with (binding) {
+            with(binding) {
                 nameTextView.text = item.name
                 translationTextView.text = item.translation
 
