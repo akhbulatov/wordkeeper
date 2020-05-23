@@ -12,21 +12,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
 
 import com.akhbulatov.wordkeeper.App;
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.databinding.FragmentWordCategoriesBinding;
 import com.akhbulatov.wordkeeper.domain.global.models.WordCategory;
 import com.akhbulatov.wordkeeper.presentation.ui.addeditwordcategory.AddEditWordCategoryDialog;
+import com.akhbulatov.wordkeeper.presentation.ui.deletewordcategory.DeleteWordCategoryDialog;
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment;
 import com.akhbulatov.wordkeeper.presentation.ui.global.list.adapters.WordCategoryAdapter;
 import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordCategoryUiModel;
 import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordCategoryUiModelKt;
+import com.akhbulatov.wordkeeper.presentation.ui.global.views.ContextMenuRecyclerView;
 import com.akhbulatov.wordkeeper.ui.activity.CategoryContentActivity;
 import com.akhbulatov.wordkeeper.ui.activity.MainActivity;
-import com.akhbulatov.wordkeeper.ui.dialog.CategoryDeleteDialog;
-import com.akhbulatov.wordkeeper.presentation.ui.global.views.ContextMenuRecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -37,19 +36,10 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
-public class WordCategoriesFragment extends BaseFragment implements
-        CategoryDeleteDialog.CategoryDeleteListener {
-
-    private static final int CATEGORY_DELETE_DIALOG_REQUEST = 2;
-
-    // Contains the ID of the current selected item (category)
-    private long mSelectedItemId;
-
-    private TextView mTextNoResultsCategory;
+public class WordCategoriesFragment extends BaseFragment {
 
     private WordCategoryAdapter mWordCategoryAdapter;
 
@@ -97,9 +87,6 @@ public class WordCategoriesFragment extends BaseFragment implements
         binding.wordCategoriesRecyclerView.setAdapter(mWordCategoryAdapter);
         registerForContextMenu(binding.wordCategoriesRecyclerView);
 
-        mTextNoResultsCategory = view.findViewById(R.id.noResultsTextView);
-        mTextNoResultsCategory.setVisibility(View.GONE);
-
 //        fabAddWord.setOnClickListener(view1 ->
 //                mListener.onFabAddWordClick(R.string.add_edit_word_add_title,
 //                        R.string.add_edit_word_action_add,
@@ -143,14 +130,14 @@ public class WordCategoriesFragment extends BaseFragment implements
                                 getString(R.string.no_results_category), escapedNewText);
                         CharSequence styledNoResults = Html.fromHtml(formattedNoResults);
 
-                        mTextNoResultsCategory.setText(styledNoResults);
-                        mTextNoResultsCategory.setVisibility(View.VISIBLE);
+                        binding.noResultsTextView.setText(styledNoResults);
+                        binding.noResultsTextView.setVisibility(View.VISIBLE);
                     } else {
-                        mTextNoResultsCategory.setVisibility(View.GONE);
+                        binding.noResultsTextView.setVisibility(View.GONE);
                     }
                 } else {
 //                    mWordCategoryAdapter.swapCursor(cursor);
-                    mTextNoResultsCategory.setVisibility(View.GONE);
+                    binding.noResultsTextView.setVisibility(View.GONE);
                 }
                 return true;
             }
@@ -181,13 +168,14 @@ public class WordCategoriesFragment extends BaseFragment implements
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         ContextMenuRecyclerView.RecyclerContextMenuInfo info =
                 (ContextMenuRecyclerView.RecyclerContextMenuInfo) item.getMenuInfo();
+
+        WordCategory wordCategory = mWordCategoryAdapter.getCurrentList().get(info.getPosition());
         switch (item.getItemId()) {
             case R.id.menu_rename_category:
-                WordCategory wordCategory = mWordCategoryAdapter.getCurrentList().get(info.getPosition());
                 showAddEditWordCategoryDialog(wordCategory);
                 return true;
             case R.id.menu_delete_category:
-                showCategoryDeleteDialog();
+                showDeleteWordCategoryDialog(wordCategory);
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -219,65 +207,17 @@ public class WordCategoriesFragment extends BaseFragment implements
         binding.wordCategoriesRecyclerView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
-    // Confirms delete the category.
-    // Also removed all words that are in the category
-    @Override
-    public void onFinishCategoryDeleteDialog(DialogFragment dialog) {
-        deleteCategory();
-    }
-
-    private void renameCategory(String name) {
-//        if (TextUtils.isEmpty(name)) {
-//            CommonUtils.showToast(getActivity(), R.string.error_category_editor_empty_field);
-//        } else {
-//            // First updates all words from the category with the new category name
-//            Cursor cursor = mWordDbAdapter.getRecordsByCategory(getName());
-//            while (!cursor.isAfterLast()) {
-//                long id = cursor.getLong(cursor.getColumnIndex(WordEntry._ID));
-//                String wordName =
-//                        cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME));
-//                String wordTranslation =
-//                        cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION));
-//
-//                mWordDbAdapter.update(new Word(id, wordName, wordTranslation, name));
-//                cursor.moveToNext();
-//            }
-//
-//            mCategoryDbAdapter.update(new Category(mSelectedItemId, name));
-////            loaderManager.restartLoader(LOADER_ID, null, this);
-//        }
-    }
-
-    private void deleteCategory() {
-        // First, deletes all words that are in the deleted category
-//        Cursor cursor = mWordDbAdapter.getRecordsByCategory(getName());
-//        WordAdapter wordAdapter = new WordAdapter(cursor);
-//        while (!cursor.isAfterLast()) {
-//            long id = wordAdapter.getItemId(cursor.getPosition());
-//            mWordDbAdapter.delete(new Word(id));
-//            cursor.moveToNext();
-//        }
-
-//        mCategoryDbAdapter.delete(new Category(mSelectedItemId));
-//        loaderManager.restartLoader(LOADER_ID, null, this);
-    }
-
-    private String getName() {
-//        return mCategoryDbAdapter.get(mSelectedItemId).getName();
-        return "";
-    }
-
     private void showAddEditWordCategoryDialog(WordCategory wordCategory) {
         WordCategoryUiModel uiModel = null;
         if (wordCategory != null) {
             uiModel = WordCategoryUiModelKt.toUiModel(wordCategory);
         }
-        AddEditWordCategoryDialog.newInstance(uiModel).show(getParentFragmentManager(), null);
+        AddEditWordCategoryDialog.newInstance(uiModel)
+                .show(getParentFragmentManager(), null);
     }
 
-    private void showCategoryDeleteDialog() {
-        DialogFragment dialog = new CategoryDeleteDialog();
-        dialog.setTargetFragment(WordCategoriesFragment.this, CATEGORY_DELETE_DIALOG_REQUEST);
-        dialog.show(requireActivity().getSupportFragmentManager(), null);
+    private void showDeleteWordCategoryDialog(WordCategory wordCategory) {
+        DeleteWordCategoryDialog.newInstance(WordCategoryUiModelKt.toUiModel(wordCategory))
+                .show(getParentFragmentManager(), null);
     }
 }

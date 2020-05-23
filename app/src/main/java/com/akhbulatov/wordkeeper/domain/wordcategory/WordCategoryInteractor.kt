@@ -17,4 +17,7 @@ class WordCategoryInteractor @Inject constructor(
 
     suspend fun editWordCategory(wordCategory: WordCategory) =
         wordCategoryRepository.editWordCategory(wordCategory)
+
+    suspend fun deleteWordCategoryWithWords(wordCategory: WordCategory) =
+        wordCategoryRepository.deleteWordCategoryWithWords(wordCategory)
 }

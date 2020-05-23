@@ -8,4 +8,5 @@ interface WordCategoryRepository {
 
     suspend fun addWordCategory(wordCategory: WordCategory)
     suspend fun editWordCategory(wordCategory: WordCategory)
+    suspend fun deleteWordCategoryWithWords(wordCategory: WordCategory)
 }

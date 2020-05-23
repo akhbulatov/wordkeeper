@@ -1,6 +1,7 @@
 package com.akhbulatov.wordkeeper.data.global.local.database.wordcategory
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -16,4 +17,7 @@ interface WordCategoryDao {
 
     @Update
     suspend fun updateWordCategory(model: WordCategoryDbModel)
+
+    @Delete
+    suspend fun deleteWordCategory(model: WordCategoryDbModel)
 }

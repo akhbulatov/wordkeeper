@@ -9,6 +9,7 @@ import com.akhbulatov.wordkeeper.di.modules.PreferencesModule
 import com.akhbulatov.wordkeeper.di.modules.ViewModelModule
 import com.akhbulatov.wordkeeper.presentation.ui.addeditword.AddEditWordComponent
 import com.akhbulatov.wordkeeper.presentation.ui.addeditwordcategory.AddEditWordCategoryComponent
+import com.akhbulatov.wordkeeper.presentation.ui.deletewordcategory.DeleteWordCategoryComponent
 import com.akhbulatov.wordkeeper.presentation.ui.main.MainComponent
 import com.akhbulatov.wordkeeper.presentation.ui.sortword.SortWordComponent
 import com.akhbulatov.wordkeeper.presentation.ui.wordcategories.WordCategoriesComponent
@@ -35,6 +36,7 @@ interface AppComponent {
     fun addEditWordComponentFactory(): AddEditWordComponent.Factory
     fun sortWordComponentFactory(): SortWordComponent.Factory
     fun addEditWordCategoryComponentFactory(): AddEditWordCategoryComponent.Factory
+    fun deleteWordCategoryComponentFactory(): DeleteWordCategoryComponent.Factory
 
     @Component.Factory
     interface Factory {

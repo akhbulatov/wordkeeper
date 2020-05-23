@@ -46,4 +46,11 @@ class WordCategoryRepositoryImpl @Inject constructor(
         val dbModel = wordCategoryDatabaseMapper.mapTo(wordCategory)
         wordCategoryDao.updateWordCategory(dbModel)
     }
+
+    override suspend fun deleteWordCategoryWithWords(wordCategory: WordCategory) {
+        val dbWords = wordCategory.words.map { wordDatabaseMapper.mapTo(it) }
+        val dbWordCategory = wordCategoryDatabaseMapper.mapTo(wordCategory)
+        wordDao.deleteWords(dbWords)
+        wordCategoryDao.deleteWordCategory(dbWordCategory)
+    }
 }
