@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView
+    <com.akhbulatov.wordkeeper.presentation.ui.global.views.ContextMenuRecyclerView
         android:id="@+id/wordCategoriesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

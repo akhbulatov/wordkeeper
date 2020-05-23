@@ -36,4 +36,14 @@ class WordCategoryRepositoryImpl @Inject constructor(
                     wordCategoryDatabaseMapper.mapFrom(wordCategory, words)
                 }
             }
+
+    override suspend fun addWordCategory(wordCategory: WordCategory) {
+        val dbModel = wordCategoryDatabaseMapper.mapTo(wordCategory)
+        wordCategoryDao.insertWordCategory(dbModel)
+    }
+
+    override suspend fun editWordCategory(wordCategory: WordCategory) {
+        val dbModel = wordCategoryDatabaseMapper.mapTo(wordCategory)
+        wordCategoryDao.updateWordCategory(dbModel)
+    }
 }

@@ -1,6 +1,5 @@
 package com.akhbulatov.wordkeeper.presentation.ui.wordcategories;
 
-import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -13,21 +12,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.akhbulatov.wordkeeper.App;
 import com.akhbulatov.wordkeeper.R;
 import com.akhbulatov.wordkeeper.databinding.FragmentWordCategoriesBinding;
 import com.akhbulatov.wordkeeper.domain.global.models.WordCategory;
+import com.akhbulatov.wordkeeper.presentation.ui.addeditwordcategory.AddEditWordCategoryDialog;
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment;
 import com.akhbulatov.wordkeeper.presentation.ui.global.list.adapters.WordCategoryAdapter;
+import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordCategoryUiModel;
+import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordCategoryUiModelKt;
 import com.akhbulatov.wordkeeper.ui.activity.CategoryContentActivity;
 import com.akhbulatov.wordkeeper.ui.activity.MainActivity;
 import com.akhbulatov.wordkeeper.ui.dialog.CategoryDeleteDialog;
-import com.akhbulatov.wordkeeper.ui.dialog.CategoryEditorDialog;
-import com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView;
-import com.akhbulatov.wordkeeper.util.CommonUtils;
+import com.akhbulatov.wordkeeper.presentation.ui.global.views.ContextMenuRecyclerView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -41,16 +42,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
 public class WordCategoriesFragment extends BaseFragment implements
-        CategoryEditorDialog.CategoryEditorDialogListener,
         CategoryDeleteDialog.CategoryDeleteListener {
 
-    private static final int CATEGORY_EDITOR_DIALOG_REQUEST = 1;
     private static final int CATEGORY_DELETE_DIALOG_REQUEST = 2;
 
     // Contains the ID of the current selected item (category)
     private long mSelectedItemId;
 
-    private ContextMenuRecyclerView mCategoryList;
     private TextView mTextNoResultsCategory;
 
     private WordCategoryAdapter mWordCategoryAdapter;
@@ -77,8 +75,17 @@ public class WordCategoriesFragment extends BaseFragment implements
         viewModel = new ViewModelProvider(this, viewModelFactory).get(WordCategoriesViewModel.class);
         viewModel.loadWordCategories();
 
-        mWordCategoryAdapter = new WordCategoryAdapter(wordCategory ->
-                startActivity(CategoryContentActivity.newIntent(getActivity(), wordCategory.getName())));
+        mWordCategoryAdapter = new WordCategoryAdapter(new WordCategoryAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(@NotNull WordCategory wordCategory) {
+                startActivity(CategoryContentActivity.newIntent(getActivity(), wordCategory.getName()));
+            }
+
+            @Override
+            public void onMoreOptionsClick(@NotNull View view) {
+                view.showContextMenu();
+            }
+        });
     }
 
     @Override
@@ -158,7 +165,7 @@ public class WordCategoriesFragment extends BaseFragment implements
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_add_category) {
-            showCategoryEditorDialog(R.string.title_new_category, R.string.category_editor_action_add);
+            showAddEditWordCategoryDialog(null);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -176,11 +183,10 @@ public class WordCategoriesFragment extends BaseFragment implements
                 (ContextMenuRecyclerView.RecyclerContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case R.id.menu_rename_category:
-                mSelectedItemId = info.id;
-                showCategoryEditorDialog(R.string.title_rename_category, R.string.category_editor_action_rename);
+                WordCategory wordCategory = mWordCategoryAdapter.getCurrentList().get(info.getPosition());
+                showAddEditWordCategoryDialog(wordCategory);
                 return true;
             case R.id.menu_delete_category:
-                mSelectedItemId = info.id;
                 showCategoryDeleteDialog();
                 return true;
             default:
@@ -213,47 +219,11 @@ public class WordCategoriesFragment extends BaseFragment implements
         binding.wordCategoriesRecyclerView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
-    // Passes the ID of the text on the positive button
-    // to determine which the dialog (category) button was pressed: add or edit
-    @Override
-    public void onFinishCategoryEditorDialog(DialogFragment dialog, int positiveTextId) {
-        // Add the category
-        if (positiveTextId == R.string.category_editor_action_add) {
-            addCategory(dialog);
-        } else {
-            // Edit the category
-            Dialog dialogView = dialog.getDialog();
-            EditText editName = dialogView.findViewById(R.id.edit_category_name);
-            String name = editName.getText().toString();
-
-            renameCategory(name);
-        }
-    }
-
     // Confirms delete the category.
     // Also removed all words that are in the category
     @Override
     public void onFinishCategoryDeleteDialog(DialogFragment dialog) {
         deleteCategory();
-    }
-
-    public void updateCategoryList() {
-//        loaderManager.restartLoader(LOADER_ID, null, this);
-    }
-
-    private void addCategory(DialogFragment dialog) {
-        Dialog dialogView = dialog.getDialog();
-
-        EditText editName = dialogView.findViewById(R.id.edit_category_name);
-        String name = editName.getText().toString();
-
-        if (TextUtils.isEmpty(name)) {
-            CommonUtils.showToast(getActivity(), R.string.error_category_editor_empty_field);
-        } else {
-//            mCategoryDbAdapter.insert(new Category(name));
-            mCategoryList.scrollToPosition(0);
-//            loaderManager.restartLoader(LOADER_ID, null, this);
-        }
     }
 
     private void renameCategory(String name) {
@@ -297,21 +267,12 @@ public class WordCategoriesFragment extends BaseFragment implements
         return "";
     }
 
-    private void showCategoryEditorDialog(int titleId, int positiveTextId) {
-        DialogFragment dialog = CategoryEditorDialog.newInstance(titleId, positiveTextId, android.R.string.cancel);
-        dialog.setTargetFragment(WordCategoriesFragment.this, CATEGORY_EDITOR_DIALOG_REQUEST);
-        dialog.show(requireActivity().getSupportFragmentManager(), null);
-
-        // Receives and shows data of the selected category to edit in the dialog
-        // Data is the name of the category
-        if (positiveTextId == R.string.category_editor_action_rename) {
-            // NOTE! If the method is not called, the app crashes
-            requireActivity().getSupportFragmentManager().executePendingTransactions();
-
-            Dialog dialogView = dialog.getDialog();
-            EditText editName = dialogView.findViewById(R.id.edit_category_name);
-            editName.setText(getName());
+    private void showAddEditWordCategoryDialog(WordCategory wordCategory) {
+        WordCategoryUiModel uiModel = null;
+        if (wordCategory != null) {
+            uiModel = WordCategoryUiModelKt.toUiModel(wordCategory);
         }
+        AddEditWordCategoryDialog.newInstance(uiModel).show(getParentFragmentManager(), null);
     }
 
     private void showCategoryDeleteDialog() {

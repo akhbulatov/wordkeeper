@@ -3,6 +3,7 @@ package com.akhbulatov.wordkeeper.data.global.local.database.wordcategory
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -12,4 +13,7 @@ interface WordCategoryDao {
 
     @Insert
     suspend fun insertWordCategory(model: WordCategoryDbModel)
+
+    @Update
+    suspend fun updateWordCategory(model: WordCategoryDbModel)
 }

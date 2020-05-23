@@ -11,4 +11,10 @@ class WordCategoryInteractor @Inject constructor(
 
     fun getWordCategories(): Flow<List<WordCategory>> =
         wordCategoryRepository.getWordCategories()
+
+    suspend fun addWordCategory(wordCategory: WordCategory) =
+        wordCategoryRepository.addWordCategory(wordCategory)
+
+    suspend fun editWordCategory(wordCategory: WordCategory) =
+        wordCategoryRepository.editWordCategory(wordCategory)
 }

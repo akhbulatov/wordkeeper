@@ -48,7 +48,7 @@ class WordCategoryAdapter(
                     itemView.isLongClickable = false
                 } else {
                     moreOptionsTextView.visibility = View.VISIBLE
-                    moreOptionsTextView.setOnClickListener { itemView.showContextMenu() }
+                    moreOptionsTextView.setOnClickListener { itemClickListener.onMoreOptionsClick(itemView) }
                     itemView.isLongClickable = true
                 }
             }
@@ -57,6 +57,7 @@ class WordCategoryAdapter(
 
     interface OnItemClickListener {
         fun onItemClick(wordCategory: WordCategory)
+        fun onMoreOptionsClick(view: View)
     }
 
     companion object {
