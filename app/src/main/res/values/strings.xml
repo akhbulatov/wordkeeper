@@ -22,7 +22,7 @@
     <string name="words_success_move">Move successfully completed</string>
     <string name="words_error_move">Move failed</string>
 
-    <!-- Categories -->
+    <!-- Word Categories -->
     <string name="title_categories">Categories</string>
     <string name="default_category">Main</string>
     <string name="action_search_category">Search</string>

@@ -13,7 +13,7 @@ import com.akhbulatov.wordkeeper.presentation.ui.about.AboutFragment;
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment;
 import com.akhbulatov.wordkeeper.presentation.ui.main.MainViewModel;
 import com.akhbulatov.wordkeeper.presentation.ui.words.WordsFragment;
-import com.akhbulatov.wordkeeper.ui.fragment.CategoryListFragment;
+import com.akhbulatov.wordkeeper.presentation.ui.wordcategories.WordCategoriesFragment;
 import com.akhbulatov.wordkeeper.util.CommonUtils;
 import com.google.android.material.navigation.NavigationView;
 
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String BUNDLE_SCREEN_TITLE = "BUNDLE_SCREEN_TITLE";
 
     private static final String WORDS_FRAGMENT_TAG = WordsFragment.class.getName();
-    private static final String CATEGORY_LIST_FRAGMENT_TAG = CategoryListFragment.class.getName();
+    private static final String CATEGORY_LIST_FRAGMENT_TAG = WordCategoriesFragment.class.getName();
     private static final String ABOUT_FRAGMENT_TAG = AboutFragment.class.getName();
 
     private DrawerLayout mDrawerLayout;
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.menu_drawer_categories:
-                fragmentClass = CategoryListFragment.class;
+                fragmentClass = WordCategoriesFragment.class;
                 break;
             case R.id.menu_drawer_rate_app:
                 showRateApp();
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().popBackStack();
                 transaction.replace(R.id.layout_root_container, fragment, WORDS_FRAGMENT_TAG);
                 mWordsFragment = (WordsFragment) fragment;
-            } else if (fragmentClass == CategoryListFragment.class) {
+            } else if (fragmentClass == WordCategoriesFragment.class) {
                 transaction.replace(R.id.layout_root_container, fragment, CATEGORY_LIST_FRAGMENT_TAG);
                 transaction.addToBackStack(null);
             } else {

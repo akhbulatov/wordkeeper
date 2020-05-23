@@ -102,6 +102,7 @@ dependencies {
 
     // Dev Tools
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
+    implementation "com.facebook.stetho:stetho:$stethoVersion"
     implementation("com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion@aar") {
         transitive = true
     }

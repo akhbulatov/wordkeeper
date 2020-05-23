@@ -17,25 +17,25 @@ class WordRepositoryImpl @Inject constructor(
     override fun getWords(): Flow<List<Word>> {
         val wordSortMode = wordPreferences.wordSortMode
         return when (wordSortMode) {
-            Word.SortMode.NAME -> wordDao.getAllSortByName()
-            Word.SortMode.LAST_MODIFIED -> wordDao.getAllSortByDescDatetime()
+            Word.SortMode.NAME -> wordDao.getAllWordsSortedByName()
+            Word.SortMode.LAST_MODIFIED -> wordDao.getAllWordsSortedByDescDatetime()
         }
             .map { it.map { word -> wordDatabaseMapper.mapFrom(word) } }
     }
 
     override suspend fun addWord(word: Word) {
         val dbModel = wordDatabaseMapper.mapTo(word)
-        wordDao.add(dbModel)
+        wordDao.insetWord(dbModel)
     }
 
     override suspend fun editWord(word: Word) {
         val dbModel = wordDatabaseMapper.mapTo(word)
-        wordDao.edit(dbModel)
+        wordDao.updateWord(dbModel)
     }
 
     override suspend fun deleteWords(words: List<Word>) {
         val dbModels = words.map { wordDatabaseMapper.mapTo(it) }
-        wordDao.delete(dbModels)
+        wordDao.deleteWord(dbModels)
     }
 
     override var wordSortMode: Word.SortMode

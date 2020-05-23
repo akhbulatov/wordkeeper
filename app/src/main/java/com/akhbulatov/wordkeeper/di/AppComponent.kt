@@ -10,6 +10,7 @@ import com.akhbulatov.wordkeeper.di.modules.ViewModelModule
 import com.akhbulatov.wordkeeper.presentation.ui.addeditword.AddEditWordComponent
 import com.akhbulatov.wordkeeper.presentation.ui.main.MainComponent
 import com.akhbulatov.wordkeeper.presentation.ui.sortword.SortWordComponent
+import com.akhbulatov.wordkeeper.presentation.ui.wordcategories.WordCategoriesComponent
 import com.akhbulatov.wordkeeper.presentation.ui.words.WordsComponent
 import dagger.BindsInstance
 import dagger.Component
@@ -29,6 +30,7 @@ import javax.inject.Singleton
 interface AppComponent {
     fun mainComponentFactory(): MainComponent.Factory
     fun wordsComponentFactory(): WordsComponent.Factory
+    fun wordCategoriesComponentFactory(): WordCategoriesComponent.Factory
     fun addEditWordComponentFactory(): AddEditWordComponent.Factory
     fun sortWordComponentFactory(): SortWordComponent.Factory
 

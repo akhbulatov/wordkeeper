@@ -10,17 +10,20 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WordDao {
     @Query("SELECT * FROM words ORDER BY name")
-    fun getAllSortByName(): Flow<List<WordDbModel>>
+    fun getAllWordsSortedByName(): Flow<List<WordDbModel>>
 
     @Query("SELECT * FROM words ORDER BY datetime DESC")
-    fun getAllSortByDescDatetime(): Flow<List<WordDbModel>>
+    fun getAllWordsSortedByDescDatetime(): Flow<List<WordDbModel>>
+
+    @Query("SELECT * FROM words WHERE category = :category")
+    suspend fun getWordsByCategory(category: String): List<WordDbModel>
 
     @Insert
-    suspend fun add(word: WordDbModel)
+    suspend fun insetWord(word: WordDbModel)
 
     @Update
-    suspend fun edit(word: WordDbModel)
+    suspend fun updateWord(word: WordDbModel)
 
     @Delete
-    suspend fun delete(words: List<WordDbModel>)
+    suspend fun deleteWord(words: List<WordDbModel>)
 }

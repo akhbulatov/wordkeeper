@@ -1,21 +1,25 @@
 package com.akhbulatov.wordkeeper.data.global.local.database
 
-import android.content.ContentValues
 import androidx.room.Database
-import androidx.room.OnConflictStrategy
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.akhbulatov.wordkeeper.data.global.local.database.word.WordDao
 import com.akhbulatov.wordkeeper.data.global.local.database.word.WordDbModel
+import com.akhbulatov.wordkeeper.data.global.local.database.wordcategory.WordCategoryDao
+import com.akhbulatov.wordkeeper.data.global.local.database.wordcategory.WordCategoryDbModel
 import com.akhbulatov.wordkeeper.database.DatabaseContract
 
 @Database(
-    entities = [WordDbModel::class],
+    entities = [
+        WordDbModel::class,
+        WordCategoryDbModel::class
+    ],
     version = 3
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun wordDao(): WordDao
+    abstract fun wordCategoryDao(): WordCategoryDao
 
     companion object {
         val MIGRATION_0_1 = object : Migration(0, 1) {
@@ -34,18 +38,8 @@ abstract class AppDatabase : RoomDatabase() {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL(DatabaseContract.SQL_WORD_ADD_COLUMN_CATEGORY)
                 database.execSQL(DatabaseContract.SQL_CREATE_CATEGORY_ENTRIES)
-
-                // Creates a default category that cannot be deleted
-                database.insert(DatabaseContract.CategoryEntry.TABLE_NAME, OnConflictStrategy.REPLACE, createDefaultCategory())
+                database.execSQL("INSERT INTO categories (_id, name) VALUES (0, 'Main')")
             }
-        }
-
-        private fun createDefaultCategory(): ContentValues? {
-//            val defaultCategory: String = mContext.getResources().getString(R.string.default_category)
-            val defaultCategory: String = "Main" // todo
-            val values = ContentValues()
-            values.put(DatabaseContract.CategoryEntry.COLUMN_NAME, defaultCategory)
-            return values
         }
     }
 }

@@ -1,78 +1,48 @@
-/*
- * Copyright 2019 Alidibir Akhbulatov
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package com.akhbulatov.wordkeeper.ui.fragment;
+package com.akhbulatov.wordkeeper.presentation.ui.wordcategories;
 
 import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.ContextMenu;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.akhbulatov.wordkeeper.App;
 import com.akhbulatov.wordkeeper.R;
-import com.akhbulatov.wordkeeper.adapter.CategoryAdapter;
-import com.akhbulatov.wordkeeper.database.CategoryDatabaseAdapter;
-import com.akhbulatov.wordkeeper.database.DatabaseContract.CategoryEntry;
-import com.akhbulatov.wordkeeper.database.DatabaseContract.WordEntry;
-import com.akhbulatov.wordkeeper.database.WordDatabaseAdapter;
-import com.akhbulatov.wordkeeper.model.Category;
-import com.akhbulatov.wordkeeper.model.Word;
+import com.akhbulatov.wordkeeper.databinding.FragmentWordCategoriesBinding;
+import com.akhbulatov.wordkeeper.domain.global.models.WordCategory;
+import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment;
+import com.akhbulatov.wordkeeper.presentation.ui.global.list.adapters.WordCategoryAdapter;
 import com.akhbulatov.wordkeeper.ui.activity.CategoryContentActivity;
 import com.akhbulatov.wordkeeper.ui.activity.MainActivity;
 import com.akhbulatov.wordkeeper.ui.dialog.CategoryDeleteDialog;
 import com.akhbulatov.wordkeeper.ui.dialog.CategoryEditorDialog;
 import com.akhbulatov.wordkeeper.ui.widget.ContextMenuRecyclerView;
 import com.akhbulatov.wordkeeper.util.CommonUtils;
-import com.akhbulatov.wordkeeper.util.FilterCursorWrapper;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-/**
- * Shows a list of categories from the database.
- * Loader uses a custom class for working with the database,
- * NOT the ContentProvider (temporary solution)
- */
-public class CategoryListFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>,
-        CategoryAdapter.CategoryItemClickListener,
+public class WordCategoriesFragment extends BaseFragment implements
         CategoryEditorDialog.CategoryEditorDialogListener,
         CategoryDeleteDialog.CategoryDeleteListener {
-
-    private static final int LOADER_ID = 1;
 
     private static final int CATEGORY_EDITOR_DIALOG_REQUEST = 1;
     private static final int CATEGORY_DELETE_DIALOG_REQUEST = 2;
@@ -83,84 +53,61 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
     private ContextMenuRecyclerView mCategoryList;
     private TextView mTextNoResultsCategory;
 
-    private LoaderManager loaderManager;
+    private WordCategoryAdapter mWordCategoryAdapter;
 
-    private CategoryAdapter mCategoryAdapter;
-    private CategoryDatabaseAdapter mCategoryDbAdapter;
-    private WordDatabaseAdapter mWordDbAdapter;
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+    private WordCategoriesViewModel viewModel;
 
-//    private FabAddWordListener mListener;
+    private FragmentWordCategoriesBinding binding;
 
-//    @Override
-//    public void onAttach(@NonNull Context context) {
-//        super.onAttach(context);
-//        try {
-//            mListener = (FabAddWordListener) context;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(context.toString() + " must implement "
-//                    + FabAddWordListener.class.getName());
-//        }
-//    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-
-        loaderManager = getLoaderManager();
-
-        mCategoryDbAdapter = new CategoryDatabaseAdapter(getActivity());
-        mCategoryDbAdapter.open();
-
-        mWordDbAdapter = new WordDatabaseAdapter(getActivity());
-        mWordDbAdapter.open();
+    public WordCategoriesFragment() {
+        super(R.layout.fragment_word_categories);
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_category_list, container, false);
+    public void onCreate(Bundle savedInstanceState) {
+        App.appComponent
+                .wordCategoriesComponentFactory()
+                .create()
+                .inject(this);
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+        viewModel = new ViewModelProvider(this, viewModelFactory).get(WordCategoriesViewModel.class);
+        viewModel.loadWordCategories();
+
+        mWordCategoryAdapter = new WordCategoryAdapter(wordCategory ->
+                startActivity(CategoryContentActivity.newIntent(getActivity(), wordCategory.getName())));
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mCategoryList = view.findViewById(R.id.recycler_category_list);
-        mCategoryList.setHasFixedSize(true);
-        mCategoryList.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
-        mCategoryList.setLayoutManager(new LinearLayoutManager(requireContext()));
-        registerForContextMenu(mCategoryList);
+        binding = FragmentWordCategoriesBinding.bind(view);
+        binding.wordCategoriesRecyclerView.setHasFixedSize(true);
+        binding.wordCategoriesRecyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+        binding.wordCategoriesRecyclerView.setAdapter(mWordCategoryAdapter);
+        registerForContextMenu(binding.wordCategoriesRecyclerView);
 
-        mTextNoResultsCategory = view.findViewById(R.id.text_no_results_category);
+        mTextNoResultsCategory = view.findViewById(R.id.noResultsTextView);
         mTextNoResultsCategory.setVisibility(View.GONE);
 
-        FloatingActionButton fabAddWord = view.findViewById(R.id.fab_add_word);
 //        fabAddWord.setOnClickListener(view1 ->
 //                mListener.onFabAddWordClick(R.string.add_edit_word_add_title,
 //                        R.string.add_edit_word_action_add,
 //                        android.R.string.cancel)
 //        );
+
+        viewModel.getViewState().observe(getViewLifecycleOwner(), this::renderViewState);
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        loaderManager.initLoader(LOADER_ID, null, this);
+    public void onDestroyView() {
+        binding.wordCategoriesRecyclerView.setAdapter(null);
+        binding = null;
+        super.onDestroyView();
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mCategoryDbAdapter.close();
-        mWordDbAdapter.close();
-    }
-
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -178,12 +125,12 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String newText) {
-                final Cursor cursor = mCategoryDbAdapter.getAll();
-                final int column = cursor.getColumnIndex(CategoryEntry.COLUMN_NAME);
+//                final Cursor cursor = mCategoryDbAdapter.getAll();
+//                final int column = cursor.getColumnIndex(CategoryEntry.COLUMN_NAME);
                 if (newText.length() > 0) {
-                    mCategoryAdapter.swapCursor(new FilterCursorWrapper(cursor, newText, column));
+//                    mWordCategoryAdapter.swapCursor(new FilterCursorWrapper(cursor, newText, column));
 
-                    if (mCategoryAdapter.getItemCount() == 0) {
+                    if (mWordCategoryAdapter.getItemCount() == 0) {
                         String escapedNewText = TextUtils.htmlEncode(newText);
                         String formattedNoResults = String.format(
                                 getString(R.string.no_results_category), escapedNewText);
@@ -195,7 +142,7 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
                         mTextNoResultsCategory.setVisibility(View.GONE);
                     }
                 } else {
-                    mCategoryAdapter.swapCursor(cursor);
+//                    mWordCategoryAdapter.swapCursor(cursor);
                     mTextNoResultsCategory.setVisibility(View.GONE);
                 }
                 return true;
@@ -210,13 +157,11 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_add_category:
-                showCategoryEditorDialog(R.string.title_new_category, R.string.category_editor_action_add);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.menu_add_category) {
+            showCategoryEditorDialog(R.string.title_new_category, R.string.category_editor_action_add);
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -243,37 +188,29 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         }
     }
 
-    @NonNull
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        // Returns the cursor with all records from the database.
-        // Uses own class instead of a ContentProvider
-        return new SimpleCursorLoader(getActivity(), mCategoryDbAdapter);
+    private void renderViewState(WordCategoriesViewModel.ViewState viewState) {
+        showEmptyProgress(viewState.getEmptyProgress());
+        showEmptyData(viewState.getEmptyData());
+        showEmptyError(viewState.getEmptyError().getFirst(), viewState.getEmptyError().getSecond());
+        showWordCategories(viewState.getWordCategories().getFirst(), viewState.getWordCategories().getSecond());
     }
 
-    @Override
-    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        if (mCategoryAdapter == null) {
-            // The adapter is created only the first time retrieving data from the database
-            mCategoryAdapter = new CategoryAdapter(data, mWordDbAdapter);
-            mCategoryAdapter.setHasStableIds(true);
-            mCategoryAdapter.setOnItemClickListener(this);
-            mCategoryList.setAdapter(mCategoryAdapter);
-        } else {
-            mCategoryAdapter.swapCursor(data);
-        }
+    private void showEmptyProgress(boolean show) {
+//        binding.emptyProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
-    @Override
-    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-        if (mCategoryAdapter != null) {
-            mCategoryAdapter.swapCursor(null);
-        }
+    private void showEmptyData(boolean show) {
+//        binding.emptyDataTextView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
-    @Override
-    public void onCategoryItemClick(String categoryName) {
-        startActivity(CategoryContentActivity.newIntent(getActivity(), categoryName));
+    private void showEmptyError(boolean show, String message) {
+//        binding.errorTextView.setText(message);
+//        binding.errorTextView.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    private void showWordCategories(boolean show, List<WordCategory> wordCategories) {
+        mWordCategoryAdapter.submitList(wordCategories);
+        binding.wordCategoriesRecyclerView.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     // Passes the ID of the text on the positive button
@@ -301,7 +238,7 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
     }
 
     public void updateCategoryList() {
-        loaderManager.restartLoader(LOADER_ID, null, this);
+//        loaderManager.restartLoader(LOADER_ID, null, this);
     }
 
     private void addCategory(DialogFragment dialog) {
@@ -313,37 +250,37 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
         if (TextUtils.isEmpty(name)) {
             CommonUtils.showToast(getActivity(), R.string.error_category_editor_empty_field);
         } else {
-            mCategoryDbAdapter.insert(new Category(name));
+//            mCategoryDbAdapter.insert(new Category(name));
             mCategoryList.scrollToPosition(0);
-            loaderManager.restartLoader(LOADER_ID, null, this);
+//            loaderManager.restartLoader(LOADER_ID, null, this);
         }
     }
 
     private void renameCategory(String name) {
-        if (TextUtils.isEmpty(name)) {
-            CommonUtils.showToast(getActivity(), R.string.error_category_editor_empty_field);
-        } else {
-            // First updates all words from the category with the new category name
-            Cursor cursor = mWordDbAdapter.getRecordsByCategory(getName());
-            while (!cursor.isAfterLast()) {
-                long id = cursor.getLong(cursor.getColumnIndex(WordEntry._ID));
-                String wordName =
-                        cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME));
-                String wordTranslation =
-                        cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION));
-
-                mWordDbAdapter.update(new Word(id, wordName, wordTranslation, name));
-                cursor.moveToNext();
-            }
-
-            mCategoryDbAdapter.update(new Category(mSelectedItemId, name));
-            loaderManager.restartLoader(LOADER_ID, null, this);
-        }
+//        if (TextUtils.isEmpty(name)) {
+//            CommonUtils.showToast(getActivity(), R.string.error_category_editor_empty_field);
+//        } else {
+//            // First updates all words from the category with the new category name
+//            Cursor cursor = mWordDbAdapter.getRecordsByCategory(getName());
+//            while (!cursor.isAfterLast()) {
+//                long id = cursor.getLong(cursor.getColumnIndex(WordEntry._ID));
+//                String wordName =
+//                        cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_NAME));
+//                String wordTranslation =
+//                        cursor.getString(cursor.getColumnIndex(WordEntry.COLUMN_TRANSLATION));
+//
+//                mWordDbAdapter.update(new Word(id, wordName, wordTranslation, name));
+//                cursor.moveToNext();
+//            }
+//
+//            mCategoryDbAdapter.update(new Category(mSelectedItemId, name));
+////            loaderManager.restartLoader(LOADER_ID, null, this);
+//        }
     }
 
     private void deleteCategory() {
         // First, deletes all words that are in the deleted category
-        Cursor cursor = mWordDbAdapter.getRecordsByCategory(getName());
+//        Cursor cursor = mWordDbAdapter.getRecordsByCategory(getName());
 //        WordAdapter wordAdapter = new WordAdapter(cursor);
 //        while (!cursor.isAfterLast()) {
 //            long id = wordAdapter.getItemId(cursor.getPosition());
@@ -351,18 +288,18 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
 //            cursor.moveToNext();
 //        }
 
-        mCategoryDbAdapter.delete(new Category(mSelectedItemId));
-        loaderManager.restartLoader(LOADER_ID, null, this);
+//        mCategoryDbAdapter.delete(new Category(mSelectedItemId));
+//        loaderManager.restartLoader(LOADER_ID, null, this);
     }
 
-    @Nullable
     private String getName() {
-        return mCategoryDbAdapter.get(mSelectedItemId).getName();
+//        return mCategoryDbAdapter.get(mSelectedItemId).getName();
+        return "";
     }
 
     private void showCategoryEditorDialog(int titleId, int positiveTextId) {
         DialogFragment dialog = CategoryEditorDialog.newInstance(titleId, positiveTextId, android.R.string.cancel);
-        dialog.setTargetFragment(CategoryListFragment.this, CATEGORY_EDITOR_DIALOG_REQUEST);
+        dialog.setTargetFragment(WordCategoriesFragment.this, CATEGORY_EDITOR_DIALOG_REQUEST);
         dialog.show(requireActivity().getSupportFragmentManager(), null);
 
         // Receives and shows data of the selected category to edit in the dialog
@@ -379,25 +316,7 @@ public class CategoryListFragment extends BaseFragment implements LoaderManager.
 
     private void showCategoryDeleteDialog() {
         DialogFragment dialog = new CategoryDeleteDialog();
-        dialog.setTargetFragment(CategoryListFragment.this, CATEGORY_DELETE_DIALOG_REQUEST);
+        dialog.setTargetFragment(WordCategoriesFragment.this, CATEGORY_DELETE_DIALOG_REQUEST);
         dialog.show(requireActivity().getSupportFragmentManager(), null);
-    }
-
-    /**
-     * Used to work with a Loader instead of a ContentProvider
-     */
-    private static class SimpleCursorLoader extends CursorLoader {
-
-        private CategoryDatabaseAdapter mCategoryDbAdapter;
-
-        SimpleCursorLoader(Context context, CategoryDatabaseAdapter categoryDbAdapter) {
-            super(context);
-            mCategoryDbAdapter = categoryDbAdapter;
-        }
-
-        @Override
-        public Cursor loadInBackground() {
-            return mCategoryDbAdapter.getAll();
-        }
     }
 }
