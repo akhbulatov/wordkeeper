@@ -25,5 +25,5 @@ interface WordDao {
     suspend fun updateWord(word: WordDbModel)
 
     @Delete
-    suspend fun deleteWord(words: List<WordDbModel>)
+    suspend fun deleteWords(words: List<WordDbModel>)
 }

@@ -35,7 +35,7 @@ class WordRepositoryImpl @Inject constructor(
 
     override suspend fun deleteWords(words: List<Word>) {
         val dbModels = words.map { wordDatabaseMapper.mapTo(it) }
-        wordDao.deleteWord(dbModels)
+        wordDao.deleteWords(dbModels)
     }
 
     override var wordSortMode: Word.SortMode
