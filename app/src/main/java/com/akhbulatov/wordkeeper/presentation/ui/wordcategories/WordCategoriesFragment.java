@@ -24,7 +24,6 @@ import com.akhbulatov.wordkeeper.presentation.ui.global.list.adapters.WordCatego
 import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordCategoryUiModel;
 import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordCategoryUiModelKt;
 import com.akhbulatov.wordkeeper.presentation.ui.global.views.ContextMenuRecyclerView;
-import com.akhbulatov.wordkeeper.ui.activity.CategoryContentActivity;
 import com.akhbulatov.wordkeeper.ui.activity.MainActivity;
 
 import org.jetbrains.annotations.NotNull;
@@ -68,7 +67,7 @@ public class WordCategoriesFragment extends BaseFragment {
         mWordCategoryAdapter = new WordCategoryAdapter(new WordCategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(@NotNull WordCategory wordCategory) {
-                startActivity(CategoryContentActivity.newIntent(getActivity(), wordCategory.getName()));
+                viewModel.onWordCategoryClicked(wordCategory);
             }
 
             @Override

@@ -36,6 +36,7 @@ class WordCategoryAdapter(
         }
 
         override fun bind(item: WordCategory) {
+            wordCategory = item
             with(binding) {
                 nameTextView.text = item.name
                 numOfWordsTextView.text = itemView.context.resources.getQuantityString(

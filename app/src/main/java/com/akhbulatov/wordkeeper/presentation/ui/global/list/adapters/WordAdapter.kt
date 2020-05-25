@@ -15,7 +15,7 @@ import com.akhbulatov.wordkeeper.presentation.ui.global.utils.color
 import java.util.ArrayList
 
 class WordAdapter(
-    private val itemClickListener: OnItemClickListener
+    private val itemClickListener: OnItemClickListener? = null
 ) : ListAdapter<Word, WordViewHolder>(DIFF_CALLBACK) {
 
     private val mSelectedWords: SparseBooleanArray = SparseBooleanArray()
@@ -66,8 +66,8 @@ class WordAdapter(
         private lateinit var word: Word
 
         init {
-            itemView.setOnClickListener { itemClickListener.onItemClick(word, bindingAdapterPosition) }
-            itemView.setOnLongClickListener { itemClickListener.onItemLongClick(word, bindingAdapterPosition) }
+            itemView.setOnClickListener { itemClickListener?.onItemClick(word, bindingAdapterPosition) }
+            itemView.setOnLongClickListener { itemClickListener?.onItemLongClick(word, bindingAdapterPosition) ?: false }
         }
 
         override fun bind(item: Word) {
