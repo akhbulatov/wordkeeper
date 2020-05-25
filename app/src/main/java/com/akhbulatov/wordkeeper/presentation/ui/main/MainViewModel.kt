@@ -9,7 +9,27 @@ class MainViewModel @Inject constructor(
     private val router: Router
 ) : BaseViewModel() {
 
-    fun onAboutClicked() = router.navigateTo(Screens.About)
+    fun onStart() {
+        router.newRootScreen(Screens.Words)
+    }
 
-    override fun onBackPressed() = router.exit()
+    fun onWordsClicked() {
+        TODO("Not yet implemented")
+    }
+
+    fun onWordCategoriesClicked() {
+        TODO("Not yet implemented")
+    }
+
+    fun onRateAppClicked() {
+        TODO("Not yet implemented")
+    }
+
+    fun onAboutClicked() {
+        router.navigateTo(Screens.About)
+    }
+
+    fun backToFirstScreen() {
+        router.backTo(Screens.Words)
+    }
 }

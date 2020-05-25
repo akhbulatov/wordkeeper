@@ -5,7 +5,7 @@
     android:background="@drawable/img_drawer_header"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:padding="@dimen/drawer_header_margin"
+    android:padding="@dimen/spacing_normal"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <TextView

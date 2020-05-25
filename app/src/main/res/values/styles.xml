@@ -1,33 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/accent</item>
-
-        <item name="actionModeBackground">@color/primary_dark</item>
-        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="windowActionModeOverlay">true</item>
-
-        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
-    </style>
-
-    <style name="NavDrawerTheme" parent="AppTheme">
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent
-        </item>
-    </style>
-
-    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">@color/accent</item>
-    </style>
-
-    <style name="AlertDialogTheme.Layout" parent="AlertDialogTheme">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:orientation">vertical</item>
-        <item name="android:paddingLeft">@dimen/dialog_horizontal_margin</item>
-        <item name="android:paddingRight">@dimen/dialog_horizontal_margin</item>
+    <style name="Widget.App.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
     <style name="ListItem" parent="android:Widget.TextView">

@@ -15,7 +15,7 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name=".presentation.ui.main.MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/NavDrawerTheme">
             <intent-filter>

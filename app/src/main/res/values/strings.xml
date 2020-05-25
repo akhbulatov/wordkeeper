@@ -1,15 +1,18 @@
 <resources>
-    <string name="app_name" translatable="false">Word Keeper</string>
+    <string name="app_name" translatable="false">WordKeeper</string>
 
-    <!-- Navigation Drawer -->
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
+    <!-- Common Messages -->
+    <string name="msg_drawer_open">Open navigation drawer</string>
+    <string name="msg_drawer_close">Close navigation drawer</string>
 
     <!-- Main -->
+    <string name="main_rate_app">Rate app</string>
+
     <string name="search_hint">Search</string>
 
     <!-- Words -->
-    <string name="words_title">All words</string>
+    <string name="words_title">Words</string>
+
     <string name="words_action_search">Search</string>
     <string name="words_action_sort">Sort by</string>
     <string name="words_action_move">Move to</string>
@@ -23,7 +26,8 @@
     <string name="words_error_move">Move failed</string>
 
     <!-- Word Categories -->
-    <string name="title_categories">Categories</string>
+    <string name="title_word_categories">Categories</string>
+
     <string name="default_category">Main</string>
     <string name="action_search_category">Search</string>
     <string name="action_add_category">Add</string>
@@ -38,11 +42,6 @@
 
     <!-- Category Content -->
     <string name="empty_category_content">No words in this category</string>
-
-    <!-- About -->
-    <string name="about_title">About</string>
-    <string name="about_app_version">Version %1$s (build %2$d)</string>
-    <string name="about_app_author">Alidibir Akhbulatov</string>
 
     <!-- Add Edit Word -->
     <string name="add_edit_word_add_title">New word</string>
@@ -78,7 +77,8 @@
     </string>
     <string name="category_action_delete">Delete</string>
 
-    <!-- Rate App -->
-    <string name="title_rate_app">Rate app</string>
-    <string name="error_rate_app">Sorry, could not find the app</string>
+    <!-- About -->
+    <string name="about_title">About</string>
+    <string name="about_app_version">Version %1$s (build %2$d)</string>
+    <string name="about_app_author">Alidibir Akhbulatov</string>
 </resources>

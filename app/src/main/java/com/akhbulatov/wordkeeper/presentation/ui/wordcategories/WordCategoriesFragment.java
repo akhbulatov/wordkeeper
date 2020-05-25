@@ -24,7 +24,7 @@ import com.akhbulatov.wordkeeper.presentation.ui.global.list.adapters.WordCatego
 import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordCategoryUiModel;
 import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordCategoryUiModelKt;
 import com.akhbulatov.wordkeeper.presentation.ui.global.views.ContextMenuRecyclerView;
-import com.akhbulatov.wordkeeper.ui.activity.MainActivity;
+import com.akhbulatov.wordkeeper.presentation.ui.main.MainActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -42,8 +42,7 @@ public class WordCategoriesFragment extends BaseFragment {
 
     private WordCategoryAdapter mWordCategoryAdapter;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
     private WordCategoriesViewModel viewModel;
 
     private FragmentWordCategoriesBinding binding;

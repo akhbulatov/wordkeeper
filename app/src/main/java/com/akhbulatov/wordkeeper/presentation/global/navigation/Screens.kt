@@ -9,9 +9,10 @@ import ru.terrakok.cicerone.android.support.SupportAppScreen
 
 object Screens {
     object Words : SupportAppScreen() {
-        override fun getFragment(): Fragment = WordsFragment()
+        override fun getFragment(): Fragment? {
+            return WordsFragment()
+        }
     }
-
 
     data class WordsOfCategory(
         val wordCategory: WordCategoryUiModel
@@ -20,6 +21,8 @@ object Screens {
     }
 
     object About : SupportAppScreen() {
-        override fun getFragment(): Fragment = AboutFragment()
+        override fun getFragment(): Fragment? {
+            return AboutFragment()
+        }
     }
 }

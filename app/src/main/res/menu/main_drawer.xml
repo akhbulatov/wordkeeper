@@ -2,27 +2,30 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group
-        android:id="@+id/menu_top_group"
+        android:id="@+id/menu_drawer_top_group"
         android:checkableBehavior="single">
+
         <item
-            android:id="@+id/menu_drawer_all_words"
+            android:id="@+id/menu_drawer_words"
             android:checked="true"
-            android:icon="@drawable/ic_all_words"
+            android:icon="@drawable/ic_library_books"
             android:title="@string/words_title" />
 
         <item
-            android:id="@+id/menu_drawer_categories"
-            android:icon="@drawable/ic_categories"
-            android:title="@string/title_categories" />
+            android:id="@+id/menu_drawer_word_categories"
+            android:icon="@drawable/ic_format_align_left"
+            android:title="@string/title_word_categories" />
+
     </group>
 
     <group
-        android:id="@+id/menu_bottom_group"
+        android:id="@+id/menu_drawer_bottom_group"
         android:checkableBehavior="single">
+
         <item
             android:id="@+id/menu_drawer_rate_app"
             android:icon="@drawable/ic_stars"
-            android:title="@string/title_rate_app" />
+            android:title="@string/main_rate_app" />
 
         <item
             android:id="@+id/menu_drawer_about"

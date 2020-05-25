@@ -1,7 +1,8 @@
 <resources>
-    <string name="drawer_open">Открыть панель навигации</string>
-    <string name="drawer_close">Закрыть панель навигации</string>
+    <string name="msg_drawer_open">Открыть панель навигации</string>
+    <string name="msg_drawer_close">Закрыть панель навигации</string>
 
+    <string name="main_rate_app">Оценить</string>
     <string name="search_hint">Поиск</string>
 
     <string name="words_title">Все слова</string>
@@ -17,7 +18,7 @@
     <string name="words_success_move">Перемещение успешно завершено</string>
     <string name="words_error_move">Перемещение не удалось выполнить</string>
 
-    <string name="title_categories">Категории</string>
+    <string name="title_word_categories">Категории</string>
     <string name="default_category">Главная</string>
     <string name="action_search_category">Поиск</string>
     <string name="action_add_category">Добавить</string>
@@ -66,7 +67,4 @@
         находящиеся в данной категории.
     </string>
     <string name="category_action_delete">Удалить</string>
-
-    <string name="title_rate_app">Оценить</string>
-    <string name="error_rate_app">Извините, не удалось найти приложение</string>
 </resources>

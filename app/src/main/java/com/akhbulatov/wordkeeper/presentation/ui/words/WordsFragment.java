@@ -23,7 +23,7 @@ import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordUiModel;
 import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordUiModelKt;
 import com.akhbulatov.wordkeeper.presentation.ui.selectwordcategory.SelectWordCategoryDialog;
 import com.akhbulatov.wordkeeper.presentation.ui.sortword.SortWordDialog;
-import com.akhbulatov.wordkeeper.ui.activity.MainActivity;
+import com.akhbulatov.wordkeeper.presentation.ui.main.MainActivity;
 import com.akhbulatov.wordkeeper.util.CommonUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -49,8 +49,7 @@ public class WordsFragment extends BaseFragment {
     private ActionModeCallback mActionModeCallback;
     private ActionMode mActionMode;
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+    @Inject ViewModelProvider.Factory viewModelFactory;
     private WordsViewModel viewModel;
 
     private FragmentWordsBinding binding;
