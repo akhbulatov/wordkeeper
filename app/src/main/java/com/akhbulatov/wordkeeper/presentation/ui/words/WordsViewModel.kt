@@ -52,6 +52,13 @@ class WordsViewModel @Inject constructor(
         }
     }
 
+    fun onSelectWordCatalogClicked(words: MutableList<Word>, category: String) {
+        val newWords = words.map { it.copy(category = category) }
+        viewModelScope.launch {
+            newWords.forEach { wordInteractor.editWord(it) }
+        }
+    }
+
     fun onDeleteWordsClicked(words: List<Word>) {
         viewModelScope.launch {
             wordInteractor.deleteWords(words)
