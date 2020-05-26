@@ -9,6 +9,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.akhbulatov.wordkeeper.App
+import com.akhbulatov.wordkeeper.BuildConfig
 import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.databinding.ActivityMainBinding
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseActivity
@@ -89,7 +90,7 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
             binding.drawerLayout.isDrawerOpen(GravityCompat.START) -> {
                 binding.drawerLayout.closeDrawer(GravityCompat.START)
             }
-            supportFragmentManager.backStackEntryCount > 0 -> viewModel.backToFirstScreen()
+            supportFragmentManager.backStackEntryCount > 0 -> currentFragment?.onBackPressed()
             else -> super.onBackPressed()
         }
     }
@@ -98,8 +99,13 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         when (item.itemId) {
             R.id.menu_drawer_words -> viewModel.onWordsClicked()
             R.id.menu_drawer_word_categories -> viewModel.onWordCategoriesClicked()
-            R.id.menu_drawer_rate_app -> viewModel.onRateAppClicked()
+            R.id.menu_drawer_rate_app -> viewModel.onRateAppClicked(APP_PLAY_MARKET_URL)
             R.id.menu_drawer_about -> viewModel.onAboutClicked()
         }
+        binding.drawerLayout.closeDrawers()
+    }
+
+    companion object {
+        private const val APP_PLAY_MARKET_URL = "market://details?id=${BuildConfig.APPLICATION_ID}"
     }
 }

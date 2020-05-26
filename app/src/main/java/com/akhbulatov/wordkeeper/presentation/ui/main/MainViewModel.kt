@@ -10,26 +10,22 @@ class MainViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     fun onStart() {
-        router.newRootScreen(Screens.Words)
+        onWordsClicked()
     }
 
     fun onWordsClicked() {
-        TODO("Not yet implemented")
+        router.newRootScreen(Screens.Words)
     }
 
     fun onWordCategoriesClicked() {
-        TODO("Not yet implemented")
+        router.replaceScreen(Screens.WordCategories)
     }
 
-    fun onRateAppClicked() {
-        TODO("Not yet implemented")
+    fun onRateAppClicked(appUrl: String) {
+        router.navigateTo(Screens.ExternalBrowser(appUrl))
     }
 
     fun onAboutClicked() {
-        router.navigateTo(Screens.About)
-    }
-
-    fun backToFirstScreen() {
-        router.backTo(Screens.Words)
+        router.replaceScreen(Screens.About)
     }
 }
