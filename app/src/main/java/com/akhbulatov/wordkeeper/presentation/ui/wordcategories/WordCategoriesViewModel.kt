@@ -58,7 +58,22 @@ class WordCategoriesViewModel @Inject constructor(
         router.navigateTo(Screens.WordsOfCategory(wordCategory.toUiModel()))
     }
 
-    override fun onBackPressed() {}
+    fun onAddWordCategoryClicked(name: String) {
+        val wordCategory = WordCategory(name = name)
+        viewModelScope.launch {
+            wordCategoryInteractor.addWordCategory(wordCategory)
+        }
+    }
+
+    fun onEditWordCategoryClicked(id: Long, name: String) {
+        val wordCategory = WordCategory(
+            id = id,
+            name = name
+        )
+        viewModelScope.launch {
+            wordCategoryInteractor.editWordCategory(wordCategory)
+        }
+    }
 
     data class ViewState(
         val emptyProgress: Boolean = false,

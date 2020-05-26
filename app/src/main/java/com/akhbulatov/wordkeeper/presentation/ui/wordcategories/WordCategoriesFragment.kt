@@ -13,6 +13,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -166,6 +167,14 @@ class WordCategoriesFragment : BaseFragment(R.layout.fragment_word_categories) {
     }
 
     private fun showAddEditWordCategoryDialog(wordCategory: WordCategory?) {
+        setFragmentResultListener(AddEditWordCategoryDialog.REQUEST_WORD_CATEGORY) { _, bundle ->
+            val category = bundle.getString(AddEditWordCategoryDialog.RESULT_WORD_CATEGORY)!!
+            if (wordCategory == null) {
+                viewModel.onAddWordCategoryClicked(category)
+            } else {
+                viewModel.onEditWordCategoryClicked(wordCategory.id, category)
+            }
+        }
         AddEditWordCategoryDialog.newInstance(wordCategory?.toUiModel())
             .show(parentFragmentManager, null)
     }
