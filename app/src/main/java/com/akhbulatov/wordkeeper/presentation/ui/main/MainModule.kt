@@ -1,4 +1,4 @@
-package com.akhbulatov.wordkeeper.presentation.ui.main.di
+package com.akhbulatov.wordkeeper.presentation.ui.main
 
 import androidx.lifecycle.ViewModel
 import com.akhbulatov.wordkeeper.di.ViewModelKey

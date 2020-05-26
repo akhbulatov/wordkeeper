@@ -6,7 +6,7 @@ import com.akhbulatov.wordkeeper.BuildConfig
 import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.databinding.FragmentAboutBinding
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment
-import com.akhbulatov.wordkeeper.presentation.ui.global.utils.getSupportActionBar
+import com.akhbulatov.wordkeeper.presentation.ui.global.utils.requireCompatActivity
 
 class AboutFragment : BaseFragment(R.layout.fragment_about) {
 
@@ -14,7 +14,7 @@ class AboutFragment : BaseFragment(R.layout.fragment_about) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentAboutBinding.bind(view)
         with(binding) {
-            requireActivity().getSupportActionBar()?.setTitle(R.string.about_title)
+            requireCompatActivity().supportActionBar?.setTitle(R.string.about_title)
 
             val appVersion = String.format(
                 getString(R.string.about_app_version),

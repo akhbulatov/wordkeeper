@@ -1,7 +1,6 @@
-package com.akhbulatov.wordkeeper.presentation.ui.main.di
+package com.akhbulatov.wordkeeper.presentation.ui.main
 
 import com.akhbulatov.wordkeeper.di.ActivityScope
-import com.akhbulatov.wordkeeper.presentation.ui.main.MainActivity
 import dagger.Subcomponent
 
 @Subcomponent(modules = [MainModule::class])
