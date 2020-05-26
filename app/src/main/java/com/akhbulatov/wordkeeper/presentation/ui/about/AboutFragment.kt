@@ -6,26 +6,22 @@ import com.akhbulatov.wordkeeper.BuildConfig
 import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.databinding.FragmentAboutBinding
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment
+import com.akhbulatov.wordkeeper.presentation.ui.global.utils.getSupportActionBar
 
 class AboutFragment : BaseFragment(R.layout.fragment_about) {
 
-    private var _binding: FragmentAboutBinding? = null
-    private val binding get() = _binding!!
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentAboutBinding.bind(view)
+        val binding = FragmentAboutBinding.bind(view)
+        with(binding) {
+            requireActivity().getSupportActionBar()?.setTitle(R.string.about_title)
 
-        val appVersion = String.format(
-            getString(R.string.about_app_version),
-            BuildConfig.VERSION_NAME,
-            BuildConfig.VERSION_CODE
-        )
-        binding.appVersionTextView.text = appVersion
-    }
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
+            val appVersion = String.format(
+                getString(R.string.about_app_version),
+                BuildConfig.VERSION_NAME,
+                BuildConfig.VERSION_CODE
+            )
+            appVersionTextView.text = appVersion
+        }
     }
 }
