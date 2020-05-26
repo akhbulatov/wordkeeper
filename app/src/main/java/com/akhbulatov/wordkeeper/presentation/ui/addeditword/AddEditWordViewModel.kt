@@ -3,13 +3,24 @@ package com.akhbulatov.wordkeeper.presentation.ui.addeditword
 import androidx.lifecycle.viewModelScope
 import com.akhbulatov.wordkeeper.domain.global.models.Word
 import com.akhbulatov.wordkeeper.domain.word.WordInteractor
+import com.akhbulatov.wordkeeper.domain.wordcategory.WordCategoryInteractor
 import com.akhbulatov.wordkeeper.presentation.global.mvvm.BaseViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class AddEditWordViewModel @Inject constructor(
-    private val wordInteractor: WordInteractor
+    private val wordInteractor: WordInteractor,
+    private val wordCategoryInteractor: WordCategoryInteractor
 ) : BaseViewModel() {
+
+    fun getWordCategories(): List<String> =
+        runBlocking {
+            wordCategoryInteractor.getWordCategories()
+                .first()
+                .map { it.name }
+        }
 
     fun onAddWordClicked(name: String, translation: String, category: String) {
         val word = Word(
@@ -34,8 +45,5 @@ class AddEditWordViewModel @Inject constructor(
         viewModelScope.launch {
             wordInteractor.editWord(word)
         }
-    }
-
-    override fun onBackPressed() {
     }
 }
