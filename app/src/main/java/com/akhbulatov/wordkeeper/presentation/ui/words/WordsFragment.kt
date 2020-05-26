@@ -173,8 +173,8 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
     }
 
     private fun showCategoryListDialog() {
-        setFragmentResultListener(SelectWordCategoryDialog.REQUEST_SELECT_WORD_CATEGORY) { _, result: Bundle ->
-            val category = result.getString(SelectWordCategoryDialog.RESULT_SELECT_WORD_CATEGORY)!!
+        setFragmentResultListener(SelectWordCategoryDialog.REQUEST_SELECT_WORD_CATEGORY) { _, bundle ->
+            val category = bundle.getString(SelectWordCategoryDialog.RESULT_SELECT_WORD_CATEGORY)!!
             val words = arrayListOf<Word>()
             for (pos in wordAdapter.getSelectedWordPositions()) {
                 words.add(wordAdapter.currentList[pos])

@@ -5,9 +5,9 @@
     <string name="msg_drawer_open">Open navigation drawer</string>
     <string name="msg_drawer_close">Close navigation drawer</string>
 
-    <string name="msg_action_search">Search</string>
     <string name="msg_action_add">Add</string>
     <string name="msg_action_delete">Delete</string>
+    <string name="msg_action_search">Search</string>
 
     <!-- Main -->
     <string name="main_rate_app">Rate app</string>

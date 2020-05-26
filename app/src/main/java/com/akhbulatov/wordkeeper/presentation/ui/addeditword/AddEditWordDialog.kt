@@ -41,8 +41,8 @@ class AddEditWordDialog : BaseDialogFragment() {
         val inflater = requireActivity().layoutInflater
         val binding = DialogAddEditWordBinding.inflate(inflater, null, false)
 
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setView(binding.root)
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(binding.root)
             .setTitle(titleId)
             .setPositiveButton(positiveTextId) { _, _ ->
                 val name = binding.nameEditText.text.toString()
@@ -56,6 +56,7 @@ class AddEditWordDialog : BaseDialogFragment() {
                 }
             }
             .setNegativeButton(android.R.string.cancel) { _, _ -> dismiss() }
+            .create()
 
         val wordCategories = viewModel.getWordCategories()
         val adapter = ArrayAdapter<CharSequence>(
@@ -74,8 +75,6 @@ class AddEditWordDialog : BaseDialogFragment() {
             binding.categoriesSpinner.setSelection(0)
         }
 
-        val dialog = builder.create()
-        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         dialog.setOnShowListener {
             combine(
                 binding.nameEditText.textChanges(emitImmediately = true),
@@ -84,6 +83,7 @@ class AddEditWordDialog : BaseDialogFragment() {
                 .onEach { dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = it }
                 .launchIn(lifecycleScope)
         }
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         return dialog
     }
 
