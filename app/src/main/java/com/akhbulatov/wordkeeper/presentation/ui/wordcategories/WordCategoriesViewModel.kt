@@ -75,6 +75,12 @@ class WordCategoriesViewModel @Inject constructor(
         }
     }
 
+    fun onDeleteWordCategoryWithWordsClicked(wordCategory: WordCategory) {
+        viewModelScope.launch {
+            wordCategoryInteractor.deleteWordCategoryWithWords(wordCategory)
+        }
+    }
+
     data class ViewState(
         val emptyProgress: Boolean = false,
         val emptyData: Boolean = false,

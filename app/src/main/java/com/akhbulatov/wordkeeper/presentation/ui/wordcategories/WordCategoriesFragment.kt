@@ -23,8 +23,8 @@ import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.databinding.FragmentWordCategoriesBinding
 import com.akhbulatov.wordkeeper.domain.global.models.WordCategory
 import com.akhbulatov.wordkeeper.presentation.ui.addeditwordcategory.AddEditWordCategoryDialog
-import com.akhbulatov.wordkeeper.presentation.ui.deletewordcategory.DeleteWordCategoryDialog
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment
+import com.akhbulatov.wordkeeper.presentation.ui.global.base.ConfirmDialog
 import com.akhbulatov.wordkeeper.presentation.ui.global.list.adapters.WordCategoryAdapter
 import com.akhbulatov.wordkeeper.presentation.ui.global.models.toUiModel
 import com.akhbulatov.wordkeeper.presentation.ui.global.utils.requireCompatActivity
@@ -180,7 +180,14 @@ class WordCategoriesFragment : BaseFragment(R.layout.fragment_word_categories) {
     }
 
     private fun showDeleteWordCategoryDialog(wordCategory: WordCategory) {
-        DeleteWordCategoryDialog.newInstance(wordCategory.toUiModel())
+        setFragmentResultListener(ConfirmDialog.REQUEST_OK) { _, _ ->
+            viewModel.onDeleteWordCategoryWithWordsClicked(wordCategory)
+        }
+        ConfirmDialog.newInstance(
+            R.string.category_delete_title,
+            R.string.category_delete_message,
+            R.string.category_action_delete
+        )
             .show(parentFragmentManager, null)
     }
 }
