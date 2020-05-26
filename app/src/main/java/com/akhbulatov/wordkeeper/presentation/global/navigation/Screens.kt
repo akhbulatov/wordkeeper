@@ -5,10 +5,9 @@ import android.content.Intent
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.akhbulatov.wordkeeper.presentation.ui.about.AboutFragment
-import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordCategoryUiModel
+import com.akhbulatov.wordkeeper.presentation.ui.categorywords.CategoryWordsFragment
 import com.akhbulatov.wordkeeper.presentation.ui.wordcategories.WordCategoriesFragment
 import com.akhbulatov.wordkeeper.presentation.ui.words.WordsFragment
-import com.akhbulatov.wordkeeper.presentation.ui.wordsofcategory.WordsOfCategoryFragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
 object Screens {
@@ -24,10 +23,13 @@ object Screens {
         }
     }
 
-    data class WordsOfCategory(
-        val wordCategory: WordCategoryUiModel
+    data class CategoryWords(
+        val category: String
     ) : SupportAppScreen() {
-        override fun getFragment(): Fragment = WordsOfCategoryFragment.newInstance(wordCategory)
+
+        override fun getFragment(): Fragment? {
+            return CategoryWordsFragment.newInstance(category)
+        }
     }
 
     object About : SupportAppScreen() {

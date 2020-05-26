@@ -7,6 +7,7 @@ import com.akhbulatov.wordkeeper.data.word.WordDatabaseMapper
 import com.akhbulatov.wordkeeper.domain.global.models.WordCategory
 import com.akhbulatov.wordkeeper.domain.global.repositories.WordCategoryRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEmpty
 import javax.inject.Inject
@@ -31,7 +32,7 @@ class WordCategoryRepositoryImpl @Inject constructor(
                 }
 
                 it.map { wordCategory ->
-                    val dbWords = wordDao.getWordsByCategory(wordCategory.name)
+                    val dbWords = wordDao.getWordsByCategory(wordCategory.name).firstOrNull() ?: emptyList()
                     val words = dbWords.map { dbWord -> wordDatabaseMapper.mapFrom(dbWord) }
                     wordCategoryDatabaseMapper.mapFrom(wordCategory, words)
                 }

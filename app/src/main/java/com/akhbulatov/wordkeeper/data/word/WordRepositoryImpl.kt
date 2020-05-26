@@ -23,6 +23,10 @@ class WordRepositoryImpl @Inject constructor(
             .map { it.map { word -> wordDatabaseMapper.mapFrom(word) } }
     }
 
+    override fun getWordsByCategory(category: String): Flow<List<Word>> =
+        wordDao.getWordsByCategory(category)
+            .map { it.map { word -> wordDatabaseMapper.mapFrom(word) } }
+
     override suspend fun addWord(word: Word) {
         val dbModel = wordDatabaseMapper.mapTo(word)
         wordDao.insetWord(dbModel)

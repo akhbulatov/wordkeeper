@@ -16,7 +16,7 @@ interface WordDao {
     fun getAllWordsSortedByDescDatetime(): Flow<List<WordDbModel>>
 
     @Query("SELECT * FROM words WHERE category = :category")
-    suspend fun getWordsByCategory(category: String): List<WordDbModel>
+    fun getWordsByCategory(category: String): Flow<List<WordDbModel>>
 
     @Insert
     suspend fun insetWord(word: WordDbModel)

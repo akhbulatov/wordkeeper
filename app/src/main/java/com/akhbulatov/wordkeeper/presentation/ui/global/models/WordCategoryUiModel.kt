@@ -7,18 +7,10 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class WordCategoryUiModel(
     val id: Long,
-    val name: String,
-    val words: List<WordUiModel>
+    val name: String
 ) : Parcelable
 
 fun WordCategory.toUiModel() = WordCategoryUiModel(
     id = id,
-    name = name,
-    words = words.map { it.toUiModel() }
-)
-
-fun WordCategoryUiModel.toDomainModel() = WordCategory(
-    id = id,
-    name = name,
-    words = words.map { it.toDomainModel() }
+    name = name
 )
