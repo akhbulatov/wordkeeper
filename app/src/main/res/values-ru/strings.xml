@@ -18,11 +18,11 @@
     <string name="words_success_move">Перемещение успешно завершено</string>
     <string name="words_error_move">Перемещение не удалось выполнить</string>
 
-    <string name="title_word_categories">Категории</string>
+    <string name="word_categories_title">Категории</string>
     <string name="default_category">Главная</string>
     <string name="action_search_category">Поиск</string>
     <string name="action_add_category">Добавить</string>
-    <string name="action_rename_category">Переименовать</string>
+    <string name="words_category_action_rename">Переименовать</string>
     <string name="action_delete_category">Удалить</string>
     <string name="more_options_description">Больше опций</string>
     <string name="no_results_category">По запросу \"&lt;b>%1$s&lt;/b>\" ничего не найдено</string>

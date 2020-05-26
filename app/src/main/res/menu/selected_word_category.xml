@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_rename_category"
-        android:title="@string/action_rename_category"
+        android:id="@+id/menu_rename_word_category"
+        android:title="@string/words_category_action_rename"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/menu_delete_category"
-        android:title="@string/action_delete_category"
+        android:id="@+id/menu_delete_word_category"
+        android:title="@string/msg_action_delete"
         app:showAsAction="never" />
 
 </menu>

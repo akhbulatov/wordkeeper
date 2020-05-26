@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_search_category"
+        android:id="@+id/menu_search_word_categories"
         android:icon="@drawable/ic_search"
-        android:title="@string/action_search_category"
+        android:title="@string/msg_action_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|ifRoom" />
 
     <item
-        android:id="@+id/menu_add_category"
+        android:id="@+id/menu_add_word_category"
         android:icon="@drawable/ic_add"
-        android:title="@string/action_add_category"
+        android:title="@string/msg_action_add"
         app:showAsAction="ifRoom" />
 
 </menu>

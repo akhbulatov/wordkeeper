@@ -5,6 +5,10 @@
     <string name="msg_drawer_open">Open navigation drawer</string>
     <string name="msg_drawer_close">Close navigation drawer</string>
 
+    <string name="msg_action_search">Search</string>
+    <string name="msg_action_add">Add</string>
+    <string name="msg_action_delete">Delete</string>
+
     <!-- Main -->
     <string name="main_rate_app">Rate app</string>
 
@@ -12,7 +16,6 @@
 
     <!-- Words -->
     <string name="words_title">Words</string>
-    <string name="words_action_search">Search</string>
     <string name="words_action_sort">Sort by</string>
     <string name="words_action_move">Move to</string>
     <string name="words_action_edit">Edit</string>
@@ -26,13 +29,10 @@
     <string name="words_error_move">Move failed</string>
 
     <!-- Word Categories -->
-    <string name="title_word_categories">Categories</string>
+    <string name="word_categories_title">Categories</string>
+    <string name="words_category_action_rename">Rename</string>
 
     <string name="default_category">Main</string>
-    <string name="action_search_category">Search</string>
-    <string name="action_add_category">Add</string>
-    <string name="action_rename_category">Rename</string>
-    <string name="action_delete_category">Delete</string>
     <string name="more_options_description">More options</string>
     <string name="no_results_category">No results found for \"&lt;b>%1$s&lt;/b>\"</string>
     <plurals name="number_of_words">
