@@ -166,10 +166,12 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
     }
 
     private fun showSortWordDialog() {
-        setFragmentResultListener(SortWordDialog.REQUEST_SORT_MODE) { _, _ ->
-            viewModel.loadWords()
+        setFragmentResultListener(SortWordDialog.REQUEST_SORT_MODE) { _, bundle ->
+            val sortMode = bundle.getSerializable(SortWordDialog.RESULT_SORT_MODE) as Word.SortMode
+            viewModel.onSortWordSelected(sortMode)
         }
-        SortWordDialog().show(requireActivity().supportFragmentManager, null)
+        SortWordDialog.newInstance(viewModel.getWordSortMode())
+            .show(requireActivity().supportFragmentManager, null)
     }
 
     private fun showCategoryListDialog() {

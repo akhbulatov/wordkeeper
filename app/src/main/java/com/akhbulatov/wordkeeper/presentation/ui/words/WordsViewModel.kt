@@ -65,6 +65,13 @@ class WordsViewModel @Inject constructor(
         }
     }
 
+    fun getWordSortMode(): Word.SortMode = wordInteractor.wordSortMode
+
+    fun onSortWordSelected(sortMode: Word.SortMode) {
+        wordInteractor.wordSortMode = sortMode
+        loadWords()
+    }
+
     override fun onBackPressed() = router.exit()
 
     data class ViewState(
