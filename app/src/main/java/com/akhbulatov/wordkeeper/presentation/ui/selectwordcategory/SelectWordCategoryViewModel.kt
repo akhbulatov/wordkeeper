@@ -10,13 +10,11 @@ class SelectWordCategoryViewModel @Inject constructor(
     private val wordCategoryInteractor: WordCategoryInteractor
 ) : BaseViewModel() {
 
-    fun getWordCategories(): Array<String> {
-        return runBlocking {
-            wordCategoryInteractor.getWordCategories().first()
+    fun getWordCategories(): Array<String> =
+        runBlocking {
+            wordCategoryInteractor.getWordCategories()
+                .first()
                 .map { it.name }
                 .toTypedArray()
         }
-    }
-
-    override fun onBackPressed() {}
 }

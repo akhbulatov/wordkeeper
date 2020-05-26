@@ -174,7 +174,7 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
             .show(requireActivity().supportFragmentManager, null)
     }
 
-    private fun showCategoryListDialog() {
+    private fun showSelectWordCategoriesDialog() {
         setFragmentResultListener(SelectWordCategoryDialog.REQUEST_SELECT_WORD_CATEGORY) { _, bundle ->
             val category = bundle.getString(SelectWordCategoryDialog.RESULT_SELECT_WORD_CATEGORY)!!
             val words = arrayListOf<Word>()
@@ -185,7 +185,8 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
             wordActionMode?.finish()
             showSnackbar(R.string.words_success_move)
         }
-        SelectWordCategoryDialog().show(requireActivity().supportFragmentManager, null)
+        SelectWordCategoryDialog.newInstance(R.string.category_list_title)
+            .show(requireActivity().supportFragmentManager, null)
     }
 
     private inner class WordActionModeCallback : ActionMode.Callback {
@@ -206,7 +207,7 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean =
             when (item.itemId) {
                 R.id.menu_move_word -> {
-                    showCategoryListDialog()
+                    showSelectWordCategoriesDialog()
                     true
                 }
                 R.id.menu_edit_word -> {
