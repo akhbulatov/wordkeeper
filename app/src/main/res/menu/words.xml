@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_search_word"
+        android:id="@+id/menu_search_words"
         android:icon="@drawable/ic_search"
         android:title="@string/words_action_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|ifRoom" />
 
     <item
-        android:id="@+id/menu_sort_word"
+        android:id="@+id/menu_sort_words"
         android:icon="@drawable/ic_sort"
         android:title="@string/words_action_sort"
         app:showAsAction="ifRoom" />

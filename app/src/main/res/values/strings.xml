@@ -12,12 +12,12 @@
 
     <!-- Words -->
     <string name="words_title">Words</string>
-
     <string name="words_action_search">Search</string>
     <string name="words_action_sort">Sort by</string>
     <string name="words_action_move">Move to</string>
     <string name="words_action_edit">Edit</string>
     <string name="words_action_delete">Delete</string>
+
     <string name="words_empty_list">You have not added words with translations.
         To add a new word, press the \"+\".
     </string>
