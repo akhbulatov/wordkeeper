@@ -57,8 +57,6 @@ class WordAdapter(
         }
     }
 
-    private fun isSelected(position: Int): Boolean = getSelectedWordPositions().contains(position)
-
     inner class WordViewHolder(private val binding: ItemWordBinding) : BaseViewHolder<Word>(binding.root) {
 
         init {
