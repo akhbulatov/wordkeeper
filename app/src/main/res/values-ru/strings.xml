@@ -33,7 +33,7 @@
         <item quantity="other">%d слов</item>
     </plurals>
 
-    <string name="empty_category_content">Нет слов в данной категории</string>
+    <string name="category_words_empty_data">Нет слов в данной категории</string>
 
     <string name="about_title">О приложении</string>
     <string name="about_app_version">Версия %1$s (сборка %2$d)</string>

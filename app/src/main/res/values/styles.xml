@@ -37,14 +37,4 @@
         <item name="android:paddingRight">?attr/listPreferredItemPaddingRight</item>
     </style>
 
-    <style name="TextNoResult" parent="android:Widget.TextView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:layout_marginLeft">@dimen/no_result_horizontal_margin</item>
-        <item name="android:layout_marginRight">@dimen/no_result_horizontal_margin</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/no_result_text_size</item>
-    </style>
-
 </resources>

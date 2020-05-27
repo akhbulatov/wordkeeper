@@ -5,8 +5,5 @@
 
     <dimen name="drawer_header_height">170dp</dimen>
     <dimen name="list_item_height">72dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="no_result_horizontal_margin">16dp</dimen>
-    <dimen name="no_result_text_size">16sp</dimen>
     <dimen name="dialog_horizontal_margin">24dp</dimen>
 </resources>

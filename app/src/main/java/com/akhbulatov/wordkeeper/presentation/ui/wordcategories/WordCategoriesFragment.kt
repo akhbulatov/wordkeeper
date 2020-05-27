@@ -174,8 +174,8 @@ class WordCategoriesFragment : BaseFragment(R.layout.fragment_word_categories) {
 
     private fun showEmptySearchResult(show: Boolean, query: String?) {
         query?.let {
-            val noResults = String.format(getString(R.string.word_categories_empty_search_result), it.htmlEncode())
-            binding.emptySearchResultTextView.text = noResults.parseAsHtml()
+            val emptyResult = String.format(getString(R.string.word_categories_empty_search_result), it.htmlEncode())
+            binding.emptySearchResultTextView.text = emptyResult.parseAsHtml()
         }
         binding.emptySearchResultTextView.isVisible = show
     }

@@ -157,8 +157,8 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
 
     private fun showEmptySearchResult(show: Boolean, query: String?) {
         query?.let {
-            val noResults = String.format(getString(R.string.words_empty_search_result), it.htmlEncode())
-            binding.emptySearchResultTextView.text = noResults.parseAsHtml()
+            val emptyResult = String.format(getString(R.string.words_empty_search_result), it.htmlEncode())
+            binding.emptySearchResultTextView.text = emptyResult.parseAsHtml()
         }
         binding.emptySearchResultTextView.isVisible = show
     }

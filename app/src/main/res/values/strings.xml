@@ -37,8 +37,8 @@
 
     <string name="default_category">Main</string>
 
-    <!-- Category Content -->
-    <string name="empty_category_content">No words in this category</string>
+    <!-- Word Categories -->
+    <string name="category_words_empty_data">No words in this category</string>
 
     <!-- Add Edit Word -->
     <string name="add_edit_word_add_title">New word</string>
