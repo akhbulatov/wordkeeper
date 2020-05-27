@@ -29,7 +29,7 @@
     </style>
 
     <style name="EmptyText">
-        <item name="android:gravity">center_vertical</item>
+        <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
