@@ -24,6 +24,7 @@ import com.akhbulatov.wordkeeper.App
 import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.databinding.FragmentWordCategoriesBinding
 import com.akhbulatov.wordkeeper.domain.global.models.WordCategory
+import com.akhbulatov.wordkeeper.presentation.ui.addeditword.AddEditWordDialog
 import com.akhbulatov.wordkeeper.presentation.ui.addeditwordcategory.AddEditWordCategoryDialog
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.ConfirmDialog
@@ -79,9 +80,7 @@ class WordCategoriesFragment : BaseFragment(R.layout.fragment_word_categories) {
             wordCategoriesRecyclerView.adapter = wordCategoryAdapter
             registerForContextMenu(wordCategoriesRecyclerView)
 
-            addWordFab.setOnClickListener {
-                // todo
-            }
+            addWordFab.setOnClickListener { showAddWordDialog() }
         }
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
@@ -207,6 +206,11 @@ class WordCategoriesFragment : BaseFragment(R.layout.fragment_word_categories) {
             R.string.category_delete_message,
             R.string.category_action_delete
         )
+            .show(parentFragmentManager, null)
+    }
+
+    private fun showAddWordDialog() {
+        AddEditWordDialog.newInstance()
             .show(parentFragmentManager, null)
     }
 }
