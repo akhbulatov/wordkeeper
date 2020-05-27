@@ -13,7 +13,7 @@
         tools:listitem="@layout/item_word_category" />
 
     <TextView
-        android:id="@+id/noResultsTextView"
+        android:id="@+id/emptySearchResultTextView"
         style="@style/TextNoResult"
         android:text="@string/no_results_category"
         android:visibility="gone"

@@ -1,13 +1,14 @@
 <resources>
     <string name="app_name" translatable="false">WordKeeper</string>
 
-    <!-- Common Messages -->
+    <!-- Common Messages. Start -->
     <string name="msg_drawer_open">Open navigation drawer</string>
     <string name="msg_drawer_close">Close navigation drawer</string>
 
     <string name="msg_action_add">Add</string>
     <string name="msg_action_delete">Delete</string>
     <string name="msg_action_search">Search</string>
+    <!-- Common Messages. End -->
 
     <!-- Main -->
     <string name="main_rate_app">Rate app</string>
@@ -20,11 +21,9 @@
     <string name="words_action_move">Move to</string>
     <string name="words_action_edit">Edit</string>
     <string name="words_action_delete">Delete</string>
+    <string name="words_empty_data">You have not added words with translations.To add a new word, press the \"+\".</string>
+    <string name="words_empty_search_result">No results found for \"&lt;b>%1$s&lt;/b>\"</string>
 
-    <string name="words_empty_list">You have not added words with translations.
-        To add a new word, press the \"+\".
-    </string>
-    <string name="words_no_results">No results found for \"&lt;b>%1$s&lt;/b>\"</string>
     <string name="words_success_move">Move successfully completed</string>
     <string name="words_error_move">Move failed</string>
 

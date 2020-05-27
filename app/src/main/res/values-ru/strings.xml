@@ -11,10 +11,10 @@
     <string name="words_action_move">Переместить</string>
     <string name="words_action_edit">Редактировать</string>
     <string name="words_action_delete">Удалить</string>
-    <string name="words_empty_list">У вас нет добавленных слов с переводами.
+    <string name="words_empty_data">У вас нет добавленных слов с переводами.
         Чтобы добавить новое слово, нажмите \"+\".
     </string>
-    <string name="words_no_results">По запросу \"&lt;b>%1$s&lt;/b>\" ничего не найдено</string>
+    <string name="words_empty_search_result">По запросу \"&lt;b>%1$s&lt;/b>\" ничего не найдено</string>
     <string name="words_success_move">Перемещение успешно завершено</string>
     <string name="words_error_move">Перемещение не удалось выполнить</string>
 

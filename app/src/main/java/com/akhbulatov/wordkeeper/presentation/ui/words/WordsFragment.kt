@@ -11,6 +11,8 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
+import androidx.core.text.htmlEncode
+import androidx.core.text.parseAsHtml
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -110,7 +112,15 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
             override fun onQueryTextSubmit(query: String): Boolean = false
 
             override fun onQueryTextChange(newText: String): Boolean {
-                // todo
+                viewModel.onSearchWordChanged(newText)
+                return true
+            }
+        })
+        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem?): Boolean = true
+
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                viewModel.onCloseSearchWordClicked()
                 return true
             }
         })
@@ -128,6 +138,7 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
         showEmptyProgress(viewState.emptyProgress)
         showEmptyData(viewState.emptyData)
         showEmptyError(viewState.emptyError.first, viewState.emptyError.second)
+        showEmptySearchResult(viewState.emptySearchResult.first, viewState.emptySearchResult.second)
         showWords(viewState.words.first, viewState.words.second)
     }
 
@@ -142,6 +153,14 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
     private fun showEmptyError(show: Boolean, message: String?) {
         binding.errorTextView.text = message
         binding.errorTextView.isVisible = show
+    }
+
+    private fun showEmptySearchResult(show: Boolean, query: String?) {
+        query?.let {
+            val noResults = String.format(getString(R.string.words_empty_search_result), it.htmlEncode())
+            binding.emptySearchResultTextView.text = noResults.parseAsHtml()
+        }
+        binding.emptySearchResultTextView.isVisible = show
     }
 
     private fun showWords(show: Boolean, words: List<Word>) {

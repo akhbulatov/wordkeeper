@@ -2,7 +2,9 @@ package com.akhbulatov.wordkeeper.domain.word
 
 import com.akhbulatov.wordkeeper.domain.global.models.Word
 import com.akhbulatov.wordkeeper.domain.global.repositories.WordRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class WordInteractor @Inject constructor(
@@ -23,6 +25,13 @@ class WordInteractor @Inject constructor(
 
     suspend fun deleteWords(words: List<Word>) =
         wordRepository.deleteWords(words)
+
+    suspend fun searchWords(query: String, source: List<Word>): List<Word> =
+        withContext(Dispatchers.IO) {
+            source.filter {
+                it.name.startsWith(query, ignoreCase = true)
+            }
+        }
 
     var wordSortMode: Word.SortMode
         get() = wordRepository.wordSortMode

@@ -8,6 +8,11 @@
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
+    <style name="EmptyText">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/font_normal</item>
+    </style>
+
     <style name="ListItem" parent="android:Widget.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
