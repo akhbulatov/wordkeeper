@@ -38,9 +38,10 @@ class WordCategoryAdapter(
         override fun bind(item: WordCategory) {
             wordCategory = item
             with(binding) {
+                val ctx = itemView.context
                 nameTextView.text = item.name
-                numOfWordsTextView.text = itemView.context.resources.getQuantityString(
-                    R.plurals.number_of_words, item.words.size, item.words.size
+                numOfWordsTextView.text = ctx.resources.getQuantityString(
+                    R.plurals.item_word_category_num_of_words, item.words.size, item.words.size
                 )
 
                 if (bindingAdapterPosition == 0) {
@@ -48,7 +49,7 @@ class WordCategoryAdapter(
                     moreOptionsTextView.setOnClickListener(null)
                     itemView.isLongClickable = false
                 } else {
-                    moreOptionsTextView.visibility = View.VISIBLE
+                    moreOptionsTextView.isVisible = true
                     moreOptionsTextView.setOnClickListener { itemClickListener.onMoreOptionsClick(itemView) }
                     itemView.isLongClickable = true
                 }

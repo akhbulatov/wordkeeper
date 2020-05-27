@@ -12,6 +12,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.SearchView
+import androidx.core.text.htmlEncode
+import androidx.core.text.parseAsHtml
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -106,7 +108,15 @@ class WordCategoriesFragment : BaseFragment(R.layout.fragment_word_categories) {
             override fun onQueryTextSubmit(query: String): Boolean = false
 
             override fun onQueryTextChange(newText: String): Boolean {
-                // todo
+                viewModel.onSearchWordCategoryChanged(newText)
+                return true
+            }
+        })
+        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem?): Boolean = true
+
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                viewModel.onCloseSearchWordCategoryClicked()
                 return true
             }
         })
@@ -145,20 +155,29 @@ class WordCategoriesFragment : BaseFragment(R.layout.fragment_word_categories) {
         showEmptyProgress(viewState.emptyProgress)
         showEmptyData(viewState.emptyData)
         showEmptyError(viewState.emptyError.first, viewState.emptyError.second)
+        showEmptySearchResult(viewState.emptySearchResult.first, viewState.emptySearchResult.second)
         showWordCategories(viewState.wordCategories.first, viewState.wordCategories.second)
     }
 
     private fun showEmptyProgress(show: Boolean) {
-//        binding.emptyProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        binding.emptyProgressBar.isVisible = show
     }
 
     private fun showEmptyData(show: Boolean) {
-//        binding.emptyDataTextView.setVisibility(show ? View.VISIBLE : View.GONE);
+        binding.emptyDataTextView.isVisible = show
     }
 
     private fun showEmptyError(show: Boolean, message: String?) {
-//        binding.errorTextView.setText(message);
-//        binding.errorTextView.setVisibility(show ? View.VISIBLE : View.GONE);
+        binding.errorTextView.text = message
+        binding.errorTextView.isVisible = show
+    }
+
+    private fun showEmptySearchResult(show: Boolean, query: String?) {
+        query?.let {
+            val noResults = String.format(getString(R.string.word_categories_empty_search_result), it.htmlEncode())
+            binding.emptySearchResultTextView.text = noResults.parseAsHtml()
+        }
+        binding.emptySearchResultTextView.isVisible = show
     }
 
     private fun showWordCategories(show: Boolean, wordCategories: List<WordCategory>) {

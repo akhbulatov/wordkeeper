@@ -23,7 +23,10 @@ class WordCategoriesViewModel @Inject constructor(
     private val _viewState = MutableLiveData<ViewState>()
     val viewState: LiveData<ViewState> get() = _viewState
 
-    private val currentViewState: ViewState get() = _viewState.value!!
+    private val currentViewState: ViewState
+        get() = _viewState.value!!
+
+    private var loadedWordCategories = listOf<WordCategory>()
 
     init {
         _viewState.value = ViewState()
@@ -36,6 +39,8 @@ class WordCategoriesViewModel @Inject constructor(
                 .onEach { _viewState.value = currentViewState.copy(emptyProgress = false) }
                 .catch { _viewState.value = currentViewState.copy(emptyError = Pair(true, it.message)) }
                 .collect {
+                    loadedWordCategories = it
+
                     if (it.isNotEmpty()) {
                         _viewState.value = currentViewState.copy(
                             emptyData = false,
@@ -80,10 +85,35 @@ class WordCategoriesViewModel @Inject constructor(
         }
     }
 
+    fun onSearchWordCategoryChanged(query: String) {
+        viewModelScope.launch {
+            if (query.isNotBlank()) {
+                val foundWords = wordCategoryInteractor.searchWordCategories(query, loadedWordCategories)
+                _viewState.value = currentViewState.copy(
+                    emptySearchResult = Pair(foundWords.isEmpty(), query),
+                    wordCategories = Pair(true, foundWords)
+                )
+            } else {
+                _viewState.value = currentViewState.copy(
+                    emptySearchResult = Pair(false, null),
+                    wordCategories = Pair(true, loadedWordCategories)
+                )
+            }
+        }
+    }
+
+    fun onCloseSearchWordCategoryClicked() {
+        _viewState.value = currentViewState.copy(
+            emptySearchResult = Pair(false, null),
+            wordCategories = Pair(true, loadedWordCategories)
+        )
+    }
+
     data class ViewState(
         val emptyProgress: Boolean = false,
         val emptyData: Boolean = false,
         val emptyError: Pair<Boolean, String?> = Pair(false, null),
+        val emptySearchResult: Pair<Boolean, String?> = Pair(false, null),
         val wordCategories: Pair<Boolean, List<WordCategory>> = Pair(false, emptyList())
     )
 }
