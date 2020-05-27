@@ -8,33 +8,29 @@
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
-    <style name="EmptyText">
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/font_normal</item>
+    <style name="ListItem">
+        <item name="android:foreground">?selectableItemBackground</item>
+        <item name="android:minHeight">@dimen/list_item_height</item>
+        <item name="android:paddingStart">?listPreferredItemPaddingStart</item>
+        <item name="android:paddingEnd">?listPreferredItemPaddingEnd</item>
     </style>
 
-    <style name="ListItem" parent="android:Widget.TextView">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="ListItemText">
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
     </style>
 
-    <style name="ListItem.Primary">
+    <style name="ListItemText.Primary">
         <item name="android:textAppearance">?android:attr/textAppearanceListItem</item>
     </style>
 
-    <style name="ListItem.Secondary">
+    <style name="ListItemText.Secondary">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
     </style>
 
-    <style name="ListItemLayout">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/list_item_height</item>
-        <item name="android:clickable">true</item>
-        <item name="android:foreground">?attr/selectableItemBackground</item>
-        <item name="android:paddingLeft">?attr/listPreferredItemPaddingLeft</item>
-        <item name="android:paddingRight">?attr/listPreferredItemPaddingRight</item>
+    <style name="EmptyText">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/font_normal</item>
     </style>
 
 </resources>
