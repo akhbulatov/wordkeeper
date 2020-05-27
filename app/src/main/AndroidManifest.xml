@@ -13,8 +13,7 @@
 
         <activity
             android:name=".presentation.ui.main.MainActivity"
-            android:launchMode="singleTop"
-            android:theme="@style/NavDrawerTheme">
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.SEARCH" />
