@@ -2,36 +2,26 @@
     <string name="msg_drawer_open">Открыть панель навигации</string>
     <string name="msg_drawer_close">Закрыть панель навигации</string>
 
+    <string name="msg_action_add">Добавить</string>
+    <string name="msg_action_delete">Удалить</string>
+    <string name="msg_action_search">Поиск</string>
+
     <string name="main_rate_app">Оценить</string>
-    <string name="search_hint">Поиск</string>
 
     <string name="words_title">Все слова</string>
-    <string name="words_action_search">Поиск</string>
     <string name="words_action_sort">Сортировать</string>
     <string name="words_action_move">Переместить</string>
     <string name="words_action_edit">Редактировать</string>
     <string name="words_action_delete">Удалить</string>
-    <string name="words_empty_data">У вас нет добавленных слов с переводами.
-        Чтобы добавить новое слово, нажмите \"+\".
-    </string>
+    <string name="words_empty_data">У вас нет добавленных слов с переводами. Чтобы добавить новое слово, нажмите \"+\".</string>
     <string name="words_empty_search_result">По запросу \"&lt;b>%1$s&lt;/b>\" ничего не найдено</string>
     <string name="words_success_move">Перемещение успешно завершено</string>
-    <string name="words_error_move">Перемещение не удалось выполнить</string>
 
     <string name="word_categories_title">Категории</string>
-    <string name="default_category">Главная</string>
-    <string name="action_search_category">Поиск</string>
-    <string name="action_add_category">Добавить</string>
+    <string name="word_categories_default">Главная</string>
     <string name="word_categories_action_rename">Переименовать</string>
-    <string name="action_delete_category">Удалить</string>
-    <string name="more_options_description">Больше опций</string>
+    <string name="word_categories_empty_data">У вас нет добавленных категорий. Чтобы добавить новую категорию, нажмите \"+\".</string>
     <string name="word_categories_empty_search_result">По запросу \"&lt;b>%1$s&lt;/b>\" ничего не найдено</string>
-    <plurals name="word_categories_number_of_words">
-        <item quantity="one">%d слово</item>
-        <item quantity="few">%d слова</item>
-        <item quantity="many">%d слов</item>
-        <item quantity="other">%d слов</item>
-    </plurals>
 
     <string name="category_words_empty_data">Нет слов в данной категории</string>
 
@@ -46,25 +36,24 @@
     <string name="add_edit_word_category">Категория</string>
     <string name="add_edit_word_action_add">Добавить</string>
     <string name="add_edit_word_action_edit">Редактировать</string>
-    <string name="add_edit_word_empty_fields">Поля не заполнены</string>
 
-    <string-array name="sort_words">
+    <string-array name="sort_words_items">
         <item>По названию</item>
         <item>По дате изменения</item>
     </string-array>
 
-    <string name="category_list_title">Переместить в категорию</string>
+    <string name="add_edit_word_category_add_title">Новая категория</string>
+    <string name="add_edit_word_category_edit_title">Переименование категории</string>
+    <string name="add_edit_word_category_name_hint">Название</string>
+    <string name="add_edit_word_category_edit">Переименовать</string>
 
-    <string name="title_new_category">Новая категория</string>
-    <string name="title_rename_category">Переименование категории</string>
-    <string name="category_editor_name_hint">Название</string>
-    <string name="category_editor_action_add">Добавить</string>
-    <string name="category_editor_action_rename">Переименовать</string>
-    <string name="error_category_editor_empty_field">Поле не заполнено</string>
+    <string name="delete_word_category_title">Удалить категорию?</string>
+    <string name="delete_word_category_message">Также удалятся все слова, находящиеся в данной категории.</string>
 
-    <string name="category_delete_title">Удалить категорию?</string>
-    <string name="category_delete_message">Также удалятся все слова,
-        находящиеся в данной категории.
-    </string>
-    <string name="category_action_delete">Удалить</string>
+    <plurals name="item_word_category_num_of_words">
+        <item quantity="one">%d слово</item>
+        <item quantity="few">%d слова</item>
+        <item quantity="many">%d слов</item>
+        <item quantity="other">%d слов</item>
+    </plurals>
 </resources>

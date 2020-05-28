@@ -31,7 +31,7 @@ import com.akhbulatov.wordkeeper.presentation.ui.global.utils.requireCompatActiv
 import com.akhbulatov.wordkeeper.presentation.ui.global.utils.showSnackbar
 import com.akhbulatov.wordkeeper.presentation.ui.main.MainActivity
 import com.akhbulatov.wordkeeper.presentation.ui.selectwordcategory.SelectWordCategoryDialog
-import com.akhbulatov.wordkeeper.presentation.ui.sortword.SortWordDialog
+import com.akhbulatov.wordkeeper.presentation.ui.sortwords.SortWordsDialog
 import javax.inject.Inject
 
 class WordsFragment : BaseFragment(R.layout.fragment_words) {
@@ -128,7 +128,7 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_sort_words) {
-            showSortWordDialog()
+            showSortWordsDialog()
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -184,12 +184,12 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
             .show(parentFragmentManager, null)
     }
 
-    private fun showSortWordDialog() {
-        setFragmentResultListener(SortWordDialog.REQUEST_SORT_MODE) { _, bundle ->
-            val sortMode = bundle.getSerializable(SortWordDialog.RESULT_SORT_MODE) as Word.SortMode
+    private fun showSortWordsDialog() {
+        setFragmentResultListener(SortWordsDialog.REQUEST_SORT_MODE) { _, bundle ->
+            val sortMode = bundle.getSerializable(SortWordsDialog.RESULT_SORT_MODE) as Word.SortMode
             viewModel.onSortWordSelected(sortMode)
         }
-        SortWordDialog.newInstance(viewModel.getWordSortMode())
+        SortWordsDialog.newInstance(viewModel.getWordSortMode())
             .show(requireActivity().supportFragmentManager, null)
     }
 
@@ -204,7 +204,7 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
             wordActionMode?.finish()
             showSnackbar(R.string.words_success_move)
         }
-        SelectWordCategoryDialog.newInstance(R.string.category_list_title)
+        SelectWordCategoryDialog.newInstance(R.string.words_action_move)
             .show(requireActivity().supportFragmentManager, null)
     }
 

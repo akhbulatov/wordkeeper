@@ -202,9 +202,9 @@ class WordCategoriesFragment : BaseFragment(R.layout.fragment_word_categories) {
             viewModel.onDeleteWordCategoryWithWordsClicked(wordCategory)
         }
         ConfirmDialog.newInstance(
-            R.string.category_delete_title,
-            R.string.category_delete_message,
-            R.string.category_action_delete
+            R.string.delete_word_category_title,
+            R.string.delete_word_category_message,
+            R.string.msg_action_delete
         )
             .show(parentFragmentManager, null)
     }

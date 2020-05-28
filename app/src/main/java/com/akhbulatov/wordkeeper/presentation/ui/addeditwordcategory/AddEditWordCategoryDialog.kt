@@ -20,14 +20,14 @@ class AddEditWordCategoryDialog : BaseDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val wordCategory: WordCategoryUiModel? = arguments?.getParcelable(ARG_WORD_CATEGORY)
         val titleId = if (wordCategory == null) {
-            R.string.title_new_category
+            R.string.add_edit_word_add_title
         } else {
-            R.string.title_rename_category
+            R.string.add_edit_word_category_edit_title
         }
         val positiveTextId = if (wordCategory == null) {
-            R.string.category_editor_action_add
+            R.string.msg_action_add
         } else {
-            R.string.category_editor_action_rename
+            R.string.add_edit_word_category_edit
         }
 
         val inflater = requireActivity().layoutInflater
