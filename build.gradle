@@ -21,6 +21,7 @@ buildscript {
         roomVersion = '2.2.5'
         coroutinesVersion = '1.3.7'
         ciceroneVersion = '5.1.1'
+        detektVersion = '1.9.1'
         leakCanaryVersion = "2.3"
         stethoVersion = "1.5.1"
         crashlyticsVersion = "2.10.1"
@@ -30,18 +31,21 @@ buildscript {
     repositories {
         jcenter()
         google()
+        maven { url "https://plugins.gradle.org/m2/" }
         maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
         classpath "com.android.tools.build:gradle:$androidGradleVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektVersion"
         classpath "com.github.ben-manes:gradle-versions-plugin:0.28.0"
         classpath "io.fabric.tools:gradle:$fabricVersion"
     }
 }
 
 allprojects {
+    apply from: "$rootDir/detekt.gradle"
     repositories {
         jcenter()
         google()
