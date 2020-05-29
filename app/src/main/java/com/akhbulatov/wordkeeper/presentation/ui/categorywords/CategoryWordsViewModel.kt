@@ -11,9 +11,11 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class CategoryWordsViewModel @Inject constructor(
+    private val router: Router,
     private val wordInteractor: WordInteractor
 ) : BaseViewModel() {
 
@@ -50,6 +52,8 @@ class CategoryWordsViewModel @Inject constructor(
                 }
         }
     }
+
+    fun onBackPressed() = router.exit()
 
     data class ViewState(
         val emptyProgress: Boolean = false,

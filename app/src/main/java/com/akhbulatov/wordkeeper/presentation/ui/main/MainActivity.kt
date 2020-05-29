@@ -13,7 +13,6 @@ import com.akhbulatov.wordkeeper.BuildConfig
 import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.databinding.ActivityMainBinding
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseActivity
-import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
@@ -40,9 +39,6 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         )
     }
 
-    private val currentFragment
-        get() = supportFragmentManager.findFragmentById(R.id.container) as BaseFragment?
-
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent
             .mainComponentFactory()
@@ -51,12 +47,22 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
         val rootView = findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
         _binding = ActivityMainBinding.bind(rootView)
-        with(binding) {
-            setSupportActionBar(toolbar)
-            drawerLayout.addDrawerListener(drawerToggle)
-            navigationView.setNavigationItemSelectedListener {
-                onNavigationItemSelected(it)
-                true
+        setSupportActionBar(binding.toolbar)
+        drawerToggle.setToolbarNavigationClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+        binding.drawerLayout.addDrawerListener(drawerToggle)
+        binding.navigationView.setNavigationItemSelectedListener {
+            onNavigationItemSelected(it)
+            true
+        }
+
+        supportFragmentManager.addOnBackStackChangedListener {
+            val hasBackStack = supportFragmentManager.backStackEntryCount > 0
+            drawerToggle.isDrawerIndicatorEnabled = !hasBackStack
+            supportActionBar?.setDisplayHomeAsUpEnabled(hasBackStack)
+            if (!hasBackStack) {
+                drawerToggle.syncState()
             }
         }
 
@@ -70,11 +76,6 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         drawerToggle.syncState()
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        drawerToggle.onConfigurationChanged(newConfig)
-    }
-
     override fun onResumeFragments() {
         super.onResumeFragments()
         navigatorHolder.setNavigator(navigator)
@@ -85,16 +86,6 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         super.onPause()
     }
 
-    override fun onBackPressed() {
-        when {
-            binding.drawerLayout.isDrawerOpen(GravityCompat.START) -> {
-                binding.drawerLayout.closeDrawer(GravityCompat.START)
-            }
-            supportFragmentManager.backStackEntryCount > 0 -> currentFragment?.onBackPressed()
-            else -> super.onBackPressed()
-        }
-    }
-
     private fun onNavigationItemSelected(item: MenuItem) {
         when (item.itemId) {
             R.id.menu_drawer_words -> viewModel.onWordsClicked()
@@ -103,6 +94,20 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
             R.id.menu_drawer_about -> viewModel.onAboutClicked()
         }
         binding.drawerLayout.closeDrawers()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        drawerToggle.onConfigurationChanged(newConfig)
+    }
+
+    override fun onBackPressed() {
+        when {
+            binding.drawerLayout.isDrawerOpen(GravityCompat.START) -> {
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
+            }
+            else -> onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     companion object {

@@ -2,6 +2,7 @@ package com.akhbulatov.wordkeeper.presentation.ui.categorywords
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -14,6 +15,7 @@ import com.akhbulatov.wordkeeper.domain.global.models.Word
 import com.akhbulatov.wordkeeper.presentation.global.mvvm.ViewModelFactory
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment
 import com.akhbulatov.wordkeeper.presentation.ui.global.list.adapters.WordAdapter
+import com.akhbulatov.wordkeeper.presentation.ui.global.utils.requireCompatActivity
 import javax.inject.Inject
 
 class CategoryWordsFragment : BaseFragment(R.layout.fragment_category_words) {
@@ -25,6 +27,7 @@ class CategoryWordsFragment : BaseFragment(R.layout.fragment_category_words) {
     private val binding get() = _binding!!
 
     private val wordAdapter by lazy { WordAdapter() }
+    private val wordCategory: String by lazy { requireArguments().getString(ARG_WORD_CATEGORY)!! }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent
@@ -32,7 +35,11 @@ class CategoryWordsFragment : BaseFragment(R.layout.fragment_category_words) {
             .create()
             .inject(this)
         super.onCreate(savedInstanceState)
-        val wordCategory = requireArguments().getString(ARG_WORD_CATEGORY)!!
+        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                viewModel.onBackPressed()
+            }
+        })
         if (savedInstanceState == null) {
             viewModel.loadWordsByCategory(wordCategory)
         }
@@ -42,6 +49,8 @@ class CategoryWordsFragment : BaseFragment(R.layout.fragment_category_words) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentCategoryWordsBinding.bind(view)
         with(binding) {
+            requireCompatActivity().supportActionBar?.title = wordCategory
+
             wordsRecyclerView.setHasFixedSize(true)
             wordsRecyclerView.addItemDecoration(
                 DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
