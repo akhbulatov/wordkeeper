@@ -38,7 +38,7 @@ class ContextMenuRecyclerView @JvmOverloads constructor(
 
     /**
      * Extra menu information provided to the
-     * {@link android.view.View.OnCreateContextMenuListener#onCreateContextMenu(android.view.ContextMenu, View, ContextMenuInfo) }
+     * [android.view.View.OnCreateContextMenuListener#onCreateContextMenu(android.view.ContextMenu, View, ContextMenuInfo)]
      * callback when a context menu is brought up for this AdapterView.
      */
     class RecyclerContextMenuInfo(
