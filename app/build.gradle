@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -104,7 +103,4 @@ dependencies {
     // Dev Tools
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
     implementation "com.facebook.stetho:stetho:$stethoVersion"
-    implementation("com.crashlytics.sdk.android:crashlytics:$crashlyticsVersion@aar") {
-        transitive = true
-    }
 }
