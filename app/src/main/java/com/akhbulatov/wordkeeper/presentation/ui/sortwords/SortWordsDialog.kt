@@ -2,19 +2,19 @@ package com.akhbulatov.wordkeeper.presentation.ui.sortwords
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.domain.global.models.Word
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseDialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class SortWordsDialog : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val args = requireArguments()
         val sortMode = args.getSerializable(ARG_SORT_MODE)!! as Word.SortMode
-        return AlertDialog.Builder(requireContext())
+        return MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.words_action_sort)
             .setSingleChoiceItems(R.array.sort_words_items, sortMode.ordinal) { _, which ->
                 val selectedSortMode = Word.SortMode.toEnumSortMode(which)

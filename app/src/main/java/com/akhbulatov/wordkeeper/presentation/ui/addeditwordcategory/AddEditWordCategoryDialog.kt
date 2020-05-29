@@ -11,6 +11,7 @@ import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.databinding.DialogAddEditWordCategoryBinding
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseDialogFragment
 import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordCategoryUiModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import reactivecircus.flowbinding.android.widget.textChanges
@@ -33,7 +34,7 @@ class AddEditWordCategoryDialog : BaseDialogFragment() {
         val inflater = requireActivity().layoutInflater
         val binding = DialogAddEditWordCategoryBinding.inflate(inflater, null, false)
 
-        val dialog = AlertDialog.Builder(requireActivity())
+        val dialog = MaterialAlertDialogBuilder(requireActivity())
             .setView(binding.root)
             .setTitle(titleId)
             .setPositiveButton(positiveTextId) { _, _ ->

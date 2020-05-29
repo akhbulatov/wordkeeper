@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Widget.App.Toolbar" parent="Widget.AppCompat.Toolbar">
+    <style name="Widget.App.Toolbar" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:background">?colorPrimary</item>
         <item name="android:elevation">4dp</item>
-        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="popupTheme">@style/ThemeOverlay.MaterialComponents.Light</item>
+    </style>
+
+    <style name="Widget.App.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <!-- TODO Remove tint after fix this issue: https://github.com/material-components/material-components-android/issues/1106 -->
+        <item name="tint">@android:color/white</item>
     </style>
 
     <style name="ListItem">

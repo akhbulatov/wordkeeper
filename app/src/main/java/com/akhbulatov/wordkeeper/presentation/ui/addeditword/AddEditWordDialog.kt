@@ -14,6 +14,7 @@ import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.databinding.DialogAddEditWordBinding
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseDialogFragment
 import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordUiModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -41,7 +42,7 @@ class AddEditWordDialog : BaseDialogFragment() {
         val inflater = requireActivity().layoutInflater
         val binding = DialogAddEditWordBinding.inflate(inflater, null, false)
 
-        val dialog = AlertDialog.Builder(requireContext())
+        val dialog = MaterialAlertDialogBuilder(requireContext())
             .setView(binding.root)
             .setTitle(titleId)
             .setPositiveButton(positiveTextId) { _, _ ->

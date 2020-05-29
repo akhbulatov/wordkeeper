@@ -3,15 +3,15 @@ package com.akhbulatov.wordkeeper.presentation.ui.global.base
 import android.app.Dialog
 import android.os.Bundle
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ConfirmDialog : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val args = requireArguments()
-        return AlertDialog.Builder(requireContext())
+        return MaterialAlertDialogBuilder(requireContext())
             .setTitle(args.getInt(ARG_TITLE))
             .setMessage(args.getInt(ARG_MESSAGE))
             .setPositiveButton(args.getInt(ARG_POSITIVE_BUTTON)) { _, _ ->

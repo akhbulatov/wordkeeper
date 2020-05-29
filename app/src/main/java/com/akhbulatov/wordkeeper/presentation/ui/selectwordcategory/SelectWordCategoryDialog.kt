@@ -3,13 +3,13 @@ package com.akhbulatov.wordkeeper.presentation.ui.selectwordcategory
 import android.app.Dialog
 import android.os.Bundle
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.akhbulatov.wordkeeper.App
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseDialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import javax.inject.Inject
 
 class SelectWordCategoryDialog : BaseDialogFragment() {
@@ -29,7 +29,7 @@ class SelectWordCategoryDialog : BaseDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val args = requireArguments()
         val categories = viewModel.getWordCategories()
-        return AlertDialog.Builder(requireContext())
+        return MaterialAlertDialogBuilder(requireContext())
             .setTitle(args.getInt(ARG_TITLE))
             .setItems(categories) { _, which ->
                 val result = bundleOf(RESULT_SELECT_WORD_CATEGORY to categories[which])
