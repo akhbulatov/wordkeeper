@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.akhbulatov.wordkeeper.App
 import com.akhbulatov.wordkeeper.BuildConfig
@@ -16,12 +18,24 @@ import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseActivity
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
+import ru.terrakok.cicerone.commands.Command
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(R.layout.activity_main) {
 
     @Inject lateinit var navigatorHolder: NavigatorHolder
-    private val navigator: Navigator by lazy { SupportAppNavigator(this, R.id.container) }
+    private val navigator: Navigator by lazy {
+        object : SupportAppNavigator(this, R.id.container) {
+            override fun setupFragmentTransaction(
+                command: Command,
+                currentFragment: Fragment?,
+                nextFragment: Fragment?,
+                fragmentTransaction: FragmentTransaction
+            ) {
+                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            }
+        }
+    }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by viewModels<MainViewModel> { viewModelFactory }
