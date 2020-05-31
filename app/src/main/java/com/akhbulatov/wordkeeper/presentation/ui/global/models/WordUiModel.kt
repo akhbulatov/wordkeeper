@@ -20,11 +20,3 @@ fun Word.toUiModel() = WordUiModel(
     datetime = datetime,
     category = category
 )
-
-fun WordUiModel.toDomainModel() = Word(
-    id = id,
-    name = name,
-    translation = translation,
-    datetime = datetime,
-    category = category
-)

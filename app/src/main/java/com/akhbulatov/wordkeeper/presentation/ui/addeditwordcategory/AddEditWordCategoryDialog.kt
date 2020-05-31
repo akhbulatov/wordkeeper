@@ -21,7 +21,7 @@ class AddEditWordCategoryDialog : BaseDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val wordCategory: WordCategoryUiModel? = arguments?.getParcelable(ARG_WORD_CATEGORY)
         val titleId = if (wordCategory == null) {
-            R.string.add_edit_word_add_title
+            R.string.add_edit_word_category_add_title
         } else {
             R.string.add_edit_word_category_edit_title
         }
