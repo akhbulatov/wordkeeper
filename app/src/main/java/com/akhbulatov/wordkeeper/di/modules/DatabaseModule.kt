@@ -16,11 +16,7 @@ abstract class DatabaseModule {
         @Singleton
         fun provideAppDatabase(context: Context): AppDatabase =
             Room.databaseBuilder(context, AppDatabase::class.java, "wordkeeper.db")
-                .addMigrations(
-                    AppDatabase.MIGRATION_0_1,
-                    AppDatabase.MIGRATION_1_2,
-                    AppDatabase.MIGRATION_2_3
-                )
+                .fallbackToDestructiveMigrationOnDowngrade()
                 .build()
 
         @Provides

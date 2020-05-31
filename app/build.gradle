@@ -23,6 +23,12 @@ android {
         versionName "1.5.0"
         resConfigs "en", "ru"
         vectorDrawables.useSupportLibrary = true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     signingConfigs {
