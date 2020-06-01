@@ -8,7 +8,7 @@
 
     <string name="main_rate_app">Оценить</string>
 
-    <string name="words_title">Все слова</string>
+    <string name="words_title">Слова</string>
     <string name="words_action_sort">Сортировать</string>
     <string name="words_action_move">Переместить</string>
     <string name="words_action_edit">Редактировать</string>
