@@ -33,6 +33,10 @@ android {
         }
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     signingConfigs {
         release {
             keyAlias keyStoreProperties['keyAlias']
@@ -66,10 +70,7 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
-    }
-
-    viewBinding {
-        enabled = true
+        freeCompilerArgs += ["-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi"]
     }
 
     androidExtensions {
