@@ -34,7 +34,12 @@ class WordsViewModel @Inject constructor(
             wordInteractor.getWords()
                 .onStart { _viewState.value = currentViewState.copy(emptyProgress = true) }
                 .onEach { _viewState.value = currentViewState.copy(emptyProgress = false) }
-                .catch { _viewState.value = currentViewState.copy(emptyError = Pair(true, it.message)) }
+                .catch {
+                    _viewState.value = currentViewState.copy(
+                        emptyProgress = false,
+                        emptyError = Pair(true, it.message)
+                    )
+                }
                 .collect {
                     loadedWords = it
 
