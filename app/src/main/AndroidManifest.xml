@@ -28,8 +28,8 @@
         </activity>
 
         <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="999c7221c0f2ad6ce13abf191bfd1f9a46a1e53f" />
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="${enableCrashReporting}" />
 
     </application>
 

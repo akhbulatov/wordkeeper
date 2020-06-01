@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "264360246075",
+    "firebase_url": "https://wordkeeper-57335.firebaseio.com",
+    "project_id": "wordkeeper-57335",
+    "storage_bucket": "wordkeeper-57335.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:264360246075:android:c2f292b1b54647d024151e",
+        "android_client_info": {
+          "package_name": "com.akhbulatov.wordkeeper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "264360246075-1jlojno9k96k6medslhu51dt2eht7vkk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhJqUgu7Xic9E--I7UtkNdLTdzDuABrMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "264360246075-1jlojno9k96k6medslhu51dt2eht7vkk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:264360246075:android:146ddf9911ccff5d24151e",
+        "android_client_info": {
+          "package_name": "com.akhbulatov.wordkeeper.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "264360246075-1jlojno9k96k6medslhu51dt2eht7vkk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhJqUgu7Xic9E--I7UtkNdLTdzDuABrMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "264360246075-1jlojno9k96k6medslhu51dt2eht7vkk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

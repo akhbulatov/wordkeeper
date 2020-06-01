@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -45,7 +47,7 @@ android {
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             debuggable true
-            ext.enableCrashlytics = false
+            manifestPlaceholders = [enableCrashReporting: "false"]
         }
 
         release {
@@ -53,6 +55,7 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+            manifestPlaceholders = [enableCrashReporting: "true"]
         }
     }
 
@@ -107,6 +110,7 @@ dependencies {
     implementation "ru.terrakok.cicerone:cicerone:$ciceroneVersion"
 
     // Dev Tools
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
     implementation "com.facebook.stetho:stetho:$stethoVersion"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
 }
