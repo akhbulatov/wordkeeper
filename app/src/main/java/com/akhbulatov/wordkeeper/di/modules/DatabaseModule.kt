@@ -1,7 +1,6 @@
 package com.akhbulatov.wordkeeper.di.modules
 
 import android.content.Context
-import androidx.room.Room
 import com.akhbulatov.wordkeeper.data.global.local.database.AppDatabase
 import com.akhbulatov.wordkeeper.data.global.local.database.word.WordDao
 import com.akhbulatov.wordkeeper.data.global.local.database.wordcategory.WordCategoryDao
@@ -14,10 +13,7 @@ abstract class DatabaseModule {
     companion object {
         @Provides
         @Singleton
-        fun provideAppDatabase(context: Context): AppDatabase =
-            Room.databaseBuilder(context, AppDatabase::class.java, "wordkeeper.db")
-                .fallbackToDestructiveMigrationOnDowngrade()
-                .build()
+        fun provideAppDatabase(context: Context): AppDatabase = AppDatabase.getInstance(context)
 
         @Provides
         @Singleton

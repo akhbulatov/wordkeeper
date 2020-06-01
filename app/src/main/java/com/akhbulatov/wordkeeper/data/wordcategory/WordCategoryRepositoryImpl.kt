@@ -1,21 +1,16 @@
 package com.akhbulatov.wordkeeper.data.wordcategory
 
-import android.content.Context
-import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.data.global.local.database.word.WordDao
 import com.akhbulatov.wordkeeper.data.global.local.database.wordcategory.WordCategoryDao
-import com.akhbulatov.wordkeeper.data.global.local.database.wordcategory.WordCategoryDbModel
 import com.akhbulatov.wordkeeper.data.word.WordDatabaseMapper
 import com.akhbulatov.wordkeeper.domain.global.models.WordCategory
 import com.akhbulatov.wordkeeper.domain.global.repositories.WordCategoryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class WordCategoryRepositoryImpl @Inject constructor(
-    private val context: Context,
     private val wordCategoryDao: WordCategoryDao,
     private val wordDao: WordDao,
     private val wordCategoryDatabaseMapper: WordCategoryDatabaseMapper,
@@ -24,13 +19,6 @@ class WordCategoryRepositoryImpl @Inject constructor(
 
     override fun getWordCategories(): Flow<List<WordCategory>> =
         wordCategoryDao.getAllWordCategories()
-            .onEach {
-                if (it.isEmpty()) {
-                    val defaultCategory = context.getString(R.string.word_categories_default)
-                    val dbModel = WordCategoryDbModel(defaultCategory)
-                    wordCategoryDao.insertWordCategory(dbModel)
-                }
-            }
             .map {
                 it.map { category ->
                     val dbWords = wordDao.getWordsByCategory(category.name).firstOrNull() ?: emptyList()
