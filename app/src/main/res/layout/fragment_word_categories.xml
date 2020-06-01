@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -58,4 +58,4 @@
         android:layout_margin="@dimen/spacing_normal"
         app:srcCompat="@drawable/ic_add" />
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
