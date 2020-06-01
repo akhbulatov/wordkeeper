@@ -1,85 +1,75 @@
 <resources>
-    <string name="app_name" translatable="false">Word Keeper</string>
+    <string name="app_name" translatable="false">WordKeeper</string>
 
-    <!-- Navigation Drawer -->
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
+    <!-- Common Messages. Start -->
+    <string name="msg_drawer_open">Open navigation drawer</string>
+    <string name="msg_drawer_close">Close navigation drawer</string>
+
+    <string name="msg_action_add">Add</string>
+    <string name="msg_action_delete">Delete</string>
+    <string name="msg_action_search">Search</string>
+    <!-- Common Messages. End -->
 
     <!-- Main -->
-    <string name="search_hint">Search</string>
+    <string name="main_rate_app">Rate app</string>
 
-    <!-- All Words -->
-    <string name="title_all_words">All words</string>
-    <string name="action_search_word">Search</string>
-    <string name="action_sort_word">Sort by</string>
-    <string name="action_move_word">Move to</string>
-    <string name="action_edit_word">Edit</string>
-    <string name="action_delete_word">Delete</string>
-    <string name="empty_word_list">You have not added words with translations.
-        To add a new word, press the \"+\".
-    </string>
-    <string name="no_results_word">No results found for \"&lt;b>%1$s&lt;/b>\"</string>
-    <string name="success_move_word">Move successfully completed</string>
-    <string name="error_move_word">Move failed</string>
+    <!-- Words -->
+    <string name="words_title">Words</string>
+    <string name="words_action_sort">Sort by</string>
+    <string name="words_action_move">Move to</string>
+    <string name="words_action_edit">Edit</string>
+    <string name="words_action_delete">Delete</string>
+    <string name="words_empty_data">You have not added words with translations. To add a new word, press the \"+\".</string>
+    <string name="words_empty_search_result">No results found for \"&lt;b>%1$s&lt;/b>\"</string>
+    <string name="words_success_move">Move successfully completed</string>
 
-    <!-- Categories -->
-    <string name="title_categories">Categories</string>
-    <string name="default_category">Main</string>
-    <string name="action_search_category">Search</string>
-    <string name="action_add_category">Add</string>
-    <string name="action_rename_category">Rename</string>
-    <string name="action_delete_category">Delete</string>
-    <string name="more_options_description">More options</string>
-    <string name="no_results_category">No results found for \"&lt;b>%1$s&lt;/b>\"</string>
-    <plurals name="number_of_words">
-        <item quantity="one">%d word</item>
-        <item quantity="other">%d words</item>
-    </plurals>
+    <!-- Word Categories -->
+    <string name="word_categories_title">Categories</string>
+    <string name="word_categories_default">Main</string>
+    <string name="word_categories_action_rename">Rename</string>
+    <string name="word_categories_empty_data">You have not added categories. To add a new category, press the \"+\".</string>
+    <string name="word_categories_empty_search_result">No results found for \"&lt;b>%1$s&lt;/b>\"</string>
 
-    <!-- Category Content -->
-    <string name="empty_category_content">No words in this category</string>
+    <!-- Word Categories -->
+    <string name="category_words_empty_data">No words in this category</string>
 
-    <!-- About -->
-    <string name="title_about">About</string>
-    <string name="app_icon_description">App icon</string>
-    <string name="app_version">Version %1$s (build %2$d)</string>
-    <string name="app_author">Alidibir Akhbulatov</string>
+    <!-- Add Edit Word -->
+    <string name="add_edit_word_add_title">New word</string>
+    <string name="add_edit_word_edit_title">Edit word</string>
+    <string name="add_edit_word_name_hint">Name</string>
+    <string name="add_edit_word_translation_hint">Translation</string>
+    <string name="add_edit_word_category">Category</string>
+    <string name="add_edit_word_action_add">Add</string>
+    <string name="add_edit_word_action_edit">Edit</string>
 
-    <!-- Word Editor -->
-    <string name="title_new_word">New word</string>
-    <string name="title_edit_word">Edit word</string>
-    <string name="word_editor_name_hint">Name</string>
-    <string name="word_editor_translation_hint">Translation</string>
-    <string name="word_editor_category">Category</string>
-    <string name="word_editor_action_add">Add</string>
-    <string name="word_editor_action_edit">Edit</string>
-    <string name="error_word_editor_empty_fields">The fields are not filled</string>
-
-    <!-- Word Sort -->
-    <string-array name="sort_words">
+    <!-- Sort Word -->
+    <string-array name="sort_words_items">
         <item>Name</item>
         <item>Last modified</item>
     </string-array>
 
-    <!-- Category List -->
-    <string name="category_list_title">Move to category</string>
+    <!-- Add Edit Word Category -->
+    <string name="add_edit_word_category_add_title">New category</string>
+    <string name="add_edit_word_category_edit_title">Rename category</string>
+    <string name="add_edit_word_category_name_hint">Name</string>
+    <string name="add_edit_word_category_edit">Rename</string>
 
-    <!-- Category Editor -->
-    <string name="title_new_category">New category</string>
-    <string name="title_rename_category">Rename category</string>
-    <string name="category_editor_name_hint">Name</string>
-    <string name="category_editor_action_add">Add</string>
-    <string name="category_editor_action_rename">Rename</string>
-    <string name="error_category_editor_empty_field">The field is not filled</string>
+    <!-- Delete Word Category -->
+    <string name="delete_word_category_title">Delete category?</string>
+    <string name="delete_word_category_message">Also removed all words that are in this category.</string>
 
-    <!-- Delete Category -->
-    <string name="category_delete_title">Delete category?</string>
-    <string name="category_delete_message">Also removed all words
-        that are in this category.
-    </string>
-    <string name="category_action_delete">Delete</string>
+    <!-- About -->
+    <string name="about_title">About</string>
+    <string name="about_app_version">Version %1$s (build %2$d)</string>
+    <string name="about_app_author">Alidibir Akhbulatov</string>
 
-    <!-- Rate App -->
-    <string name="title_rate_app">Rate app</string>
-    <string name="error_rate_app">Sorry, could not find the app</string>
+    <!-- List Items. Start -->
+
+    <!-- Item Word Category -->
+    <plurals name="item_word_category_num_of_words">
+        <item quantity="one">%d word</item>
+        <item quantity="other">%d words</item>
+    </plurals>
+
+    <!-- List Items. End -->
 </resources>
