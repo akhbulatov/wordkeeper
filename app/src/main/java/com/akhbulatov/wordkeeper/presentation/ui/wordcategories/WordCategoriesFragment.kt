@@ -20,6 +20,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import com.akhbulatov.wordkeeper.App
 import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.databinding.FragmentWordCategoriesBinding
@@ -77,6 +78,16 @@ class WordCategoriesFragment : BaseFragment(R.layout.fragment_word_categories) {
             wordCategoriesRecyclerView.addItemDecoration(
                 DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
             )
+            wordCategoriesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (dy > 0) {
+                        addWordFab.hide()
+                    } else {
+                        addWordFab.show()
+                    }
+                }
+            })
             wordCategoriesRecyclerView.adapter = wordCategoryAdapter
             registerForContextMenu(wordCategoriesRecyclerView)
 

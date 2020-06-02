@@ -19,6 +19,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import com.akhbulatov.wordkeeper.App
 import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.databinding.FragmentWordsBinding
@@ -83,6 +84,18 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
 
             wordsRecyclerView.setHasFixedSize(true)
             wordsRecyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+            wordsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (wordActionMode == null) {
+                        if (dy > 0) {
+                            addWordFab.hide()
+                        } else {
+                            addWordFab.show()
+                        }
+                    }
+                }
+            })
             wordsRecyclerView.adapter = wordAdapter
 
             addWordFab.setOnClickListener { showAddEditWordDialog(null) }
@@ -215,6 +228,7 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
             mode.menuInflater.inflate(R.menu.selected_word, menu)
             editWordItem = menu.findItem(R.id.menu_edit_word)
+            binding.addWordFab.hide()
             return true
         }
 
@@ -251,6 +265,7 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
         override fun onDestroyActionMode(mode: ActionMode) {
             wordAdapter.clearSelection()
             wordActionMode = null
+            binding.addWordFab.show()
         }
     }
 }
