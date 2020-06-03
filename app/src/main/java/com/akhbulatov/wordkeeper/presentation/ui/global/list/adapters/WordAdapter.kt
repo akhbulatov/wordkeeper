@@ -5,6 +5,7 @@ import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.util.contains
+import androidx.core.util.forEach
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.akhbulatov.wordkeeper.R
@@ -31,9 +32,9 @@ class WordAdapter(
     }
 
     fun getSelectedWordPositions(): List<Int> {
-        val words = arrayListOf(selectedWords.size())
-        for (i in 0 until selectedWords.size()) {
-            words.add(selectedWords.keyAt(i))
+        val words = arrayListOf<Int>()
+        selectedWords.forEach { key, _ ->
+            words.add(selectedWords.keyAt(key))
         }
         return words
     }
