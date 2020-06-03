@@ -34,7 +34,7 @@ class WordAdapter(
     fun getSelectedWordPositions(): List<Int> {
         val words = arrayListOf<Int>()
         selectedWords.forEach { key, _ ->
-            words.add(selectedWords.keyAt(key))
+            words.add(key)
         }
         return words
     }
