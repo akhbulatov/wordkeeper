@@ -72,16 +72,13 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         }
 
         supportFragmentManager.addOnBackStackChangedListener {
-            val hasBackStack = supportFragmentManager.backStackEntryCount > 0
-            drawerToggle.isDrawerIndicatorEnabled = !hasBackStack
-            supportActionBar?.setDisplayHomeAsUpEnabled(hasBackStack)
-            if (!hasBackStack) {
-                drawerToggle.syncState()
-            }
+            refreshActionBarWithNavDrawer()
         }
 
         if (savedInstanceState == null) {
             viewModel.onStart()
+        } else {
+            refreshActionBarWithNavDrawer()
         }
     }
 
@@ -98,6 +95,15 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
     override fun onPause() {
         navigatorHolder.removeNavigator()
         super.onPause()
+    }
+
+    private fun refreshActionBarWithNavDrawer() {
+        val hasBackStack = supportFragmentManager.backStackEntryCount > 0
+        drawerToggle.isDrawerIndicatorEnabled = !hasBackStack
+        supportActionBar?.setDisplayHomeAsUpEnabled(hasBackStack)
+        if (!hasBackStack) {
+            drawerToggle.syncState()
+        }
     }
 
     private fun onNavigationItemSelected(item: MenuItem) {
