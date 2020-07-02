@@ -6,7 +6,6 @@ import com.akhbulatov.wordkeeper.di.modules.DataModule
 import com.akhbulatov.wordkeeper.di.modules.DatabaseModule
 import com.akhbulatov.wordkeeper.di.modules.NavigationModule
 import com.akhbulatov.wordkeeper.di.modules.PreferencesModule
-import com.akhbulatov.wordkeeper.di.modules.ViewModelModule
 import com.akhbulatov.wordkeeper.presentation.ui.addeditword.AddEditWordComponent
 import com.akhbulatov.wordkeeper.presentation.ui.categorywords.CategoryWordsComponent
 import com.akhbulatov.wordkeeper.presentation.ui.main.MainComponent
@@ -23,8 +22,7 @@ import javax.inject.Singleton
         DatabaseModule::class,
         PreferencesModule::class,
         DataModule::class,
-        NavigationModule::class,
-        ViewModelModule::class
+        NavigationModule::class
     ]
 )
 @Singleton

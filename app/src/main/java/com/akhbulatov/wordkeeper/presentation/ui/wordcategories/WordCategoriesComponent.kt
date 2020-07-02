@@ -1,10 +1,11 @@
 package com.akhbulatov.wordkeeper.presentation.ui.wordcategories
 
 import com.akhbulatov.wordkeeper.di.FragmentScope
+import com.akhbulatov.wordkeeper.presentation.global.mvvm.ViewModelModule
 import dagger.Subcomponent
 
-@Subcomponent(modules = [WordCategoriesModule::class])
 @FragmentScope
+@Subcomponent(modules = [WordCategoriesModule::class, ViewModelModule::class])
 interface WordCategoriesComponent {
     fun inject(fragment: WordCategoriesFragment)
 

@@ -1,10 +1,11 @@
 package com.akhbulatov.wordkeeper.presentation.ui.addeditword
 
 import com.akhbulatov.wordkeeper.di.DialogScope
+import com.akhbulatov.wordkeeper.presentation.global.mvvm.ViewModelModule
 import dagger.Subcomponent
 
-@Subcomponent(modules = [AddEditWordModule::class])
 @DialogScope
+@Subcomponent(modules = [AddEditWordModule::class, ViewModelModule::class])
 interface AddEditWordComponent {
     fun inject(dialog: AddEditWordDialog)
 

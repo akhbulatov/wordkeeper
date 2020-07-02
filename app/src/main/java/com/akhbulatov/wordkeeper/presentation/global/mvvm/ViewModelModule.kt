@@ -1,7 +1,6 @@
-package com.akhbulatov.wordkeeper.di.modules
+package com.akhbulatov.wordkeeper.presentation.global.mvvm
 
 import androidx.lifecycle.ViewModelProvider
-import com.akhbulatov.wordkeeper.presentation.global.mvvm.ViewModelFactory
 import dagger.Binds
 import dagger.Module
 
