@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 
-@Module()
+@Module
 abstract class CategoryWordsModule {
     @Binds
     abstract fun bindCategoryWordsViewModel(viewModel: CategoryWordsViewModel): ViewModel
