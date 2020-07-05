@@ -21,7 +21,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.akhbulatov.wordkeeper.App
 import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.databinding.FragmentWordCategoriesBinding
 import com.akhbulatov.wordkeeper.domain.global.models.WordCategory
@@ -57,10 +56,7 @@ class WordCategoriesFragment : BaseFragment(R.layout.fragment_word_categories) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent
-            .wordCategoriesComponentFactory()
-            .create()
-            .inject(this)
+        WordCategoriesComponent.create().inject(this)
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         if (savedInstanceState == null) {
@@ -94,9 +90,7 @@ class WordCategoriesFragment : BaseFragment(R.layout.fragment_word_categories) {
             addWordFab.setOnClickListener { showAddWordDialog() }
         }
 
-        viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
-            renderViewState(viewState)
-        })
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { renderViewState(it) })
     }
 
     override fun onDestroyView() {

@@ -20,7 +20,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.akhbulatov.wordkeeper.App
 import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.databinding.FragmentWordsBinding
 import com.akhbulatov.wordkeeper.domain.global.models.Word
@@ -65,10 +64,7 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent
-            .wordsComponentFactory()
-            .create()
-            .inject(this)
+        WordsComponent.create().inject(this)
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         if (savedInstanceState == null) {
@@ -101,9 +97,7 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
             addWordFab.setOnClickListener { showAddEditWordDialog(null) }
         }
 
-        viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
-            renderViewState(viewState)
-        })
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { renderViewState(it) })
     }
 
     override fun onDestroyView() {
@@ -209,11 +203,9 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
     private fun showSelectWordCategoriesDialog() {
         setFragmentResultListener(SelectWordCategoryDialog.REQUEST_SELECT_WORD_CATEGORY) { _, bundle ->
             val category = bundle.getString(SelectWordCategoryDialog.RESULT_SELECT_WORD_CATEGORY)!!
-            val words = arrayListOf<Word>()
-            for (pos in wordAdapter.getSelectedWordPositions()) {
-                words.add(wordAdapter.currentList[pos])
-            }
-            viewModel.onSelectWordCatalogClicked(words, category)
+            val words = wordAdapter.getSelectedWordPositions()
+                .map { wordAdapter.currentList[it] }
+            viewModel.onSelectWordCatalogClicked(words.toMutableList(), category)
             wordActionMode?.finish()
             showSnackbar(R.string.words_success_move)
         }
@@ -251,10 +243,8 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
                     true
                 }
                 R.id.menu_delete_word -> {
-                    val words = arrayListOf<Word>()
-                    for (pos in wordAdapter.getSelectedWordPositions()) {
-                        words.add(wordAdapter.currentList[pos])
-                    }
+                    val words = wordAdapter.getSelectedWordPositions()
+                        .map { wordAdapter.currentList[it] }
                     viewModel.onDeleteWordsClicked(words)
                     mode.finish()
                     true

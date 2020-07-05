@@ -10,7 +10,6 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
-import com.akhbulatov.wordkeeper.App
 import com.akhbulatov.wordkeeper.BuildConfig
 import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.databinding.ActivityMainBinding
@@ -54,17 +53,12 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent
-            .mainComponentFactory()
-            .create()
-            .inject(this)
+        MainComponent.create().inject(this)
         super.onCreate(savedInstanceState)
         val rootView = findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
         _binding = ActivityMainBinding.bind(rootView)
         setSupportActionBar(binding.toolbar)
-        drawerToggle.setToolbarNavigationClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+        drawerToggle.setToolbarNavigationClickListener { onBackPressedDispatcher.onBackPressed() }
         binding.drawerLayout.addDrawerListener(drawerToggle)
         binding.navigationView.setNavigationItemSelectedListener {
             onNavigationItemSelected(it)

@@ -9,7 +9,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.akhbulatov.wordkeeper.App
 import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.databinding.DialogAddEditWordBinding
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseDialogFragment
@@ -27,10 +26,7 @@ class AddEditWordDialog : BaseDialogFragment() {
     private val viewModel by viewModels<AddEditWordViewModel> { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent
-            .addEditWordComponentFactory()
-            .create()
-            .inject(this)
+        AddEditWordComponent.create().inject(this)
         super.onCreate(savedInstanceState)
     }
 

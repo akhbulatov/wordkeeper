@@ -8,7 +8,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.akhbulatov.wordkeeper.App
 import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.databinding.FragmentCategoryWordsBinding
 import com.akhbulatov.wordkeeper.domain.global.models.Word
@@ -30,10 +29,7 @@ class CategoryWordsFragment : BaseFragment(R.layout.fragment_category_words) {
     private val wordCategory: String by lazy { requireArguments().getString(ARG_WORD_CATEGORY)!! }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent
-            .categoryWordsComponentFactory()
-            .create()
-            .inject(this)
+        CategoryWordsComponent.create().inject(this)
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -58,9 +54,7 @@ class CategoryWordsFragment : BaseFragment(R.layout.fragment_category_words) {
             wordsRecyclerView.adapter = wordAdapter
         }
 
-        viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
-            renderViewState(viewState)
-        })
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { renderViewState(it) })
     }
 
     override fun onDestroyView() {

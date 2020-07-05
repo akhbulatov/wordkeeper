@@ -7,22 +7,17 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import com.akhbulatov.wordkeeper.App
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import javax.inject.Inject
 
 class SelectWordCategoryDialog : BaseDialogFragment() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: SelectWordCategoryViewModel by viewModels { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent
-            .selectWordCategoryComponentFactory()
-            .create()
-            .inject(this)
+        SelectWordCategoryComponent.create().inject(this)
         super.onCreate(savedInstanceState)
     }
 

@@ -1,5 +1,6 @@
 package com.akhbulatov.wordkeeper.presentation.ui.words
 
+import com.akhbulatov.wordkeeper.App
 import com.akhbulatov.wordkeeper.di.FragmentScope
 import com.akhbulatov.wordkeeper.presentation.global.mvvm.ViewModelModule
 import dagger.Subcomponent
@@ -12,5 +13,11 @@ interface WordsComponent {
     @Subcomponent.Factory
     interface Factory {
         fun create(): WordsComponent
+    }
+
+    companion object {
+        fun create(): WordsComponent = App.appComponent
+            .wordsComponentFactory()
+            .create()
     }
 }

@@ -1,5 +1,6 @@
 package com.akhbulatov.wordkeeper.presentation.ui.main
 
+import com.akhbulatov.wordkeeper.App
 import com.akhbulatov.wordkeeper.di.ActivityScope
 import com.akhbulatov.wordkeeper.presentation.global.mvvm.ViewModelModule
 import dagger.Subcomponent
@@ -12,5 +13,11 @@ interface MainComponent {
     @Subcomponent.Factory
     interface Factory {
         fun create(): MainComponent
+    }
+
+    companion object {
+        fun create(): MainComponent = App.appComponent
+            .mainComponentFactory()
+            .create()
     }
 }

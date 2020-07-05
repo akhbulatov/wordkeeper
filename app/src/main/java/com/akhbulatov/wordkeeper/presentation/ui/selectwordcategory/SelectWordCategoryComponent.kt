@@ -1,5 +1,6 @@
 package com.akhbulatov.wordkeeper.presentation.ui.selectwordcategory
 
+import com.akhbulatov.wordkeeper.App
 import com.akhbulatov.wordkeeper.di.DialogScope
 import com.akhbulatov.wordkeeper.presentation.global.mvvm.ViewModelModule
 import dagger.Subcomponent
@@ -12,5 +13,11 @@ interface SelectWordCategoryComponent {
     @Subcomponent.Factory
     interface Factory {
         fun create(): SelectWordCategoryComponent
+    }
+
+    companion object {
+        fun create(): SelectWordCategoryComponent = App.appComponent
+            .selectWordCategoryComponentFactory()
+            .create()
     }
 }
