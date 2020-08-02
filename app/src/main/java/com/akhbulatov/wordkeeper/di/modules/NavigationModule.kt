@@ -1,10 +1,10 @@
 package com.akhbulatov.wordkeeper.di.modules
 
+import com.github.terrakok.cicerone.Cicerone
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
 import dagger.Module
 import dagger.Provides
-import ru.terrakok.cicerone.Cicerone
-import ru.terrakok.cicerone.NavigatorHolder
-import ru.terrakok.cicerone.Router
 import javax.inject.Singleton
 
 @Module
@@ -19,5 +19,5 @@ object NavigationModule {
     @JvmStatic
     @Provides
     @Singleton
-    fun provideNavigatorHolder(): NavigatorHolder = cicerone.navigatorHolder
+    fun provideNavigatorHolder(): NavigatorHolder = cicerone.getNavigatorHolder()
 }

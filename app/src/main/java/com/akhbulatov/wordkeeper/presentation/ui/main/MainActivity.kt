@@ -14,22 +14,20 @@ import com.akhbulatov.wordkeeper.BuildConfig
 import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.databinding.ActivityMainBinding
 import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseActivity
-import ru.terrakok.cicerone.Navigator
-import ru.terrakok.cicerone.NavigatorHolder
-import ru.terrakok.cicerone.android.support.SupportAppNavigator
-import ru.terrakok.cicerone.commands.Command
+import com.github.terrakok.cicerone.Navigator
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.androidx.AppNavigator
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(R.layout.activity_main) {
 
     @Inject lateinit var navigatorHolder: NavigatorHolder
     private val navigator: Navigator by lazy {
-        object : SupportAppNavigator(this, R.id.container) {
+        object : AppNavigator(this, R.id.container) {
             override fun setupFragmentTransaction(
-                command: Command,
+                fragmentTransaction: FragmentTransaction,
                 currentFragment: Fragment?,
-                nextFragment: Fragment?,
-                fragmentTransaction: FragmentTransaction
+                nextFragment: Fragment?
             ) {
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             }

@@ -1,8 +1,9 @@
 package com.akhbulatov.wordkeeper.presentation.ui.main
 
 import com.akhbulatov.wordkeeper.presentation.global.mvvm.BaseViewModel
+import com.akhbulatov.wordkeeper.presentation.global.navigation.ExternalScreens
 import com.akhbulatov.wordkeeper.presentation.global.navigation.Screens
-import ru.terrakok.cicerone.Router
+import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
@@ -14,18 +15,18 @@ class MainViewModel @Inject constructor(
     }
 
     fun onWordsClicked() {
-        router.newRootScreen(Screens.Words)
+        router.newRootScreen(Screens.words())
     }
 
     fun onWordCategoriesClicked() {
-        router.replaceScreen(Screens.WordCategories)
+        router.replaceScreen(Screens.wordCategories())
     }
 
     fun onRateAppClicked(appUrl: String) {
-        router.navigateTo(Screens.ExternalBrowser(appUrl))
+        router.navigateTo(ExternalScreens.externalBrowser(appUrl))
     }
 
     fun onAboutClicked() {
-        router.replaceScreen(Screens.About)
+        router.replaceScreen(Screens.about())
     }
 }

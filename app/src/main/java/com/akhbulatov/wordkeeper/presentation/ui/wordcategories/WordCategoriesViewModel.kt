@@ -7,12 +7,12 @@ import com.akhbulatov.wordkeeper.domain.global.models.WordCategory
 import com.akhbulatov.wordkeeper.domain.wordcategory.WordCategoryInteractor
 import com.akhbulatov.wordkeeper.presentation.global.mvvm.BaseViewModel
 import com.akhbulatov.wordkeeper.presentation.global.navigation.Screens
+import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class WordCategoriesViewModel @Inject constructor(
@@ -64,7 +64,7 @@ class WordCategoriesViewModel @Inject constructor(
     }
 
     fun onWordCategoryClicked(wordCategory: WordCategory) {
-        router.navigateTo(Screens.CategoryWords(wordCategory.name))
+        router.navigateTo(Screens.categoryWords(wordCategory.name))
     }
 
     fun onAddWordCategoryClicked(name: String) {
