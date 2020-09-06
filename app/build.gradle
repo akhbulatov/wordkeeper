@@ -107,7 +107,7 @@ dependencies {
     implementation "com.github.terrakok:cicerone:$ciceroneVersion"
 
     // Dev Tools
-    implementation 'com.google.firebase:firebase-crashlytics:17.1.1'
+    implementation "com.google.firebase:firebase-crashlytics:$firebaseCrashlyticsVersion"
     implementation "com.facebook.stetho:stetho:$stethoVersion"
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
 }

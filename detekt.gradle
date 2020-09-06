@@ -1,11 +1,11 @@
 apply plugin: "io.gitlab.arturbosch.detekt"
 
 detekt {
-    toolVersion = " 1.11.0-RC1"
+    toolVersion = "1.12.0"
     config = files("$rootDir/config/detekt/detekt.yml")
     autoCorrect = true
 }
 
 dependencies {
-    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.11.0-RC1"
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.12.0"
 }
