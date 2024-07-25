@@ -19,7 +19,6 @@ buildscript {
         set("roomVersion", "2.6.1")
         set("coroutinesVersion", "1.9.0-RC")
         set("ciceroneVersion", "7.1")
-        set("detektVersion", "1.12.0")
         set("leakCanaryVersion", "2.14")
     }
 
@@ -34,7 +33,6 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${rootProject.extra["kotlinVersion"]}")
         classpath("com.google.gms:google-services:4.4.2")
         classpath("com.google.firebase:firebase-crashlytics-gradle:3.0.2")
-        classpath("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${rootProject.extra["detektVersion"]}")
         classpath("com.github.ben-manes:gradle-versions-plugin:0.51.0")
     }
 }
@@ -45,10 +43,6 @@ plugins {
 }
 
 allprojects {
-    apply {
-        from("$rootDir/detekt.gradle")
-    }
-
     repositories {
         mavenCentral()
         google()
