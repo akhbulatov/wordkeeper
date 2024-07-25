@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
@@ -10,8 +10,8 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    namespace "com.akhbulatov.wordkeeper"
+    compileSdk rootProject.ext.compileSdkVersion
 
     defaultConfig {
         applicationId "com.akhbulatov.wordkeeper"
@@ -20,7 +20,6 @@ android {
         versionCode 12
         versionName "2.0.1"
         resConfigs "en", "ru"
-        vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -30,7 +29,8 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
+        buildConfig true
+        viewBinding true
     }
 
     signingConfigs {
@@ -68,17 +68,11 @@ android {
         jvmTarget = "1.8"
         freeCompilerArgs += ["-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi"]
     }
-
-    androidExtensions {
-        experimental = true
-    }
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
     // AndroidX
     implementation "com.google.android.material:material:$materialVersion"
@@ -108,6 +102,5 @@ dependencies {
 
     // Dev Tools
     implementation "com.google.firebase:firebase-crashlytics:$firebaseCrashlyticsVersion"
-    implementation "com.facebook.stetho:stetho:$stethoVersion"
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
 }

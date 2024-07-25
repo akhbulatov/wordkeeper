@@ -50,7 +50,7 @@ class AddEditWordCategoryDialog : BaseDialogFragment() {
         }
 
         dialog.setOnShowListener {
-            binding.nameEditText.textChanges(emitImmediately = true)
+            binding.nameEditText.textChanges()
                 .onEach { dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = it.isNotBlank() }
                 .launchIn(lifecycleScope)
         }

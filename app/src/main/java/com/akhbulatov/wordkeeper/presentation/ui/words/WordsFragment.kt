@@ -123,9 +123,9 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
             }
         })
         searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-            override fun onMenuItemActionExpand(item: MenuItem?): Boolean = true
+            override fun onMenuItemActionExpand(item: MenuItem): Boolean = true
 
-            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+            override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
                 viewModel.onCloseSearchWordClicked()
                 return true
             }

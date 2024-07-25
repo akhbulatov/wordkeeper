@@ -74,8 +74,8 @@ class AddEditWordDialog : BaseDialogFragment() {
 
         dialog.setOnShowListener {
             combine(
-                binding.nameEditText.textChanges(emitImmediately = true),
-                binding.translationEditText.textChanges(emitImmediately = true)
+                binding.nameEditText.textChanges(),
+                binding.translationEditText.textChanges()
             ) { name, translation -> name.isNotBlank() && translation.isNotBlank() }
                 .onEach { dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = it }
                 .launchIn(lifecycleScope)

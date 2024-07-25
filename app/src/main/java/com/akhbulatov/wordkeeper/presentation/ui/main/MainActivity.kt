@@ -17,6 +17,7 @@ import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseActivity
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
+import com.github.terrakok.cicerone.androidx.FragmentScreen
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(R.layout.activity_main) {
@@ -25,9 +26,10 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
     private val navigator: Navigator by lazy {
         object : AppNavigator(this, R.id.container) {
             override fun setupFragmentTransaction(
+                screen: FragmentScreen,
                 fragmentTransaction: FragmentTransaction,
                 currentFragment: Fragment?,
-                nextFragment: Fragment?
+                nextFragment: Fragment
             ) {
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             }

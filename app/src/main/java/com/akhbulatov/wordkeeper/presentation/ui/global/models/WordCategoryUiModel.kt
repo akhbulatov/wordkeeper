@@ -2,7 +2,7 @@ package com.akhbulatov.wordkeeper.presentation.ui.global.models
 
 import android.os.Parcelable
 import com.akhbulatov.wordkeeper.domain.global.models.WordCategory
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class WordCategoryUiModel(
