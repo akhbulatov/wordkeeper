@@ -5,7 +5,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-parcelize")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.ksp)
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
 }
@@ -16,12 +16,12 @@ keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 android {
     namespace = "com.akhbulatov.wordkeeper"
-    compileSdk = rootProject.extra["compileSdkVersion"] as Int
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.akhbulatov.wordkeeper"
-        minSdk = rootProject.extra["minSdkVersion"] as Int
-        targetSdk = rootProject.extra["targetSdkVersion"] as Int
+        minSdk = 24
+        targetSdk = 34
         versionCode = 12
         versionName = "2.0.1"
         resourceConfigurations += setOf("en", "ru")
@@ -75,36 +75,29 @@ android {
 }
 
 dependencies {
-    // Kotlin
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.extra["kotlinVersion"]}")
+    implementation(libs.kotlin.stdlib)
 
-    // AndroidX
-    implementation("com.google.android.material:material:${rootProject.extra["materialVersion"]}")
-    implementation("androidx.appcompat:appcompat:${rootProject.extra["appcompatVersion"]}")
-    implementation("androidx.constraintlayout:constraintlayout:${rootProject.extra["constraintLayoutVersion"]}")
-    implementation("androidx.core:core-ktx:${rootProject.extra["coreVersion"]}")
-    implementation("androidx.fragment:fragment-ktx:${rootProject.extra["fragmentVersion"]}")
-    implementation("androidx.recyclerview:recyclerview:${rootProject.extra["recyclerViewVersion"]}")
+    implementation(libs.material)
+    implementation(libs.appcompat)
+    implementation(libs.constraintLayout)
+    implementation(libs.core.ktx)
+    implementation(libs.fragment.ktx)
+    implementation(libs.recyclerView)
 
-    implementation("io.github.reactivecircus.flowbinding:flowbinding-android:${rootProject.extra["flowBindingVersion"]}")
+    implementation(libs.flowbinding.android)
 
-    // DI
-    implementation("com.google.dagger:dagger:${rootProject.extra["daggerVersion"]}")
-    ksp("com.google.dagger:dagger-compiler:${rootProject.extra["daggerVersion"]}")
+    implementation(libs.firebase.crashlytics)
 
-    // Database
-    implementation("androidx.room:room-runtime:${rootProject.extra["roomVersion"]}")
-    implementation("androidx.room:room-ktx:${rootProject.extra["roomVersion"]}")
-    ksp("androidx.room:room-compiler:${rootProject.extra["roomVersion"]}")
+    implementation(libs.dagger)
+    ksp(libs.dagger.compiler)
 
-    // Async
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.extra["coroutinesVersion"]}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${rootProject.extra["coroutinesVersion"]}")
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
-    // Navigation
-    implementation("com.github.terrakok:cicerone:${rootProject.extra["ciceroneVersion"]}")
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
 
-    // Dev Tools
-    implementation("com.google.firebase:firebase-crashlytics:${rootProject.extra["firebaseCrashlyticsVersion"]}")
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:${rootProject.extra["leakCanaryVersion"]}")
+    implementation(libs.cicerone)
+
+    debugImplementation(libs.leakCanary.android)
 }
