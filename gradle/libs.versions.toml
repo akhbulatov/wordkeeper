@@ -42,5 +42,10 @@ cicerone = "com.github.terrakok:cicerone:7.1"
 leakCanary-android = "com.squareup.leakcanary:leakcanary-android:2.14"
 
 [plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 ksp = "com.google.devtools.ksp:2.0.0-1.0.23"
+googleServices = "com.google.gms.google-services:4.4.2"
+firebase-crashlytics = "com.google.firebase.crashlytics:3.0.2"
 versions = "com.github.ben-manes.versions:0.51.0"
