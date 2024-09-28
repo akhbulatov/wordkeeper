@@ -1,8 +1,9 @@
 package com.akhbulatov.wordkeeper.data.wordcategory
 
-import com.akhbulatov.wordkeeper.core.database.word.WordDao
-import com.akhbulatov.wordkeeper.core.database.wordcategory.WordCategoryDao
-import com.akhbulatov.wordkeeper.data.word.WordDatabaseMapper
+import com.akhbulatov.wordkeeper.data.word.database.WordDao
+import com.akhbulatov.wordkeeper.data.word.database.WordDatabaseMapper
+import com.akhbulatov.wordkeeper.data.wordcategory.database.WordCategoryDao
+import com.akhbulatov.wordkeeper.data.wordcategory.database.WordCategoryDatabaseMapper
 import com.akhbulatov.wordkeeper.domain.wordcategory.WordCategoryRepository
 import com.akhbulatov.wordkeeper.domain.wordcategory.models.WordCategory
 import kotlinx.coroutines.flow.Flow

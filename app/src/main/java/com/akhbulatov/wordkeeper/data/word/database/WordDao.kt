@@ -1,10 +1,11 @@
-package com.akhbulatov.wordkeeper.core.database.word
+package com.akhbulatov.wordkeeper.data.word.database
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.akhbulatov.wordkeeper.data.word.database.models.WordDbModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -1,6 +1,6 @@
-package com.akhbulatov.wordkeeper.data.wordcategory
+package com.akhbulatov.wordkeeper.data.wordcategory.database
 
-import com.akhbulatov.wordkeeper.core.database.wordcategory.WordCategoryDbModel
+import com.akhbulatov.wordkeeper.data.wordcategory.database.models.WordCategoryDbModel
 import com.akhbulatov.wordkeeper.domain.word.models.Word
 import com.akhbulatov.wordkeeper.domain.wordcategory.models.WordCategory
 import javax.inject.Inject

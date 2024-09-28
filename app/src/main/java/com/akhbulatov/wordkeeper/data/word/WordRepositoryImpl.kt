@@ -1,7 +1,8 @@
 package com.akhbulatov.wordkeeper.data.word
 
-import com.akhbulatov.wordkeeper.core.database.word.WordDao
 import com.akhbulatov.wordkeeper.core.preferences.word.WordPreferences
+import com.akhbulatov.wordkeeper.data.word.database.WordDao
+import com.akhbulatov.wordkeeper.data.word.database.WordDatabaseMapper
 import com.akhbulatov.wordkeeper.domain.word.WordRepository
 import com.akhbulatov.wordkeeper.domain.word.models.Word
 import kotlinx.coroutines.flow.Flow

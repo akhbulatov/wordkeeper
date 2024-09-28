@@ -1,6 +1,6 @@
-package com.akhbulatov.wordkeeper.data.word
+package com.akhbulatov.wordkeeper.data.word.database
 
-import com.akhbulatov.wordkeeper.core.database.word.WordDbModel
+import com.akhbulatov.wordkeeper.data.word.database.models.WordDbModel
 import com.akhbulatov.wordkeeper.domain.word.models.Word
 import javax.inject.Inject
 

@@ -1,10 +1,11 @@
-package com.akhbulatov.wordkeeper.core.database.wordcategory
+package com.akhbulatov.wordkeeper.data.wordcategory.database
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.akhbulatov.wordkeeper.data.wordcategory.database.models.WordCategoryDbModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
