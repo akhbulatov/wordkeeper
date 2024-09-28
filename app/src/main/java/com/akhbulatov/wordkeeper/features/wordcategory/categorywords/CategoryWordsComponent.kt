@@ -1,6 +1,6 @@
 package com.akhbulatov.wordkeeper.features.wordcategory.categorywords
 
-import com.akhbulatov.wordkeeper.App
+import com.akhbulatov.wordkeeper.WordKeeperApp
 import com.akhbulatov.wordkeeper.core.ui.mvvm.ViewModelModule
 import com.akhbulatov.wordkeeper.di.FragmentScope
 import dagger.Subcomponent
@@ -16,7 +16,7 @@ interface CategoryWordsComponent {
     }
 
     companion object {
-        fun create(): CategoryWordsComponent = App.appComponent
+        fun create(): CategoryWordsComponent = WordKeeperApp.appComponent
             .categoryWordsComponentFactory()
             .create()
     }

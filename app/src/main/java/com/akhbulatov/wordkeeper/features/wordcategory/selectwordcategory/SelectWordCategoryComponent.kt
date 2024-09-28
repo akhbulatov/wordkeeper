@@ -1,6 +1,6 @@
 package com.akhbulatov.wordkeeper.features.wordcategory.selectwordcategory
 
-import com.akhbulatov.wordkeeper.App
+import com.akhbulatov.wordkeeper.WordKeeperApp
 import com.akhbulatov.wordkeeper.core.ui.mvvm.ViewModelModule
 import com.akhbulatov.wordkeeper.di.DialogScope
 import dagger.Subcomponent
@@ -16,7 +16,7 @@ interface SelectWordCategoryComponent {
     }
 
     companion object {
-        fun create(): SelectWordCategoryComponent = App.appComponent
+        fun create(): SelectWordCategoryComponent = WordKeeperApp.appComponent
             .selectWordCategoryComponentFactory()
             .create()
     }

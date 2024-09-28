@@ -1,6 +1,6 @@
 package com.akhbulatov.wordkeeper.features.word.addeditword
 
-import com.akhbulatov.wordkeeper.App
+import com.akhbulatov.wordkeeper.WordKeeperApp
 import com.akhbulatov.wordkeeper.core.ui.mvvm.ViewModelModule
 import com.akhbulatov.wordkeeper.di.DialogScope
 import dagger.Subcomponent
@@ -16,7 +16,7 @@ interface AddEditWordComponent {
     }
 
     companion object {
-        fun create(): AddEditWordComponent = App.appComponent
+        fun create(): AddEditWordComponent = WordKeeperApp.appComponent
             .addEditWordComponentFactory()
             .create()
     }

@@ -4,7 +4,7 @@ import android.app.Application
 import com.akhbulatov.wordkeeper.di.AppComponent
 import com.akhbulatov.wordkeeper.di.DaggerAppComponent
 
-class App : Application() {
+class WordKeeperApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
