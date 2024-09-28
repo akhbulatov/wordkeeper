@@ -1,4 +1,4 @@
-package com.akhbulatov.wordkeeper.core.ui.navigation
+package com.akhbulatov.wordkeeper
 
 import android.content.Intent
 import androidx.core.net.toUri

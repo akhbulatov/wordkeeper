@@ -1,8 +1,8 @@
 package com.akhbulatov.wordkeeper.features.main
 
+import com.akhbulatov.wordkeeper.ExternalScreens
+import com.akhbulatov.wordkeeper.Screens
 import com.akhbulatov.wordkeeper.core.ui.mvvm.BaseViewModel
-import com.akhbulatov.wordkeeper.core.ui.navigation.ExternalScreens
-import com.akhbulatov.wordkeeper.core.ui.navigation.Screens
 import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 

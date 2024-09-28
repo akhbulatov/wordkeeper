@@ -3,8 +3,8 @@ package com.akhbulatov.wordkeeper.features.wordcategory.wordcategories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.akhbulatov.wordkeeper.Screens
 import com.akhbulatov.wordkeeper.core.ui.mvvm.BaseViewModel
-import com.akhbulatov.wordkeeper.core.ui.navigation.Screens
 import com.akhbulatov.wordkeeper.domain.wordcategory.models.WordCategory
 import com.akhbulatov.wordkeeper.domain.wordcategory.usecases.AddWordCategoryUseCase
 import com.akhbulatov.wordkeeper.domain.wordcategory.usecases.DeleteWordCategoryWithWordsUseCase
