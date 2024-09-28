@@ -1,4 +1,4 @@
-package com.akhbulatov.wordkeeper.presentation.ui.global.views
+package com.akhbulatov.wordkeeper.core.ui.views
 
 import android.content.Context
 import android.util.AttributeSet

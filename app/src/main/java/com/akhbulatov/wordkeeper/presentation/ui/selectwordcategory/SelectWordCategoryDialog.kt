@@ -7,7 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseDialogFragment
+import com.akhbulatov.wordkeeper.core.ui.base.BaseDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import javax.inject.Inject
 

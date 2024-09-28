@@ -1,4 +1,4 @@
-package com.akhbulatov.wordkeeper.presentation.ui.global.models
+package com.akhbulatov.wordkeeper.core.ui.models
 
 import android.os.Parcelable
 import com.akhbulatov.wordkeeper.domain.global.models.WordCategory

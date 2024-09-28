@@ -1,4 +1,4 @@
-package com.akhbulatov.wordkeeper.presentation.ui.global.list.viewholders
+package com.akhbulatov.wordkeeper.core.ui.list.viewholders
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

@@ -1,8 +1,8 @@
 package com.akhbulatov.wordkeeper.presentation.ui.main
 
-import com.akhbulatov.wordkeeper.presentation.global.mvvm.BaseViewModel
-import com.akhbulatov.wordkeeper.presentation.global.navigation.ExternalScreens
-import com.akhbulatov.wordkeeper.presentation.global.navigation.Screens
+import com.akhbulatov.wordkeeper.core.ui.mvvm.BaseViewModel
+import com.akhbulatov.wordkeeper.core.ui.navigation.ExternalScreens
+import com.akhbulatov.wordkeeper.core.ui.navigation.Screens
 import com.github.terrakok.cicerone.Router
 import javax.inject.Inject
 

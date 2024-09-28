@@ -1,4 +1,4 @@
-package com.akhbulatov.wordkeeper.presentation.ui.global.utils
+package com.akhbulatov.wordkeeper.core.ui.utils
 
 import android.content.Context
 import androidx.annotation.ColorRes

@@ -10,9 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.akhbulatov.wordkeeper.R
+import com.akhbulatov.wordkeeper.core.ui.base.BaseDialogFragment
+import com.akhbulatov.wordkeeper.core.ui.models.WordUiModel
 import com.akhbulatov.wordkeeper.databinding.DialogAddEditWordBinding
-import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseDialogFragment
-import com.akhbulatov.wordkeeper.presentation.ui.global.models.WordUiModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn

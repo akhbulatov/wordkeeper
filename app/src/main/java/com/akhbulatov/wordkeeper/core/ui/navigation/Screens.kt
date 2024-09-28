@@ -1,4 +1,4 @@
-package com.akhbulatov.wordkeeper.presentation.global.navigation
+package com.akhbulatov.wordkeeper.core.ui.navigation
 
 import com.akhbulatov.wordkeeper.presentation.ui.about.AboutFragment
 import com.akhbulatov.wordkeeper.presentation.ui.categorywords.CategoryWordsFragment

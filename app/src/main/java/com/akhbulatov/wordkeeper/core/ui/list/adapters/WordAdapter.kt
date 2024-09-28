@@ -1,4 +1,4 @@
-package com.akhbulatov.wordkeeper.presentation.ui.global.list.adapters
+package com.akhbulatov.wordkeeper.core.ui.list.adapters
 
 import android.graphics.Color
 import android.util.SparseBooleanArray
@@ -9,11 +9,11 @@ import androidx.core.util.forEach
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.akhbulatov.wordkeeper.R
+import com.akhbulatov.wordkeeper.core.ui.list.adapters.WordAdapter.WordViewHolder
+import com.akhbulatov.wordkeeper.core.ui.list.viewholders.BaseViewHolder
+import com.akhbulatov.wordkeeper.core.ui.utils.color
 import com.akhbulatov.wordkeeper.databinding.ItemWordBinding
 import com.akhbulatov.wordkeeper.domain.global.models.Word
-import com.akhbulatov.wordkeeper.presentation.ui.global.list.adapters.WordAdapter.WordViewHolder
-import com.akhbulatov.wordkeeper.presentation.ui.global.list.viewholders.BaseViewHolder
-import com.akhbulatov.wordkeeper.presentation.ui.global.utils.color
 
 class WordAdapter(
     private val onItemClickListener: OnItemClickListener? = null

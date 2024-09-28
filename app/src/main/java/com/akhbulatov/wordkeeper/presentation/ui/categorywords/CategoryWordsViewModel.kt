@@ -3,12 +3,11 @@ package com.akhbulatov.wordkeeper.presentation.ui.categorywords
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.akhbulatov.wordkeeper.core.ui.mvvm.BaseViewModel
 import com.akhbulatov.wordkeeper.domain.global.models.Word
 import com.akhbulatov.wordkeeper.domain.word.WordInteractor
-import com.akhbulatov.wordkeeper.presentation.global.mvvm.BaseViewModel
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch

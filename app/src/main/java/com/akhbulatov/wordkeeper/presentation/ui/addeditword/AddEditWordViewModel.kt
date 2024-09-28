@@ -1,10 +1,10 @@
 package com.akhbulatov.wordkeeper.presentation.ui.addeditword
 
 import androidx.lifecycle.viewModelScope
+import com.akhbulatov.wordkeeper.core.ui.mvvm.BaseViewModel
 import com.akhbulatov.wordkeeper.domain.global.models.Word
 import com.akhbulatov.wordkeeper.domain.word.WordInteractor
 import com.akhbulatov.wordkeeper.domain.wordcategory.WordCategoryInteractor
-import com.akhbulatov.wordkeeper.presentation.global.mvvm.BaseViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking

@@ -1,4 +1,4 @@
-package com.akhbulatov.wordkeeper.presentation.ui.global.base
+package com.akhbulatov.wordkeeper.core.ui.base
 
 import android.app.Dialog
 import android.os.Bundle

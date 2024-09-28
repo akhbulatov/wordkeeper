@@ -22,16 +22,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.akhbulatov.wordkeeper.R
+import com.akhbulatov.wordkeeper.core.ui.base.BaseFragment
+import com.akhbulatov.wordkeeper.core.ui.base.ConfirmDialog
+import com.akhbulatov.wordkeeper.core.ui.list.adapters.WordCategoryAdapter
+import com.akhbulatov.wordkeeper.core.ui.models.toUiModel
+import com.akhbulatov.wordkeeper.core.ui.utils.requireCompatActivity
+import com.akhbulatov.wordkeeper.core.ui.views.ContextMenuRecyclerView.RecyclerContextMenuInfo
 import com.akhbulatov.wordkeeper.databinding.FragmentWordCategoriesBinding
 import com.akhbulatov.wordkeeper.domain.global.models.WordCategory
 import com.akhbulatov.wordkeeper.presentation.ui.addeditword.AddEditWordDialog
 import com.akhbulatov.wordkeeper.presentation.ui.addeditwordcategory.AddEditWordCategoryDialog
-import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment
-import com.akhbulatov.wordkeeper.presentation.ui.global.base.ConfirmDialog
-import com.akhbulatov.wordkeeper.presentation.ui.global.list.adapters.WordCategoryAdapter
-import com.akhbulatov.wordkeeper.presentation.ui.global.models.toUiModel
-import com.akhbulatov.wordkeeper.presentation.ui.global.utils.requireCompatActivity
-import com.akhbulatov.wordkeeper.presentation.ui.global.views.ContextMenuRecyclerView.RecyclerContextMenuInfo
 import com.akhbulatov.wordkeeper.presentation.ui.main.MainActivity
 import javax.inject.Inject
 

@@ -8,12 +8,12 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.akhbulatov.wordkeeper.R
+import com.akhbulatov.wordkeeper.core.ui.base.BaseFragment
+import com.akhbulatov.wordkeeper.core.ui.list.adapters.WordAdapter
+import com.akhbulatov.wordkeeper.core.ui.mvvm.ViewModelFactory
+import com.akhbulatov.wordkeeper.core.ui.utils.requireCompatActivity
 import com.akhbulatov.wordkeeper.databinding.FragmentCategoryWordsBinding
 import com.akhbulatov.wordkeeper.domain.global.models.Word
-import com.akhbulatov.wordkeeper.presentation.global.mvvm.ViewModelFactory
-import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment
-import com.akhbulatov.wordkeeper.presentation.ui.global.list.adapters.WordAdapter
-import com.akhbulatov.wordkeeper.presentation.ui.global.utils.requireCompatActivity
 import javax.inject.Inject
 
 class CategoryWordsFragment : BaseFragment(R.layout.fragment_category_words) {

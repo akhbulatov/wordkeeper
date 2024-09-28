@@ -12,8 +12,8 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.akhbulatov.wordkeeper.BuildConfig
 import com.akhbulatov.wordkeeper.R
+import com.akhbulatov.wordkeeper.core.ui.base.BaseActivity
 import com.akhbulatov.wordkeeper.databinding.ActivityMainBinding
-import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseActivity
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator

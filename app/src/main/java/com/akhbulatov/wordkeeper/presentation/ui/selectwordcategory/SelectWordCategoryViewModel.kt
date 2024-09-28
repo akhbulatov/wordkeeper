@@ -1,7 +1,7 @@
 package com.akhbulatov.wordkeeper.presentation.ui.selectwordcategory
 
+import com.akhbulatov.wordkeeper.core.ui.mvvm.BaseViewModel
 import com.akhbulatov.wordkeeper.domain.wordcategory.WordCategoryInteractor
-import com.akhbulatov.wordkeeper.presentation.global.mvvm.BaseViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject

@@ -1,8 +1,8 @@
 package com.akhbulatov.wordkeeper.presentation.ui.main
 
 import com.akhbulatov.wordkeeper.App
+import com.akhbulatov.wordkeeper.core.ui.mvvm.ViewModelModule
 import com.akhbulatov.wordkeeper.di.ActivityScope
-import com.akhbulatov.wordkeeper.presentation.global.mvvm.ViewModelModule
 import dagger.Subcomponent
 
 @ActivityScope

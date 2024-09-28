@@ -1,4 +1,4 @@
-package com.akhbulatov.wordkeeper.presentation.ui.global.utils
+package com.akhbulatov.wordkeeper.core.ui.utils
 
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity

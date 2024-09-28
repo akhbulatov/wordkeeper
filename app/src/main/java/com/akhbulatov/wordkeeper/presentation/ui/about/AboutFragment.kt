@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.View
 import com.akhbulatov.wordkeeper.BuildConfig
 import com.akhbulatov.wordkeeper.R
+import com.akhbulatov.wordkeeper.core.ui.base.BaseFragment
+import com.akhbulatov.wordkeeper.core.ui.utils.requireCompatActivity
 import com.akhbulatov.wordkeeper.databinding.FragmentAboutBinding
-import com.akhbulatov.wordkeeper.presentation.ui.global.base.BaseFragment
-import com.akhbulatov.wordkeeper.presentation.ui.global.utils.requireCompatActivity
 
 class AboutFragment : BaseFragment(R.layout.fragment_about) {
 
