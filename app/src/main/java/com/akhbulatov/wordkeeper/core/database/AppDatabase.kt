@@ -1,4 +1,4 @@
-package com.akhbulatov.wordkeeper.data.global.local.database
+package com.akhbulatov.wordkeeper.core.database
 
 import android.content.Context
 import androidx.room.Database
@@ -6,10 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.akhbulatov.wordkeeper.R
-import com.akhbulatov.wordkeeper.data.global.local.database.word.WordDao
-import com.akhbulatov.wordkeeper.data.global.local.database.word.WordDbModel
-import com.akhbulatov.wordkeeper.data.global.local.database.wordcategory.WordCategoryDao
-import com.akhbulatov.wordkeeper.data.global.local.database.wordcategory.WordCategoryDbModel
+import com.akhbulatov.wordkeeper.core.database.word.WordDao
+import com.akhbulatov.wordkeeper.core.database.word.WordDbModel
+import com.akhbulatov.wordkeeper.core.database.wordcategory.WordCategoryDao
+import com.akhbulatov.wordkeeper.core.database.wordcategory.WordCategoryDbModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

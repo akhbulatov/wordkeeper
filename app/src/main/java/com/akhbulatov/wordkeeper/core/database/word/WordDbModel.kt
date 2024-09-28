@@ -1,4 +1,4 @@
-package com.akhbulatov.wordkeeper.data.global.local.database.word
+package com.akhbulatov.wordkeeper.core.database.word
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

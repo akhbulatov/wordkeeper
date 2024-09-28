@@ -1,4 +1,4 @@
-package com.akhbulatov.wordkeeper.data.global.local.preferences.word
+package com.akhbulatov.wordkeeper.core.preferences.word
 
 import android.content.SharedPreferences
 import androidx.core.content.edit

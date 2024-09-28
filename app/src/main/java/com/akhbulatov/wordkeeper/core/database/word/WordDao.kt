@@ -1,4 +1,4 @@
-package com.akhbulatov.wordkeeper.data.global.local.database.word
+package com.akhbulatov.wordkeeper.core.database.word
 
 import androidx.room.Dao
 import androidx.room.Delete

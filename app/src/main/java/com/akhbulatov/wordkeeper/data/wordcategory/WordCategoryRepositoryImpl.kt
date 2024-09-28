@@ -1,7 +1,7 @@
 package com.akhbulatov.wordkeeper.data.wordcategory
 
-import com.akhbulatov.wordkeeper.data.global.local.database.word.WordDao
-import com.akhbulatov.wordkeeper.data.global.local.database.wordcategory.WordCategoryDao
+import com.akhbulatov.wordkeeper.core.database.word.WordDao
+import com.akhbulatov.wordkeeper.core.database.wordcategory.WordCategoryDao
 import com.akhbulatov.wordkeeper.data.word.WordDatabaseMapper
 import com.akhbulatov.wordkeeper.domain.global.models.WordCategory
 import com.akhbulatov.wordkeeper.domain.global.repositories.WordCategoryRepository
