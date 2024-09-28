@@ -5,7 +5,7 @@ import com.akhbulatov.wordkeeper.core.ui.mvvm.BaseViewModel
 import com.akhbulatov.wordkeeper.domain.word.models.Word
 import com.akhbulatov.wordkeeper.domain.word.usecases.AddWordUseCase
 import com.akhbulatov.wordkeeper.domain.word.usecases.EditWordUseCase
-import com.akhbulatov.wordkeeper.domain.wordcategory.WordCategoryInteractor
+import com.akhbulatov.wordkeeper.domain.wordcategory.usecases.GetWordCategoriesUseCase
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -14,13 +14,12 @@ import javax.inject.Inject
 class AddEditWordViewModel @Inject constructor(
     private val addWordUseCase: AddWordUseCase,
     private val editWordUseCase: EditWordUseCase,
-    private val wordCategoryInteractor: WordCategoryInteractor
+    private val getWordCategoriesUseCase: GetWordCategoriesUseCase
 ) : BaseViewModel() {
 
     fun getWordCategories(): List<String> =
         runBlocking {
-            wordCategoryInteractor.getWordCategories()
-                .first()
+            getWordCategoriesUseCase.invoke().first()
                 .map { it.name }
         }
 

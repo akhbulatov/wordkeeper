@@ -1,6 +1,6 @@
-package com.akhbulatov.wordkeeper.domain.global.repositories
+package com.akhbulatov.wordkeeper.domain.wordcategory
 
-import com.akhbulatov.wordkeeper.domain.global.models.WordCategory
+import com.akhbulatov.wordkeeper.domain.wordcategory.models.WordCategory
 import kotlinx.coroutines.flow.Flow
 
 interface WordCategoryRepository {

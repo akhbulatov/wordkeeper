@@ -3,8 +3,8 @@ package com.akhbulatov.wordkeeper.data.wordcategory
 import com.akhbulatov.wordkeeper.core.database.word.WordDao
 import com.akhbulatov.wordkeeper.core.database.wordcategory.WordCategoryDao
 import com.akhbulatov.wordkeeper.data.word.WordDatabaseMapper
-import com.akhbulatov.wordkeeper.domain.global.models.WordCategory
-import com.akhbulatov.wordkeeper.domain.global.repositories.WordCategoryRepository
+import com.akhbulatov.wordkeeper.domain.wordcategory.WordCategoryRepository
+import com.akhbulatov.wordkeeper.domain.wordcategory.models.WordCategory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map

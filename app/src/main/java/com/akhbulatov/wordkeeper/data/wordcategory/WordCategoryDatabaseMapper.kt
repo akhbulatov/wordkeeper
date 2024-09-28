@@ -1,8 +1,8 @@
 package com.akhbulatov.wordkeeper.data.wordcategory
 
 import com.akhbulatov.wordkeeper.core.database.wordcategory.WordCategoryDbModel
-import com.akhbulatov.wordkeeper.domain.global.models.WordCategory
 import com.akhbulatov.wordkeeper.domain.word.models.Word
+import com.akhbulatov.wordkeeper.domain.wordcategory.models.WordCategory
 import javax.inject.Inject
 
 class WordCategoryDatabaseMapper @Inject constructor() {

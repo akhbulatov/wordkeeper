@@ -29,7 +29,7 @@ import com.akhbulatov.wordkeeper.core.ui.models.toUiModel
 import com.akhbulatov.wordkeeper.core.ui.utils.requireCompatActivity
 import com.akhbulatov.wordkeeper.core.ui.views.ContextMenuRecyclerView.RecyclerContextMenuInfo
 import com.akhbulatov.wordkeeper.databinding.FragmentWordCategoriesBinding
-import com.akhbulatov.wordkeeper.domain.global.models.WordCategory
+import com.akhbulatov.wordkeeper.domain.wordcategory.models.WordCategory
 import com.akhbulatov.wordkeeper.presentation.ui.addeditword.AddEditWordDialog
 import com.akhbulatov.wordkeeper.presentation.ui.addeditwordcategory.AddEditWordCategoryDialog
 import com.akhbulatov.wordkeeper.presentation.ui.main.MainActivity

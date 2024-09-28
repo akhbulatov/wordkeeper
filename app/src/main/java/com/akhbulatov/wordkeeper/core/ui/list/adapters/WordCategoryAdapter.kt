@@ -10,7 +10,7 @@ import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.core.ui.list.adapters.WordCategoryAdapter.WordCategoryViewHolder
 import com.akhbulatov.wordkeeper.core.ui.list.viewholders.BaseViewHolder
 import com.akhbulatov.wordkeeper.databinding.ItemWordCategoryBinding
-import com.akhbulatov.wordkeeper.domain.global.models.WordCategory
+import com.akhbulatov.wordkeeper.domain.wordcategory.models.WordCategory
 
 class WordCategoryAdapter(
     private val itemClickListener: OnItemClickListener

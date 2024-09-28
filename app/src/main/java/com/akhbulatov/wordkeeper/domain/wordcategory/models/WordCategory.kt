@@ -1,4 +1,4 @@
-package com.akhbulatov.wordkeeper.domain.global.models
+package com.akhbulatov.wordkeeper.domain.wordcategory.models
 
 import com.akhbulatov.wordkeeper.domain.word.models.Word
 

@@ -5,8 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.akhbulatov.wordkeeper.core.ui.mvvm.BaseViewModel
 import com.akhbulatov.wordkeeper.core.ui.navigation.Screens
-import com.akhbulatov.wordkeeper.domain.global.models.WordCategory
-import com.akhbulatov.wordkeeper.domain.wordcategory.WordCategoryInteractor
+import com.akhbulatov.wordkeeper.domain.wordcategory.models.WordCategory
+import com.akhbulatov.wordkeeper.domain.wordcategory.usecases.AddWordCategoryUseCase
+import com.akhbulatov.wordkeeper.domain.wordcategory.usecases.DeleteWordCategoryWithWordsUseCase
+import com.akhbulatov.wordkeeper.domain.wordcategory.usecases.EditWordCategoryUseCase
+import com.akhbulatov.wordkeeper.domain.wordcategory.usecases.GetWordCategoriesUseCase
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onEach
@@ -16,7 +19,10 @@ import javax.inject.Inject
 
 class WordCategoriesViewModel @Inject constructor(
     private val router: Router,
-    private val wordCategoryInteractor: WordCategoryInteractor
+    private val getWordCategoriesUseCase: GetWordCategoriesUseCase,
+    private val addWordCategoryUseCase: AddWordCategoryUseCase,
+    private val editWordCategoryUseCase: EditWordCategoryUseCase,
+    private val deleteWordCategoryWithWordsUseCase: DeleteWordCategoryWithWordsUseCase
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
@@ -33,29 +39,29 @@ class WordCategoriesViewModel @Inject constructor(
 
     fun loadWordCategories() {
         viewModelScope.launch {
-            wordCategoryInteractor.getWordCategories()
+            getWordCategoriesUseCase.invoke()
                 .onStart { _viewState.value = currentViewState.copy(emptyProgress = true) }
                 .onEach { _viewState.value = currentViewState.copy(emptyProgress = false) }
-                .catch {
+                .catch { ex ->
                     _viewState.value = currentViewState.copy(
                         emptyProgress = false,
-                        emptyError = Pair(true, it.message)
+                        emptyError = Pair(true, ex.message)
                     )
                 }
-                .collect {
-                    loadedWordCategories = it
+                .collect { wordCategories ->
+                    loadedWordCategories = wordCategories
 
-                    if (it.isNotEmpty()) {
+                    if (wordCategories.isNotEmpty()) {
                         _viewState.value = currentViewState.copy(
                             emptyData = false,
                             emptyError = Pair(false, null),
-                            wordCategories = Pair(true, it)
+                            wordCategories = Pair(true, wordCategories)
                         )
                     } else {
                         _viewState.value = currentViewState.copy(
                             emptyData = true,
                             emptyError = Pair(false, null),
-                            wordCategories = Pair(false, it)
+                            wordCategories = Pair(false, wordCategories)
                         )
                     }
                 }
@@ -69,7 +75,7 @@ class WordCategoriesViewModel @Inject constructor(
     fun onAddWordCategoryClicked(name: String) {
         val wordCategory = WordCategory(name = name)
         viewModelScope.launch {
-            wordCategoryInteractor.addWordCategory(wordCategory)
+            addWordCategoryUseCase.invoke(wordCategory)
         }
     }
 
@@ -79,20 +85,22 @@ class WordCategoriesViewModel @Inject constructor(
             name = name
         )
         viewModelScope.launch {
-            wordCategoryInteractor.editWordCategory(wordCategory)
+            editWordCategoryUseCase.invoke(wordCategory)
         }
     }
 
     fun onDeleteWordCategoryWithWordsClicked(wordCategory: WordCategory) {
         viewModelScope.launch {
-            wordCategoryInteractor.deleteWordCategoryWithWords(wordCategory)
+            deleteWordCategoryWithWordsUseCase.invoke(wordCategory)
         }
     }
 
     fun onSearchWordCategoryChanged(query: String) {
         viewModelScope.launch {
             if (query.isNotBlank()) {
-                val foundWords = wordCategoryInteractor.searchWordCategories(query, loadedWordCategories)
+                val foundWords = loadedWordCategories.filter { wordCategory ->
+                    wordCategory.name.startsWith(query, ignoreCase = true)
+                }
                 _viewState.value = currentViewState.copy(
                     emptySearchResult = Pair(foundWords.isEmpty(), query),
                     wordCategories = Pair(true, foundWords)
