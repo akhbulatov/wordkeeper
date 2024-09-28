@@ -2,8 +2,8 @@ package com.akhbulatov.wordkeeper.data.word
 
 import com.akhbulatov.wordkeeper.core.database.word.WordDao
 import com.akhbulatov.wordkeeper.core.preferences.word.WordPreferences
-import com.akhbulatov.wordkeeper.domain.global.models.Word
-import com.akhbulatov.wordkeeper.domain.global.repositories.WordRepository
+import com.akhbulatov.wordkeeper.domain.word.WordRepository
+import com.akhbulatov.wordkeeper.domain.word.models.Word
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -42,9 +42,11 @@ class WordRepositoryImpl @Inject constructor(
         wordDao.deleteWords(dbModels)
     }
 
-    override var wordSortMode: Word.SortMode
-        get() = wordPreferences.wordSortMode
-        set(value) {
-            wordPreferences.wordSortMode = value
-        }
+    override fun getWordSortMode(): Word.SortMode {
+        return wordPreferences.wordSortMode
+    }
+
+    override fun setWordSortMode(mode: Word.SortMode) {
+        wordPreferences.wordSortMode = mode
+    }
 }

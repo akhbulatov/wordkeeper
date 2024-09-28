@@ -1,6 +1,6 @@
-package com.akhbulatov.wordkeeper.domain.global.repositories
+package com.akhbulatov.wordkeeper.domain.word
 
-import com.akhbulatov.wordkeeper.domain.global.models.Word
+import com.akhbulatov.wordkeeper.domain.word.models.Word
 import kotlinx.coroutines.flow.Flow
 
 interface WordRepository {
@@ -11,5 +11,6 @@ interface WordRepository {
     suspend fun editWord(word: Word)
     suspend fun deleteWords(words: List<Word>)
 
-    var wordSortMode: Word.SortMode
+    fun getWordSortMode(): Word.SortMode
+    fun setWordSortMode(mode: Word.SortMode)
 }

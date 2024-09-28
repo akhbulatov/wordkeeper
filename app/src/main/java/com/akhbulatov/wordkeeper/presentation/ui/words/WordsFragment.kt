@@ -26,7 +26,7 @@ import com.akhbulatov.wordkeeper.core.ui.models.toUiModel
 import com.akhbulatov.wordkeeper.core.ui.utils.requireCompatActivity
 import com.akhbulatov.wordkeeper.core.ui.utils.showSnackbar
 import com.akhbulatov.wordkeeper.databinding.FragmentWordsBinding
-import com.akhbulatov.wordkeeper.domain.global.models.Word
+import com.akhbulatov.wordkeeper.domain.word.models.Word
 import com.akhbulatov.wordkeeper.presentation.ui.addeditword.AddEditWordDialog
 import com.akhbulatov.wordkeeper.presentation.ui.main.MainActivity
 import com.akhbulatov.wordkeeper.presentation.ui.selectwordcategory.SelectWordCategoryDialog

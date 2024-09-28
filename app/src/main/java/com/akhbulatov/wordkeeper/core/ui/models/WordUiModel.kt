@@ -1,7 +1,7 @@
 package com.akhbulatov.wordkeeper.core.ui.models
 
 import android.os.Parcelable
-import com.akhbulatov.wordkeeper.domain.global.models.Word
+import com.akhbulatov.wordkeeper.domain.word.models.Word
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

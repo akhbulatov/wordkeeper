@@ -2,7 +2,7 @@ package com.akhbulatov.wordkeeper.core.preferences.word
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.akhbulatov.wordkeeper.domain.global.models.Word
+import com.akhbulatov.wordkeeper.domain.word.models.Word
 import javax.inject.Inject
 
 interface WordPreferences {

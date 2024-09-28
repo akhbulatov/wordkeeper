@@ -4,8 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.akhbulatov.wordkeeper.core.ui.mvvm.BaseViewModel
-import com.akhbulatov.wordkeeper.domain.global.models.Word
-import com.akhbulatov.wordkeeper.domain.word.WordInteractor
+import com.akhbulatov.wordkeeper.domain.word.models.Word
+import com.akhbulatov.wordkeeper.domain.word.usecases.DeleteWordsUseCase
+import com.akhbulatov.wordkeeper.domain.word.usecases.EditWordUseCase
+import com.akhbulatov.wordkeeper.domain.word.usecases.GetWordSortModeUseCase
+import com.akhbulatov.wordkeeper.domain.word.usecases.GetWordsUseCase
+import com.akhbulatov.wordkeeper.domain.word.usecases.SetWordSortModeUseCase
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -13,7 +17,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class WordsViewModel @Inject constructor(
-    private val wordInteractor: WordInteractor
+    private val getWordsUseCase: GetWordsUseCase,
+    private val editWordUseCase: EditWordUseCase,
+    private val deleteWordsUseCase: DeleteWordsUseCase,
+    private val getWordSortModeUseCase: GetWordSortModeUseCase,
+    private val setWordSortModeUseCase: SetWordSortModeUseCase
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
@@ -30,29 +38,29 @@ class WordsViewModel @Inject constructor(
 
     fun loadWords() {
         viewModelScope.launch {
-            wordInteractor.getWords()
+            getWordsUseCase.invoke()
                 .onStart { _viewState.value = currentViewState.copy(emptyProgress = true) }
                 .onEach { _viewState.value = currentViewState.copy(emptyProgress = false) }
-                .catch {
+                .catch { ex ->
                     _viewState.value = currentViewState.copy(
                         emptyProgress = false,
-                        emptyError = Pair(true, it.message)
+                        emptyError = Pair(true, ex.message)
                     )
                 }
-                .collect {
-                    loadedWords = it
+                .collect { words ->
+                    loadedWords = words
 
-                    if (it.isNotEmpty()) {
+                    if (words.isNotEmpty()) {
                         _viewState.value = currentViewState.copy(
                             emptyData = false,
                             emptyError = Pair(false, null),
-                            words = Pair(true, it)
+                            words = Pair(true, words)
                         )
                     } else {
                         _viewState.value = currentViewState.copy(
                             emptyData = true,
                             emptyError = Pair(false, null),
-                            words = Pair(false, it)
+                            words = Pair(false, words)
                         )
                     }
                 }
@@ -62,20 +70,22 @@ class WordsViewModel @Inject constructor(
     fun onSelectWordCatalogClicked(words: MutableList<Word>, category: String) {
         val newWords = words.map { it.copy(category = category) }
         viewModelScope.launch {
-            newWords.forEach { wordInteractor.editWord(it) }
+            newWords.forEach { editWordUseCase.invoke(it) }
         }
     }
 
     fun onDeleteWordsClicked(words: List<Word>) {
         viewModelScope.launch {
-            wordInteractor.deleteWords(words)
+            deleteWordsUseCase.invoke(words)
         }
     }
 
     fun onSearchWordChanged(query: String) {
         viewModelScope.launch {
             if (query.isNotBlank()) {
-                val foundWords = wordInteractor.searchWords(query, loadedWords)
+                val foundWords = loadedWords.filter { word ->
+                    word.name.startsWith(query, ignoreCase = true)
+                }
                 _viewState.value = currentViewState.copy(
                     emptySearchResult = Pair(foundWords.isEmpty(), query),
                     words = Pair(true, foundWords)
@@ -96,10 +106,10 @@ class WordsViewModel @Inject constructor(
         )
     }
 
-    fun getWordSortMode(): Word.SortMode = wordInteractor.wordSortMode
+    fun getWordSortMode(): Word.SortMode = getWordSortModeUseCase.invoke()
 
     fun onSortWordSelected(sortMode: Word.SortMode) {
-        wordInteractor.wordSortMode = sortMode
+        setWordSortModeUseCase.invoke(sortMode)
         loadWords()
     }
 

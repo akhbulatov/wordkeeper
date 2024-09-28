@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.akhbulatov.wordkeeper.core.ui.mvvm.BaseViewModel
-import com.akhbulatov.wordkeeper.domain.global.models.Word
-import com.akhbulatov.wordkeeper.domain.word.WordInteractor
+import com.akhbulatov.wordkeeper.domain.word.models.Word
+import com.akhbulatov.wordkeeper.domain.word.usecases.GetWordsByCategoryUseCase
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onEach
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class CategoryWordsViewModel @Inject constructor(
     private val router: Router,
-    private val wordInteractor: WordInteractor
+    private val getWordsByCategoryUseCase: GetWordsByCategoryUseCase
 ) : BaseViewModel() {
 
     private val _viewState = MutableLiveData<ViewState>()
@@ -30,22 +30,22 @@ class CategoryWordsViewModel @Inject constructor(
 
     fun loadWordsByCategory(category: String) {
         viewModelScope.launch {
-            wordInteractor.getWordsByCategory(category)
+            getWordsByCategoryUseCase.invoke(category)
                 .onStart { _viewState.value = currentViewState.copy(emptyProgress = true) }
                 .onEach { _viewState.value = currentViewState.copy(emptyProgress = false) }
                 .catch { _viewState.value = currentViewState.copy(emptyError = Pair(true, it.message)) }
-                .collect {
-                    if (it.isNotEmpty()) {
+                .collect { words ->
+                    if (words.isNotEmpty()) {
                         _viewState.value = currentViewState.copy(
                             emptyData = false,
                             emptyError = Pair(false, null),
-                            words = Pair(true, it)
+                            words = Pair(true, words)
                         )
                     } else {
                         _viewState.value = currentViewState.copy(
                             emptyData = true,
                             emptyError = Pair(false, null),
-                            words = Pair(false, it)
+                            words = Pair(false, words)
                         )
                     }
                 }

@@ -1,4 +1,4 @@
-package com.akhbulatov.wordkeeper.domain.global.models
+package com.akhbulatov.wordkeeper.domain.word.models
 
 data class Word(
     val id: Long = 0,

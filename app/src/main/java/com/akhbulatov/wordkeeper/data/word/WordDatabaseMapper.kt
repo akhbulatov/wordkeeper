@@ -1,7 +1,7 @@
 package com.akhbulatov.wordkeeper.data.word
 
 import com.akhbulatov.wordkeeper.core.database.word.WordDbModel
-import com.akhbulatov.wordkeeper.domain.global.models.Word
+import com.akhbulatov.wordkeeper.domain.word.models.Word
 import javax.inject.Inject
 
 class WordDatabaseMapper @Inject constructor() {

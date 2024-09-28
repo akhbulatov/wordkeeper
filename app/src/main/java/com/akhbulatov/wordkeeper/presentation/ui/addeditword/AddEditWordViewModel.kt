@@ -2,8 +2,9 @@ package com.akhbulatov.wordkeeper.presentation.ui.addeditword
 
 import androidx.lifecycle.viewModelScope
 import com.akhbulatov.wordkeeper.core.ui.mvvm.BaseViewModel
-import com.akhbulatov.wordkeeper.domain.global.models.Word
-import com.akhbulatov.wordkeeper.domain.word.WordInteractor
+import com.akhbulatov.wordkeeper.domain.word.models.Word
+import com.akhbulatov.wordkeeper.domain.word.usecases.AddWordUseCase
+import com.akhbulatov.wordkeeper.domain.word.usecases.EditWordUseCase
 import com.akhbulatov.wordkeeper.domain.wordcategory.WordCategoryInteractor
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -11,7 +12,8 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class AddEditWordViewModel @Inject constructor(
-    private val wordInteractor: WordInteractor,
+    private val addWordUseCase: AddWordUseCase,
+    private val editWordUseCase: EditWordUseCase,
     private val wordCategoryInteractor: WordCategoryInteractor
 ) : BaseViewModel() {
 
@@ -30,7 +32,7 @@ class AddEditWordViewModel @Inject constructor(
             category = category
         )
         viewModelScope.launch {
-            wordInteractor.addWord(word)
+            addWordUseCase.invoke(word)
         }
     }
 
@@ -43,7 +45,7 @@ class AddEditWordViewModel @Inject constructor(
             category = category
         )
         viewModelScope.launch {
-            wordInteractor.editWord(word)
+            editWordUseCase.invoke(word)
         }
     }
 }

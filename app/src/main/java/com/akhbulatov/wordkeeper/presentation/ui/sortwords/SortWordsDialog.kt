@@ -6,7 +6,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.core.ui.base.BaseDialogFragment
-import com.akhbulatov.wordkeeper.domain.global.models.Word
+import com.akhbulatov.wordkeeper.domain.word.models.Word
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class SortWordsDialog : BaseDialogFragment() {

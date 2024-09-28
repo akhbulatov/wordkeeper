@@ -13,7 +13,7 @@ import com.akhbulatov.wordkeeper.core.ui.list.adapters.WordAdapter.WordViewHolde
 import com.akhbulatov.wordkeeper.core.ui.list.viewholders.BaseViewHolder
 import com.akhbulatov.wordkeeper.core.ui.utils.color
 import com.akhbulatov.wordkeeper.databinding.ItemWordBinding
-import com.akhbulatov.wordkeeper.domain.global.models.Word
+import com.akhbulatov.wordkeeper.domain.word.models.Word
 
 class WordAdapter(
     private val onItemClickListener: OnItemClickListener? = null

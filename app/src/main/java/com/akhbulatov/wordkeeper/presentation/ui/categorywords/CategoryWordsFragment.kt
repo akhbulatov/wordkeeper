@@ -13,7 +13,7 @@ import com.akhbulatov.wordkeeper.core.ui.list.adapters.WordAdapter
 import com.akhbulatov.wordkeeper.core.ui.mvvm.ViewModelFactory
 import com.akhbulatov.wordkeeper.core.ui.utils.requireCompatActivity
 import com.akhbulatov.wordkeeper.databinding.FragmentCategoryWordsBinding
-import com.akhbulatov.wordkeeper.domain.global.models.Word
+import com.akhbulatov.wordkeeper.domain.word.models.Word
 import javax.inject.Inject
 
 class CategoryWordsFragment : BaseFragment(R.layout.fragment_category_words) {
