@@ -1,9 +1,9 @@
 package com.akhbulatov.wordkeeper.di.modules
 
 import android.content.Context
-import com.akhbulatov.wordkeeper.data.global.local.database.AppDatabase
-import com.akhbulatov.wordkeeper.data.global.local.database.word.WordDao
-import com.akhbulatov.wordkeeper.data.global.local.database.wordcategory.WordCategoryDao
+import com.akhbulatov.wordkeeper.data.AppDatabase
+import com.akhbulatov.wordkeeper.data.word.database.WordDao
+import com.akhbulatov.wordkeeper.data.wordcategory.database.WordCategoryDao
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
