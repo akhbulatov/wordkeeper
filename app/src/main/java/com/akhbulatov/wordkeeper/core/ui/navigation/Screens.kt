@@ -1,9 +1,9 @@
 package com.akhbulatov.wordkeeper.core.ui.navigation
 
-import com.akhbulatov.wordkeeper.presentation.ui.about.AboutFragment
-import com.akhbulatov.wordkeeper.presentation.ui.categorywords.CategoryWordsFragment
-import com.akhbulatov.wordkeeper.presentation.ui.wordcategories.WordCategoriesFragment
-import com.akhbulatov.wordkeeper.presentation.ui.words.WordsFragment
+import com.akhbulatov.wordkeeper.features.about.AboutFragment
+import com.akhbulatov.wordkeeper.features.word.words.WordsFragment
+import com.akhbulatov.wordkeeper.features.wordcategory.categorywords.CategoryWordsFragment
+import com.akhbulatov.wordkeeper.features.wordcategory.wordcategories.WordCategoriesFragment
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 
 object Screens {
