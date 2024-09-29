@@ -1,21 +1,22 @@
 package com.akhbulatov.wordkeeper
 
 import android.app.Application
-import com.akhbulatov.wordkeeper.di.AppComponent
-import com.akhbulatov.wordkeeper.di.DaggerAppComponent
+import com.akhbulatov.wordkeeper.di.AppFactory
 
 class WordKeeperApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        initDI()
-    }
-
-    private fun initDI() {
-        appComponent = DaggerAppComponent.factory().create(applicationContext)
+        instance = this
     }
 
     companion object {
-        lateinit var appComponent: AppComponent
+        private lateinit var instance: WordKeeperApp
+
+        val appFactory: AppFactory by lazy {
+            AppFactory(
+                appContext = instance.applicationContext
+            )
+        }
     }
 }

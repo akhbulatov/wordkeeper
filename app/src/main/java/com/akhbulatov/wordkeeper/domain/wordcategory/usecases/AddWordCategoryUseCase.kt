@@ -2,9 +2,8 @@ package com.akhbulatov.wordkeeper.domain.wordcategory.usecases
 
 import com.akhbulatov.wordkeeper.domain.wordcategory.WordCategoryRepository
 import com.akhbulatov.wordkeeper.domain.wordcategory.models.WordCategory
-import javax.inject.Inject
 
-class AddWordCategoryUseCase @Inject constructor(
+class AddWordCategoryUseCase(
     private val wordCategoryRepository: WordCategoryRepository
 ) {
 

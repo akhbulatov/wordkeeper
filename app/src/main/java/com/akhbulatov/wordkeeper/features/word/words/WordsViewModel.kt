@@ -14,9 +14,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class WordsViewModel @Inject constructor(
+class WordsViewModel(
     private val getWordsUseCase: GetWordsUseCase,
     private val editWordUseCase: EditWordUseCase,
     private val deleteWordsUseCase: DeleteWordsUseCase,

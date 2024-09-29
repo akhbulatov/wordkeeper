@@ -4,9 +4,8 @@ import com.akhbulatov.wordkeeper.core.ui.mvvm.BaseViewModel
 import com.akhbulatov.wordkeeper.domain.wordcategory.usecases.GetWordCategoriesUseCase
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import javax.inject.Inject
 
-class SelectWordCategoryViewModel @Inject constructor(
+class SelectWordCategoryViewModel(
     private val getWordCategoriesUseCase: GetWordCategoriesUseCase
 ) : BaseViewModel() {
 

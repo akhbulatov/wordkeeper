@@ -18,7 +18,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.akhbulatov.wordkeeper.R
@@ -30,15 +29,14 @@ import com.akhbulatov.wordkeeper.core.ui.utils.requireCompatActivity
 import com.akhbulatov.wordkeeper.core.ui.views.ContextMenuRecyclerView.RecyclerContextMenuInfo
 import com.akhbulatov.wordkeeper.databinding.FragmentWordCategoriesBinding
 import com.akhbulatov.wordkeeper.domain.wordcategory.models.WordCategory
+import com.akhbulatov.wordkeeper.features.main.MainActivity
 import com.akhbulatov.wordkeeper.features.word.addeditword.AddEditWordDialog
 import com.akhbulatov.wordkeeper.features.wordcategory.addeditwordcategory.AddEditWordCategoryDialog
-import com.akhbulatov.wordkeeper.features.main.MainActivity
-import javax.inject.Inject
 
 class WordCategoriesFragment : BaseFragment(R.layout.fragment_word_categories) {
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel by viewModels<WordCategoriesViewModel> { viewModelFactory }
+    private val factory by lazy { WordCategoriesFactory() }
+    private val viewModel by viewModels<WordCategoriesViewModel> { factory.createViewModelFactory() }
 
     private var _binding: FragmentWordCategoriesBinding? = null
     private val binding get() = _binding!!
@@ -56,7 +54,6 @@ class WordCategoriesFragment : BaseFragment(R.layout.fragment_word_categories) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        WordCategoriesComponent.create().inject(this)
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         if (savedInstanceState == null) {

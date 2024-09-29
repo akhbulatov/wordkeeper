@@ -16,7 +16,6 @@ import androidx.core.text.parseAsHtml
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.akhbulatov.wordkeeper.R
@@ -31,12 +30,11 @@ import com.akhbulatov.wordkeeper.features.main.MainActivity
 import com.akhbulatov.wordkeeper.features.word.addeditword.AddEditWordDialog
 import com.akhbulatov.wordkeeper.features.word.sortwords.SortWordsDialog
 import com.akhbulatov.wordkeeper.features.wordcategory.selectwordcategory.SelectWordCategoryDialog
-import javax.inject.Inject
 
 class WordsFragment : BaseFragment(R.layout.fragment_words) {
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel by viewModels<WordsViewModel> { viewModelFactory }
+    private val factory by lazy { WordsFactory() }
+    private val viewModel by viewModels<WordsViewModel> { factory.createViewModelFactory() }
 
     private var _binding: FragmentWordsBinding? = null
     private val binding get() = _binding!!
@@ -63,7 +61,6 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        WordsComponent.create().inject(this)
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         if (savedInstanceState == null) {
@@ -234,6 +231,7 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
                     showSelectWordCategoriesDialog()
                     true
                 }
+
                 R.id.menu_edit_word -> {
                     val firstPos = wordAdapter.getSelectedWordPositions().first()
                     val word = wordAdapter.currentList[firstPos]
@@ -241,6 +239,7 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
                     mode.finish()
                     true
                 }
+
                 R.id.menu_delete_word -> {
                     val words = wordAdapter.getSelectedWordPositions()
                         .map { wordAdapter.currentList[it] }
@@ -248,6 +247,7 @@ class WordsFragment : BaseFragment(R.layout.fragment_words) {
                     mode.finish()
                     true
                 }
+
                 else -> false
             }
 

@@ -10,16 +10,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.core.ui.base.BaseFragment
 import com.akhbulatov.wordkeeper.core.ui.list.adapters.WordAdapter
-import com.akhbulatov.wordkeeper.core.ui.mvvm.ViewModelFactory
 import com.akhbulatov.wordkeeper.core.ui.utils.requireCompatActivity
 import com.akhbulatov.wordkeeper.databinding.FragmentCategoryWordsBinding
 import com.akhbulatov.wordkeeper.domain.word.models.Word
-import javax.inject.Inject
 
 class CategoryWordsFragment : BaseFragment(R.layout.fragment_category_words) {
 
-    @Inject lateinit var viewModelFactory: ViewModelFactory
-    private val viewModel by viewModels<CategoryWordsViewModel> { viewModelFactory }
+    private val factory by lazy { CategoryWordsFactory() }
+    private val viewModel by viewModels<CategoryWordsViewModel> { factory.createViewModelFactory() }
 
     private var _binding: FragmentCategoryWordsBinding? = null
     private val binding get() = _binding!!
@@ -28,7 +26,6 @@ class CategoryWordsFragment : BaseFragment(R.layout.fragment_category_words) {
     private val wordCategory: String by lazy { requireArguments().getString(ARG_WORD_CATEGORY)!! }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        CategoryWordsComponent.create().inject(this)
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

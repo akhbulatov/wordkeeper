@@ -11,9 +11,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class CategoryWordsViewModel @Inject constructor(
+class CategoryWordsViewModel(
     private val router: Router,
     private val getWordsByCategoryUseCase: GetWordsByCategoryUseCase
 ) : BaseViewModel() {

@@ -6,20 +6,13 @@ import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.akhbulatov.wordkeeper.core.ui.base.BaseDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import javax.inject.Inject
 
 class SelectWordCategoryDialog : BaseDialogFragment() {
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: SelectWordCategoryViewModel by viewModels { viewModelFactory }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        SelectWordCategoryComponent.create().inject(this)
-        super.onCreate(savedInstanceState)
-    }
+    private val factory by lazy { SelectWordCategoryFactory() }
+    private val viewModel: SelectWordCategoryViewModel by viewModels { factory.createViewModelFactory() }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val args = requireArguments()

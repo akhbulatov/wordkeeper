@@ -7,7 +7,6 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.akhbulatov.wordkeeper.R
 import com.akhbulatov.wordkeeper.core.ui.base.BaseDialogFragment
@@ -18,17 +17,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import reactivecircus.flowbinding.android.widget.textChanges
-import javax.inject.Inject
 
 class AddEditWordDialog : BaseDialogFragment() {
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel by viewModels<AddEditWordViewModel> { viewModelFactory }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        AddEditWordComponent.create().inject(this)
-        super.onCreate(savedInstanceState)
-    }
+    private val factory by lazy { AddEditWordFactory() }
+    private val viewModel by viewModels<AddEditWordViewModel> { factory.createViewModelFactory() }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val word: WordUiModel? = arguments?.getParcelable(ARG_WORD)
