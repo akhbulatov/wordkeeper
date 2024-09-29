@@ -9,20 +9,19 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.ViewModelProvider
 import com.akhbulatov.wordkeeper.BuildConfig
 import com.akhbulatov.wordkeeper.R
+import com.akhbulatov.wordkeeper.WordKeeperApp
 import com.akhbulatov.wordkeeper.core.ui.base.BaseActivity
 import com.akhbulatov.wordkeeper.databinding.ActivityMainBinding
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.github.terrakok.cicerone.androidx.FragmentScreen
-import javax.inject.Inject
 
 class MainActivity : BaseActivity(R.layout.activity_main) {
 
-    @Inject lateinit var navigatorHolder: NavigatorHolder
+    private val navigatorHolder: NavigatorHolder = WordKeeperApp.appFactory.navigationFactory.navigatorHolder
     private val navigator: Navigator by lazy {
         object : AppNavigator(this, R.id.container) {
             override fun setupFragmentTransaction(
@@ -36,8 +35,8 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         }
     }
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel by viewModels<MainViewModel> { viewModelFactory }
+    private val factory by lazy { MainFactory() }
+    private val viewModel by viewModels<MainViewModel> { factory.createViewModelFactory() }
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
@@ -53,7 +52,6 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        MainComponent.create().inject(this)
         super.onCreate(savedInstanceState)
         val rootView = findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
         _binding = ActivityMainBinding.bind(rootView)

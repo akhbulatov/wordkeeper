@@ -1,19 +1,15 @@
-package com.akhbulatov.wordkeeper.core.preferences.word
+package com.akhbulatov.wordkeeper.core.preferences
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.akhbulatov.wordkeeper.domain.word.models.Word
 import javax.inject.Inject
 
-interface WordPreferences {
-    var wordSortMode: Word.SortMode
-}
-
-class WordPreferencesImpl @Inject constructor(
+class AppPreferences @Inject constructor(
     private val sharedPrefs: SharedPreferences
-) : WordPreferences {
+) {
 
-    override var wordSortMode: Word.SortMode
+    var wordSortMode: Word.SortMode
         get() {
             val wordSortMode = sharedPrefs.getInt(PREF_WORD_SORT_MODE, 1)
             return Word.SortMode.toEnumSortMode(wordSortMode)

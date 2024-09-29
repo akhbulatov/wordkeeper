@@ -1,22 +1,21 @@
 package com.akhbulatov.wordkeeper.data.word
 
-import com.akhbulatov.wordkeeper.core.preferences.word.WordPreferences
+import com.akhbulatov.wordkeeper.core.preferences.AppPreferences
 import com.akhbulatov.wordkeeper.data.word.database.WordDao
 import com.akhbulatov.wordkeeper.data.word.database.WordDatabaseMapper
 import com.akhbulatov.wordkeeper.domain.word.WordRepository
 import com.akhbulatov.wordkeeper.domain.word.models.Word
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class WordRepositoryImpl @Inject constructor(
+class WordRepositoryImpl(
     private val wordDao: WordDao,
-    private val wordPreferences: WordPreferences,
+    private val appPreferences: AppPreferences,
     private val wordDatabaseMapper: WordDatabaseMapper
 ) : WordRepository {
 
     override fun getWords(): Flow<List<Word>> {
-        val wordSortMode = wordPreferences.wordSortMode
+        val wordSortMode = appPreferences.wordSortMode
         return when (wordSortMode) {
             Word.SortMode.NAME -> wordDao.getAllWordsSortedByName()
             Word.SortMode.LAST_MODIFIED -> wordDao.getAllWordsSortedByDescDatetime()
@@ -44,10 +43,10 @@ class WordRepositoryImpl @Inject constructor(
     }
 
     override fun getWordSortMode(): Word.SortMode {
-        return wordPreferences.wordSortMode
+        return appPreferences.wordSortMode
     }
 
     override fun setWordSortMode(mode: Word.SortMode) {
-        wordPreferences.wordSortMode = mode
+        appPreferences.wordSortMode = mode
     }
 }

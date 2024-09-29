@@ -4,9 +4,8 @@ import com.akhbulatov.wordkeeper.ExternalScreens
 import com.akhbulatov.wordkeeper.Screens
 import com.akhbulatov.wordkeeper.core.ui.mvvm.BaseViewModel
 import com.github.terrakok.cicerone.Router
-import javax.inject.Inject
 
-class MainViewModel @Inject constructor(
+class MainViewModel(
     private val router: Router
 ) : BaseViewModel() {
 

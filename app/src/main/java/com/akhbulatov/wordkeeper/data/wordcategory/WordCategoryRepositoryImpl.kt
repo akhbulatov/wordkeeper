@@ -9,9 +9,8 @@ import com.akhbulatov.wordkeeper.domain.wordcategory.models.WordCategory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class WordCategoryRepositoryImpl @Inject constructor(
+class WordCategoryRepositoryImpl(
     private val wordCategoryDao: WordCategoryDao,
     private val wordDao: WordDao,
     private val wordCategoryDatabaseMapper: WordCategoryDatabaseMapper,

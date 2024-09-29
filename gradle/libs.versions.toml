@@ -1,7 +1,6 @@
 [versions]
 kotlin = "2.0.20"
 agp = "8.6.1"
-dagger = "2.52"
 room = "2.6.1"
 coroutines = "1.9.0"
 
@@ -22,10 +21,6 @@ flowbinding-android = "io.github.reactivecircus.flowbinding:flowbinding-android:
 
 # Firebase
 firebase-crashlytics = "com.google.firebase:firebase-crashlytics:19.1.0"
-
-# DI
-dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
-dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 
 # Database
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
