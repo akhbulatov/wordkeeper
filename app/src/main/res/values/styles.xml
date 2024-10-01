@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Widget.App.Toolbar" parent="Widget.MaterialComponents.Toolbar">
-        <item name="android:background">?colorPrimary</item>
-        <item name="android:elevation">4dp</item>
-        <item name="popupTheme">@style/ThemeOverlay.MaterialComponents.Light</item>
+    <style name="Widget.App.ActionMode" parent="Widget.Material3.ActionMode">
+        <item name="background">?colorPrimaryDark</item>
+        <item name="titleTextStyle">@style/TextAppearance.App.ActionMode.Title</item>
     </style>
 
-    <style name="Widget.App.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
-        <!-- TODO Remove tint after fix this issue: https://github.com/material-components/material-components-android/issues/1106 -->
-        <item name="tint">@android:color/white</item>
+    <style name="TextAppearance.App.ActionMode.Title" parent="@style/TextAppearance.Material3.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:elevation">4dp</item>
+        <item name="popupTheme">@style/ThemeOverlay.Material3.Light</item>
+    </style>
+
+    <style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Secondary">
+        <item name="backgroundTint">?colorSecondary</item>
+        <item name="tint">@null</item>
     </style>
 
     <style name="ListItem">
