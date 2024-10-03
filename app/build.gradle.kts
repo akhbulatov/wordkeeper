@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.kotlin.stdlib)
 
     implementation(libs.material)
+    implementation(libs.activity)
     implementation(libs.appcompat)
     implementation(libs.constraintLayout)
     implementation(libs.core.ktx)
