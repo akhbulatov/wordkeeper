@@ -33,6 +33,9 @@
       </option>
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
     </JetCodeStyleSettings>
+    <Properties>
+      <option name="KEEP_BLANK_LINES" value="true" />
+    </Properties>
     <codeStyleSettings language="JAVA">
       <option name="FIELD_ANNOTATION_WRAP" value="0" />
     </codeStyleSettings>

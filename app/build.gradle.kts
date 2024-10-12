@@ -4,6 +4,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
     alias(libs.plugins.googleServices)
@@ -34,6 +35,7 @@ android {
 
     buildFeatures {
         buildConfig = true
+        compose = true
         viewBinding = true
     }
 
@@ -74,6 +76,10 @@ android {
             "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi"
         )
     }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.kotlinCompilerExtension.get()
+    }
 }
 
 dependencies {
@@ -86,6 +92,14 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.fragment.ktx)
     implementation(libs.recyclerView)
+
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.runtime)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.tooling.preview)
 
     implementation(libs.flowbinding.android)
 
